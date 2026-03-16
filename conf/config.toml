@@ -5,12 +5,12 @@ fast_mode = false
 # 支持网络地址 https://xxx
 # 支持本地地址（绝对地址）/User/xxx/xx.yml
 # 支持单个订阅链接，ss://xxx
+# 公开源宁少勿杂，优先保留实测能筛出健康节点的源
 subs = [
-    "https://raw.githubusercontent.com/ReaJason/Clash-Butler/master/clash.yaml"
+    "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta.yaml",
+    "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml",
     "https://raw.githubusercontent.com/dongchengjie/airport/refs/heads/main/subs/merged/tested_within.yaml",
-    "https://raw.githubusercontent.com/PuddinCat/BestClash/refs/heads/main/proxies.yaml",
-    "https://git.io/emzclash",
-    "https://raw.githubusercontent.com/ripaojiedian/freenode/main/clash"
+    "https://raw.githubusercontent.com/mfuu/v2ray/master/clash.yaml",
 ]
 
 # 是否重命名节点，打开后会使用 geoip 等方式进行代理真实 IP 和地理地址查询
@@ -18,13 +18,9 @@ rename_node = true
 rename_pattern = "${COUNTRYCODE}_${CITY}_${ISP}"
 
 # 是否需要加上代理池的节点一起筛选
-need_add_pool = true
+need_add_pool = false
 # 代理节点池
-pools = [
-    "https://raw.githubusercontent.com/Ruk1ng001/freeSub/main/clash.yaml",
-    "https://raw.githubusercontent.com/PuddinCat/BestClash/refs/heads/main/proxies.yaml",
-    "https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list.txt",
-]
+pools = []
 
 # 测试分组大小
 test_group_size = 50
