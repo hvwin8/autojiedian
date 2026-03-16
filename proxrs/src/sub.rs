@@ -13,6 +13,7 @@ use std::time::Duration;
 
 use regex::Regex;
 use reqwest::Client;
+use serde_json::Value as JsonValue;
 use serde_yaml::Mapping;
 use serde_yaml::Value;
 use tokio::time::sleep;
@@ -32,16 +33,55 @@ impl SubManager {
     /// 4. edhxxx, 传入 base64 的节点信息
     pub async fn get_proxies_from_url(url: String) -> Vec<Proxy> {
         let mut proxies: Vec<Proxy> = Vec::new();
-        if url.starts_with("http") {
-            if let Ok(file_path) = Self::get_content_from_sub_url(&url).await {
-                proxies = Self::parse_content(file_path).unwrap();
+        let mut pending_sources = vec![url];
+        let mut visited_sources: HashSet<String> = HashSet::new();
+
+        while let Some(source) = pending_sources.pop() {
+            if !visited_sources.insert(source.clone()) {
+                continue;
             }
-        } else if Path::new(&url).is_file() {
-            proxies = Self::parse_from_path(&url).unwrap();
-        } else if let Ok(p) = Self::parse_content(url.to_string()) {
-            proxies.extend(p);
+
+            if source.starts_with("http") {
+                if let Ok(content) = Self::get_content_from_sub_url(&source).await {
+                    if let Ok(parsed) = Self::parse_content(content.clone()) {
+                        if !parsed.is_empty() {
+                            info!("{} parsed proxies: {}", &source, &parsed.len());
+                            proxies.extend(parsed);
+                            continue;
+                        }
+                    }
+                    let provider_urls = Self::extract_proxy_provider_urls(&content);
+                    info!(
+                        "{} parsed proxies: 0, nested providers: {}",
+                        &source,
+                        &provider_urls.len()
+                    );
+                    pending_sources.extend(provider_urls);
+                }
+            } else if Path::new(&source).is_file() {
+                if let Ok(content) = fs::read_to_string(&source) {
+                    if let Ok(parsed) = Self::parse_content(content.clone()) {
+                        if !parsed.is_empty() {
+                            info!("{} parsed proxies: {}", &source, &parsed.len());
+                            proxies.extend(parsed);
+                            continue;
+                        }
+                    }
+                    let provider_urls = Self::extract_proxy_provider_urls(&content);
+                    info!(
+                        "{} parsed proxies: 0, nested providers: {}",
+                        &source,
+                        &provider_urls.len()
+                    );
+                    pending_sources.extend(provider_urls);
+                }
+            } else if let Ok(parsed) = Self::parse_content(source.clone()) {
+                info!("{} parsed proxies: {}", &source, &parsed.len());
+                proxies.extend(parsed);
+            } else {
+                info!("{} parsed proxies: 0", &source);
+            }
         }
-        info!("{} parsed proxies: {}", &url, &proxies.len());
         proxies
     }
 
@@ -157,58 +197,109 @@ impl SubManager {
 
     fn parse_yaml_content(content: &str) -> Result<Vec<Proxy>, Box<dyn std::error::Error>> {
         let mut conf_proxies: Vec<Proxy> = Vec::new();
-        let yaml = serde_yaml::from_str::<serde_json::Value>(content)?;
-        match yaml.get("proxies").or_else(|| yaml.get("Proxies")) {
-            None => {
-                return Err(format!("Proxy not found: {}", content).into());
-            }
-            Some(proxies) => {
-                if let Some(proxies_arr) = proxies.as_array() {
-                    for proxy in proxies_arr {
-                        let result = Proxy::from_json(&proxy.to_string());
-                        match result {
-                            Ok(p) => {
-                                conf_proxies.push(p);
-                            }
-                            Err(e) => {
-                                println!("{} {:?}", e, proxy);
-                            }
-                        }
-                    }
-                }
-            }
+        let yaml = serde_yaml::from_str::<JsonValue>(content)?;
+        Self::collect_proxies_from_json_value(&yaml, &mut conf_proxies);
+        if conf_proxies.is_empty() {
+            return Err(format!("Proxy not found: {}", content).into());
         }
         Ok(conf_proxies)
     }
 
     fn parse_base64_content(content: &str) -> Result<Vec<Proxy>, Box<dyn std::error::Error>> {
-        let mut conf_proxies: Vec<Proxy> = Vec::new();
-        let base64 = base64decode(content.trim());
-        base64
-            .split("\n")
-            .filter(|line| !line.is_empty())
-            .for_each(|line| match Proxy::from_link(line.trim().to_string()) {
-                Ok(proxy) => conf_proxies.push(proxy),
-                Err(e) => {
-                    println!("{}", e);
-                }
-            });
-        Ok(conf_proxies)
+        let compact = content.lines().map(str::trim).collect::<String>();
+        let decoded = base64decode(compact.trim());
+        if decoded.trim().is_empty() || decoded.trim() == compact.trim() {
+            return Err("Base64 content decode failed".into());
+        }
+        if let Ok(proxies) = Self::parse_yaml_content(&decoded) {
+            return Ok(proxies);
+        }
+        Self::parse_links_content(&decoded)
     }
 
     fn parse_links_content(content: &str) -> Result<Vec<Proxy>, Box<dyn std::error::Error>> {
         let mut conf_proxies: Vec<Proxy> = Vec::new();
-        let links = content
-            .split("\n")
-            .filter(|line| !line.is_empty())
-            .map(|link| link.trim())
-            .collect::<Vec<&str>>();
-        for link in links {
-            if let Ok(proxy) = Proxy::from_link(link.trim().to_string()) {
+        let link_regex =
+            Regex::new(r#"(?i)(?:ssr?|vmess|vless|trojan|hysteria2|hy2)://[^\s"'<>]+"#).unwrap();
+        for matched in link_regex.find_iter(content) {
+            let link = Self::normalize_link_candidate(matched.as_str());
+            if let Ok(proxy) = Proxy::from_link(link) {
                 conf_proxies.push(proxy)
             }
         }
+        if conf_proxies.is_empty() {
+            return Err("No supported proxy links found".into());
+        }
         Ok(conf_proxies)
+    }
+
+    fn collect_proxies_from_json_value(value: &JsonValue, proxies: &mut Vec<Proxy>) {
+        match value {
+            JsonValue::Object(map) => {
+                for key in ["proxies", "Proxies", "payload"] {
+                    if let Some(items) = map.get(key).and_then(JsonValue::as_array) {
+                        Self::collect_proxy_array(items, proxies);
+                    }
+                }
+                for nested in map.values() {
+                    Self::collect_proxies_from_json_value(nested, proxies);
+                }
+            }
+            JsonValue::Array(items) => {
+                for item in items {
+                    Self::collect_proxies_from_json_value(item, proxies);
+                }
+            }
+            _ => {}
+        }
+    }
+
+    fn collect_proxy_array(items: &[JsonValue], proxies: &mut Vec<Proxy>) {
+        for item in items {
+            let result = Proxy::from_json(&item.to_string());
+            match result {
+                Ok(proxy) => proxies.push(proxy),
+                Err(e) => {
+                    println!("{} {:?}", e, item);
+                }
+            }
+        }
+    }
+
+    fn normalize_link_candidate(link: &str) -> String {
+        let trimmed = link.trim().trim_matches(|c| {
+            matches!(c, '"' | '\'' | '`' | ',' | ';' | ')' | ']' | '}' | '>' | '.')
+        });
+        if let Some(rest) = trimmed.strip_prefix("hy2://") {
+            return format!("hysteria2://{}", rest);
+        }
+        trimmed.to_string()
+    }
+
+    fn extract_proxy_provider_urls(content: &str) -> Vec<String> {
+        let mut urls = Vec::new();
+        let Ok(yaml) = serde_yaml::from_str::<JsonValue>(content) else {
+            return urls;
+        };
+        let Some(root) = yaml.as_object() else {
+            return urls;
+        };
+        let Some(provider_root) = root.get("proxy-providers").and_then(JsonValue::as_object) else {
+            return urls;
+        };
+        for provider in provider_root.values() {
+            if let Some(url) = provider
+                .as_object()
+                .and_then(|item| item.get("url"))
+                .and_then(JsonValue::as_str)
+            {
+                let trimmed = url.trim();
+                if trimmed.starts_with("http") && !urls.iter().any(|item| item == trimmed) {
+                    urls.push(trimmed.to_string());
+                }
+            }
+        }
+        urls
     }
 
     /// 移除重复节点
@@ -426,6 +517,54 @@ mod test {
         assert_eq!(proxies.get(4).unwrap().get_name(), "xixi");
     }
 
+    #[test]
+    fn test_parse_payload_yaml() {
+        let content = r#"
+payload:
+  - name: payload-ss
+    type: ss
+    server: 1.1.1.1
+    port: 443
+    cipher: aes-128-gcm
+    password: pass
+"#
+        .to_string();
+        let proxies = SubManager::parse_content(content).unwrap();
+        assert_eq!(proxies.len(), 1);
+        assert_eq!(proxies[0].get_name(), "payload-ss");
+    }
+
+    #[test]
+    fn test_parse_base64_yaml_content() {
+        let yaml = r#"
+proxies:
+  - name: base64-yaml-ss
+    type: ss
+    server: 2.2.2.2
+    port: 443
+    cipher: aes-128-gcm
+    password: pass
+"#;
+        let content = crate::base64::base64encode(yaml.to_string());
+        let proxies = SubManager::parse_content(content).unwrap();
+        assert_eq!(proxies.len(), 1);
+        assert_eq!(proxies[0].get_name(), "base64-yaml-ss");
+    }
+
+    #[test]
+    fn test_parse_mixed_links_and_hy2_alias() {
+        let content = r#"
+订阅说明文本
+hy2://pass@127.0.0.1:8443/?insecure=1&sni=example.com#hy2-node
+末尾还有一个 ss://YWVzLTEyOC1nY206cGFzcw==@3.3.3.3:443#ss-node
+"#
+        .to_string();
+        let proxies = SubManager::parse_content(content).unwrap();
+        assert_eq!(proxies.len(), 2);
+        assert!(proxies.iter().any(|proxy| proxy.get_name() == "hy2-node"));
+        assert!(proxies.iter().any(|proxy| proxy.get_name() == "ss-node"));
+    }
+
     #[tokio::test]
     async fn test_merge_config() {
         let urls = vec![
@@ -445,6 +584,23 @@ mod test {
             "/Users/reajason/RustroverProjects/clash-butler/subs/release/proxy-merge.yaml"
                 .to_string();
         SubManager::save_proxies_into_clash_file(&proxies, release_clash_template_path, save_path);
+    }
+
+    #[test]
+    fn test_extract_proxy_provider_urls() {
+        let content = r#"
+proxy-providers:
+  one:
+    type: http
+    url: https://example.com/one.yaml
+  two:
+    type: http
+    url: https://example.com/two.yaml
+"#;
+        let urls = SubManager::extract_proxy_provider_urls(content);
+        assert_eq!(urls.len(), 2);
+        assert!(urls.iter().any(|item| item == "https://example.com/one.yaml"));
+        assert!(urls.iter().any(|item| item == "https://example.com/two.yaml"));
     }
 
     #[tokio::test]

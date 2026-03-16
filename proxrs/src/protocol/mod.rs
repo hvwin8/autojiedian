@@ -189,6 +189,12 @@ impl Proxy {
                 ProxyType::Hysteria2,
                 Box::new(Hysteria2::from_link(link)?),
             ))
+        } else if link.starts_with("hy2://") {
+            let normalized = format!("hysteria2://{}", &link[6..]);
+            Ok(Proxy::new(
+                ProxyType::Hysteria2,
+                Box::new(Hysteria2::from_link(normalized)?),
+            ))
         } else if link.starts_with("vless://") {
             Ok(Proxy::new(
                 ProxyType::Vless,
