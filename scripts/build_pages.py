@@ -30,6 +30,25 @@ def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def count_release_proxies(release_file: Path) -> int:
+    in_proxies = False
+    count = 0
+    for raw_line in release_file.read_text(encoding="utf-8", errors="ignore").splitlines():
+        line = raw_line.rstrip()
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if not in_proxies:
+            if line == "proxies:":
+                in_proxies = True
+            continue
+        if not raw_line.startswith((" ", "\t", "-")) and stripped.endswith(":"):
+            break
+        if raw_line.startswith("- "):
+            count += 1
+    return count
+
+
 def sha256_of(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -55,6 +74,23 @@ def resolve_commit_sha() -> str:
         return result.stdout.strip()
     except Exception:
         return ""
+
+
+def load_summary(summary_file: Path, release_file: Path) -> tuple[dict[str, Any], str]:
+    if summary_file.exists():
+        return read_json(summary_file), "artifact"
+    release_proxy_count = count_release_proxies(release_file)
+    return (
+        {
+            "candidate_source_count": 0,
+            "raw_proxy_count": release_proxy_count,
+            "unique_proxy_count": release_proxy_count,
+            "useful_proxy_count": release_proxy_count,
+            "final_release_proxy_count": release_proxy_count,
+            "summary_mode": "derived_from_release_file",
+        },
+        "derived_from_release_file",
+    )
 
 
 def build_index_html(base_url: str, latest: dict[str, Any]) -> str:
@@ -196,23 +232,26 @@ def main() -> int:
     fallback_registry_file = (ROOT / args.fallback_registry_file).resolve()
     if not release_file.exists():
         raise FileNotFoundError(f"release file not found: {release_file}")
-    if not summary_file.exists():
-        raise FileNotFoundError(f"summary file not found: {summary_file}")
 
     source_registry_path = registry_file if registry_file.exists() else fallback_registry_file
+    summary, summary_source = load_summary(summary_file, release_file)
     ensure_clean_dir(output_dir)
 
     shutil.copy2(release_file, output_dir / "clash.yaml")
-    shutil.copy2(summary_file, output_dir / "summary.json")
+    summary_output_path = output_dir / "summary.json"
+    summary_output_path.write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
     if source_registry_path.exists():
         shutil.copy2(source_registry_path, output_dir / "source-registry.json")
 
-    summary = read_json(summary_file)
     base_url = str(args.base_url or "").rstrip("/")
     latest = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "commit": resolve_commit_sha(),
         "base_url": base_url,
+        "summary_source": summary_source,
         "files": {
             "clash": {
                 "path": "clash.yaml",
@@ -223,7 +262,7 @@ def main() -> int:
             "summary": {
                 "path": "summary.json",
                 "url": f"{base_url}/summary.json" if base_url else "summary.json",
-                "size": summary_file.stat().st_size,
+                "size": summary_output_path.stat().st_size,
             },
         },
         "summary": summary,
