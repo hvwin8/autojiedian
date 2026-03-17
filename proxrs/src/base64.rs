@@ -8,7 +8,7 @@ pub fn base64decode(content: &str) -> String {
         n => cleaned + &"=".repeat(4 - n),
     };
     match BASE64_STANDARD.decode(padded.as_bytes()) {
-        Ok(data) => String::from_utf8(data).unwrap(),
+        Ok(data) => String::from_utf8(data).unwrap_or_else(|_| content.to_string()),
         Err(_) => content.to_string(),
     }
 }

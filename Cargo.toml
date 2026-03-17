@@ -30,3 +30,4 @@ config = "0.15.11"
 clap = { version = "4.5.40", features = ["derive"] }
 futures-util = "0.3.31"
 regex = "1.11.1"
+zip = { version = "2.2.2", default-features = false, features = ["deflate"] }

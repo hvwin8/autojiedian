@@ -1,19 +1,29 @@
 #![allow(dead_code)]
 
 use std::collections::HashMap;
-use std::fs::File;
+use std::fs::{self, File};
+use std::io::{Cursor, Read, Write};
+use std::path::{Path, PathBuf};
 use std::process::Child;
 use std::process::Command;
 use std::process::Stdio;
 use std::time::Duration;
 
+use reqwest::header::USER_AGENT;
 use reqwest::Client;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::json;
 use serde_json::Value;
 use tokio::time::sleep;
-use tracing::info;
+use tracing::{info, warn};
+use zip::ZipArchive;
+
+const CORE_DIR: &str = "clash-meta";
+const UNIX_CORE_NAME: &str = "mihomo";
+const WINDOWS_CORE_NAME: &str = "mihomo.exe";
+const MIHOMO_RELEASE_API: &str = "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest";
+const GITHUB_USER_AGENT: &str = "clash-butler/0.1";
 
 pub struct ClashMeta {
     pub external_port: u64,
@@ -34,29 +44,36 @@ impl ClashMeta {
             external_url: format!("http://127.0.0.1:{}", external_port),
             proxy_url: format!("http://127.0.0.1:{}", mixed_port),
             process: None,
-            core_path: "clash-meta/mihomo".to_string(),
+            core_path: default_core_path().to_string_lossy().to_string(),
             test_path: "subs/test".to_string(),
             log_path: "logs/clash.log".to_string(),
         }
     }
 
     pub async fn start(&mut self) -> Result<(), Box<dyn std::error::Error>> {
-        let log_file = File::create(&self.log_path)?;
+        self.ensure_core_ready().await?;
 
-        let clash_process = Command::new(&self.core_path)
+        let log_file = File::create(&self.log_path)?;
+        let mut clash_process = Command::new(&self.core_path)
             .arg("-d")
             .arg(&self.test_path)
-            .stdout(Stdio::from(log_file.try_clone().unwrap()))
-            .stdout(Stdio::from(log_file))
+            .stdout(Stdio::from(log_file.try_clone()?))
+            .stderr(Stdio::from(log_file))
             .spawn()?;
 
-        sleep(Duration::from_secs(2)).await;
-
-        let response = reqwest::get(format!("{}/version", &self.external_url)).await?;
-        let res = response.json::<ClashVersion>().await?;
-        info!("原神启动！ 版本号：{}", res.version);
-        self.process = Some(clash_process);
-        Ok(())
+        let version_check = self.wait_for_ready().await;
+        match version_check {
+            Ok(res) => {
+                info!("mihomo started, version: {}", res.version);
+                self.process = Some(clash_process);
+                Ok(())
+            }
+            Err(err) => {
+                let _ = clash_process.kill();
+                let _ = clash_process.wait();
+                Err(err)
+            }
+        }
     }
 
     pub async fn restart(&self) -> Result<(), Box<dyn std::error::Error>> {
@@ -68,10 +85,10 @@ impl ClashMeta {
             .await?;
 
         if response.status().is_success() {
-            info!("内核重启成功");
+            info!("mihomo restarted successfully");
             sleep(Duration::from_secs(2)).await;
         } else {
-            info!("内核重启失败: {}", response.status());
+            info!("mihomo restart failed: {}", response.status());
         }
         Ok(())
     }
@@ -104,15 +121,15 @@ impl ClashMeta {
             .unwrap();
         let response = client.get(&url).query(&delay_test_config).send().await?;
         if !response.status().is_success() {
-            return Err(Box::from("获取分组延迟失败".to_string()));
+            return Err(Box::new(std::io::Error::other(
+                "failed to fetch delay result for proxy group",
+            )));
         }
         let res: Value = response.json().await?;
         match res {
             Value::Object(map) => {
-                let msg = map.get("message");
-                if msg.is_some() {
-                    let msg = msg.unwrap();
-                    Err(Box::from(msg.to_string()))
+                if let Some(msg) = map.get("message") {
+                    Err(Box::new(std::io::Error::other(msg.to_string())))
                 } else {
                     let mut result = HashMap::new();
                     for (name, value) in map {
@@ -123,7 +140,9 @@ impl ClashMeta {
                     Ok(result)
                 }
             }
-            _ => Err(Box::from("所有节点无速度")),
+            _ => Err(Box::new(std::io::Error::other(
+                "all proxies in the group failed delay test",
+            ))),
         }
     }
 
@@ -136,7 +155,9 @@ impl ClashMeta {
         let client = Client::builder().timeout(Duration::from_secs(60)).build()?;
         let response = client.get(&url).query(delay_test_config).send().await?;
         if !response.status().is_success() {
-            return Err(Box::from("获取分组延迟失败".to_string()));
+            return Err(Box::new(std::io::Error::other(
+                "failed to fetch delay result for proxy",
+            )));
         }
         Ok(response.json::<ProxyDelay>().await?.delay)
     }
@@ -167,6 +188,81 @@ impl ClashMeta {
             .await?;
         Ok(response.status().is_success())
     }
+
+    async fn ensure_core_ready(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+        let expected_path = default_core_path();
+        self.core_path = expected_path.to_string_lossy().to_string();
+        fs::create_dir_all(CORE_DIR)?;
+
+        if is_valid_core_binary(&expected_path)? {
+            return Ok(());
+        }
+
+        if cfg!(windows) {
+            let legacy_path = Path::new(CORE_DIR).join(UNIX_CORE_NAME);
+            if is_valid_core_binary(&legacy_path)? {
+                warn!(
+                    "found a valid Windows mihomo core at {}, copying it to {}",
+                    legacy_path.display(),
+                    expected_path.display()
+                );
+                fs::copy(&legacy_path, &expected_path)?;
+                return Ok(());
+            }
+
+            if expected_path.exists() {
+                warn!(
+                    "existing mihomo core at {} is not a valid Windows executable, downloading a fresh one",
+                    expected_path.display()
+                );
+            } else {
+                info!(
+                    "mihomo core missing at {}, downloading a Windows build from the official release",
+                    expected_path.display()
+                );
+            }
+
+            download_windows_core(&expected_path).await?;
+            if is_valid_core_binary(&expected_path)? {
+                return Ok(());
+            }
+
+            return Err(Box::new(std::io::Error::other(format!(
+                "downloaded mihomo core at {} is still invalid",
+                expected_path.display()
+            ))));
+        }
+
+        Err(Box::new(std::io::Error::other(format!(
+            "mihomo core missing or invalid at {}",
+            expected_path.display()
+        ))))
+    }
+
+    async fn wait_for_ready(&self) -> Result<ClashVersion, Box<dyn std::error::Error>> {
+        let client = Client::builder().timeout(Duration::from_secs(2)).build()?;
+        let version_url = format!("{}/version", &self.external_url);
+
+        for _ in 0..10 {
+            match client.get(&version_url).send().await {
+                Ok(response) => match response.error_for_status() {
+                    Ok(ok_response) => match ok_response.json::<ClashVersion>().await {
+                        Ok(version) => return Ok(version),
+                        Err(err) => return Err(Box::new(err)),
+                    },
+                    Err(_) => {}
+                },
+                Err(_) => {}
+            }
+
+            sleep(Duration::from_secs(1)).await;
+        }
+
+        Err(Box::new(std::io::Error::other(format!(
+            "mihomo did not become ready at {} within 10 seconds",
+            version_url
+        ))))
+    }
 }
 
 #[derive(Deserialize, Debug)]
@@ -174,6 +270,18 @@ impl ClashMeta {
 struct ClashVersion {
     meta: bool,
     version: String,
+}
+
+#[derive(Deserialize, Debug)]
+struct GithubRelease {
+    tag_name: String,
+    assets: Vec<GithubAsset>,
+}
+
+#[derive(Deserialize, Debug)]
+struct GithubAsset {
+    name: String,
+    browser_download_url: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -197,10 +305,263 @@ pub struct Group {
     pub name: String,
 }
 
+fn default_core_path() -> PathBuf {
+    if cfg!(windows) {
+        Path::new(CORE_DIR).join(WINDOWS_CORE_NAME)
+    } else {
+        Path::new(CORE_DIR).join(UNIX_CORE_NAME)
+    }
+}
+
+fn is_valid_core_binary(path: &Path) -> Result<bool, Box<dyn std::error::Error>> {
+    if !path.exists() {
+        return Ok(false);
+    }
+
+    let mut file = File::open(path)?;
+    let mut magic = [0_u8; 4];
+    let read_len = file.read(&mut magic)?;
+    if read_len < 2 {
+        return Ok(false);
+    }
+
+    let os = if cfg!(windows) {
+        "windows"
+    } else if cfg!(target_os = "macos") {
+        "macos"
+    } else {
+        "linux"
+    };
+
+    Ok(binary_matches_platform(&magic[..read_len], os))
+}
+
+fn binary_matches_platform(header: &[u8], os: &str) -> bool {
+    match os {
+        "windows" => header.starts_with(b"MZ"),
+        "macos" => {
+            header.starts_with(&[0xCF, 0xFA, 0xED, 0xFE])
+                || header.starts_with(&[0xFE, 0xED, 0xFA, 0xCF])
+                || header.starts_with(&[0xCA, 0xFE, 0xBA, 0xBE])
+                || header.starts_with(&[0xBE, 0xBA, 0xFE, 0xCA])
+        }
+        _ => header.starts_with(&[0x7F, b'E', b'L', b'F']),
+    }
+}
+
+async fn download_windows_core(target_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::builder()
+        .timeout(Duration::from_secs(120))
+        .build()?;
+
+    let release = client
+        .get(MIHOMO_RELEASE_API)
+        .header(USER_AGENT, GITHUB_USER_AGENT)
+        .send()
+        .await?
+        .error_for_status()?
+        .json::<GithubRelease>()
+        .await?;
+
+    let asset =
+        select_windows_asset_for_arch(&release, std::env::consts::ARCH).ok_or_else(|| {
+            std::io::Error::other(format!(
+                "could not find a suitable Windows mihomo asset in release {}",
+                release.tag_name
+            ))
+        })?;
+
+    info!("downloading official mihomo Windows core: {}", asset.name);
+
+    let zip_bytes = client
+        .get(&asset.browser_download_url)
+        .header(USER_AGENT, GITHUB_USER_AGENT)
+        .send()
+        .await?
+        .error_for_status()?
+        .bytes()
+        .await?;
+
+    extract_mihomo_from_zip(zip_bytes.as_ref(), target_path)?;
+    info!("mihomo core saved to {}", target_path.display());
+    Ok(())
+}
+
+fn select_windows_asset_for_arch<'a>(
+    release: &'a GithubRelease,
+    arch: &str,
+) -> Option<&'a GithubAsset> {
+    let tag = release.tag_name.as_str();
+    let exact_candidates = preferred_windows_asset_names(arch, tag);
+    for candidate in &exact_candidates {
+        if let Some(asset) = release.assets.iter().find(|asset| asset.name == *candidate) {
+            return Some(asset);
+        }
+    }
+
+    let prefixes = preferred_windows_asset_prefixes(arch);
+    for prefix in prefixes {
+        if let Some(asset) = release.assets.iter().find(|asset| {
+            asset.name.starts_with(prefix)
+                && asset.name.ends_with(".zip")
+                && !asset.name.contains("-go")
+        }) {
+            return Some(asset);
+        }
+    }
+
+    release.assets.iter().find(|asset| {
+        asset.name.starts_with("mihomo-windows-")
+            && asset.name.ends_with(".zip")
+            && !asset.name.contains("-go")
+    })
+}
+
+fn preferred_windows_asset_names(arch: &str, tag: &str) -> Vec<String> {
+    match arch {
+        "x86_64" => vec![
+            format!("mihomo-windows-amd64-compatible-{}.zip", tag),
+            format!("mihomo-windows-amd64-{}.zip", tag),
+            format!("mihomo-windows-amd64-v1-{}.zip", tag),
+            format!("mihomo-windows-amd64-v2-{}.zip", tag),
+            format!("mihomo-windows-amd64-v3-{}.zip", tag),
+        ],
+        "aarch64" => vec![format!("mihomo-windows-arm64-{}.zip", tag)],
+        "x86" => vec![format!("mihomo-windows-386-{}.zip", tag)],
+        _ => Vec::new(),
+    }
+}
+
+fn preferred_windows_asset_prefixes(arch: &str) -> Vec<&'static str> {
+    match arch {
+        "x86_64" => vec![
+            "mihomo-windows-amd64-compatible-",
+            "mihomo-windows-amd64-",
+            "mihomo-windows-amd64-v1-",
+            "mihomo-windows-amd64-v2-",
+            "mihomo-windows-amd64-v3-",
+        ],
+        "aarch64" => vec!["mihomo-windows-arm64-"],
+        "x86" => vec!["mihomo-windows-386-"],
+        _ => Vec::new(),
+    }
+}
+
+fn extract_mihomo_from_zip(
+    zip_bytes: &[u8],
+    target_path: &Path,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let reader = Cursor::new(zip_bytes);
+    let mut archive = ZipArchive::new(reader)?;
+    let temp_path = target_path.with_extension("download");
+
+    if temp_path.exists() {
+        fs::remove_file(&temp_path)?;
+    }
+
+    for index in 0..archive.len() {
+        let mut entry = archive.by_index(index)?;
+        if entry.is_dir() {
+            continue;
+        }
+
+        let file_name = Path::new(entry.name())
+            .file_name()
+            .and_then(|name| name.to_str())
+            .unwrap_or_default();
+
+        if is_mihomo_archive_entry(file_name) {
+            let mut output = File::create(&temp_path)?;
+            std::io::copy(&mut entry, &mut output)?;
+            output.flush()?;
+
+            if target_path.exists() {
+                fs::remove_file(target_path)?;
+            }
+
+            fs::rename(&temp_path, target_path)?;
+            return Ok(());
+        }
+    }
+
+    Err(Box::new(std::io::Error::other(
+        "the downloaded zip does not contain mihomo executable",
+    )))
+}
+
+fn is_mihomo_archive_entry(file_name: &str) -> bool {
+    let normalized = file_name.to_ascii_lowercase();
+    normalized == WINDOWS_CORE_NAME
+        || normalized == UNIX_CORE_NAME
+        || (normalized.starts_with("mihomo") && normalized.ends_with(".exe"))
+}
+
 #[cfg(test)]
 mod tests {
+    use crate::clash::binary_matches_platform;
+    use crate::clash::is_mihomo_archive_entry;
+    use crate::clash::select_windows_asset_for_arch;
     use crate::clash::ClashMeta;
     use crate::clash::DelayTestConfig;
+    use crate::clash::GithubAsset;
+    use crate::clash::GithubRelease;
+
+    #[test]
+    fn test_binary_magic_matches_platform() {
+        assert!(binary_matches_platform(b"MZ\x90\x00", "windows"));
+        assert!(!binary_matches_platform(b"\x7FELF", "windows"));
+        assert!(binary_matches_platform(b"\x7FELF", "linux"));
+        assert!(binary_matches_platform(&[0xCF, 0xFA, 0xED, 0xFE], "macos"));
+    }
+
+    #[test]
+    fn test_select_windows_asset_prefers_compatible_build() {
+        let release = GithubRelease {
+            tag_name: "v1.2.3".to_string(),
+            assets: vec![
+                GithubAsset {
+                    name: "mihomo-windows-amd64-v1-v1.2.3.zip".to_string(),
+                    browser_download_url: "https://example.com/v1.zip".to_string(),
+                },
+                GithubAsset {
+                    name: "mihomo-windows-amd64-compatible-v1.2.3.zip".to_string(),
+                    browser_download_url: "https://example.com/compatible.zip".to_string(),
+                },
+            ],
+        };
+
+        let selected = select_windows_asset_for_arch(&release, "x86_64").unwrap();
+        assert_eq!(selected.name, "mihomo-windows-amd64-compatible-v1.2.3.zip");
+    }
+
+    #[test]
+    fn test_select_windows_asset_skips_go_variants_when_falling_back() {
+        let release = GithubRelease {
+            tag_name: "v1.2.3".to_string(),
+            assets: vec![
+                GithubAsset {
+                    name: "mihomo-windows-amd64-v1-go125-v1.2.3.zip".to_string(),
+                    browser_download_url: "https://example.com/go.zip".to_string(),
+                },
+                GithubAsset {
+                    name: "mihomo-windows-amd64-v2-v1.2.3.zip".to_string(),
+                    browser_download_url: "https://example.com/v2.zip".to_string(),
+                },
+            ],
+        };
+
+        let selected = select_windows_asset_for_arch(&release, "x86_64").unwrap();
+        assert_eq!(selected.name, "mihomo-windows-amd64-v2-v1.2.3.zip");
+    }
+
+    #[test]
+    fn test_archive_entry_match_accepts_official_windows_binary_name() {
+        assert!(is_mihomo_archive_entry(
+            "mihomo-windows-amd64-compatible.exe"
+        ));
+        assert!(is_mihomo_archive_entry("mihomo.exe"));
+        assert!(!is_mihomo_archive_entry("readme.txt"));
+    }
 
     #[tokio::test]
     #[ignore]

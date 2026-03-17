@@ -1,11 +1,7 @@
-# 是否开启快速模式，快速模式下仅测试连通性
+# Fast mode only runs connectivity filtering and skips the final rename stage.
 fast_mode = false
 
-# 待测速的订阅节点
-# 支持网络地址 https://xxx
-# 支持本地地址（绝对地址）/User/xxx/xx.yml
-# 支持单个订阅链接，ss://xxx
-# 公开源宁少勿杂，优先保留实测能筛出健康节点的源
+# Seed subscription sources.
 subs = [
     "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta.yaml",
     "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml",
@@ -13,25 +9,40 @@ subs = [
     "https://raw.githubusercontent.com/mfuu/v2ray/master/clash.yaml",
 ]
 
-# 是否重命名节点，打开后会使用 geoip 等方式进行代理真实 IP 和地理地址查询
-rename_node = true
-rename_pattern = "${COUNTRYCODE}_${CITY}_${ISP}"
+# Discovery feeds can be repo pages, tree pages, or readme pages that link to
+# frequently changing public subscription files.
+discover_enabled = true
+discover_feeds = [
+    "https://github.com/snakem982/proxypool/tree/main/source",
+    "https://github.com/dongchengjie/airport/tree/main/subs/merged",
+    "https://github.com/mfuu/v2ray",
+]
 
-# 是否需要加上代理池的节点一起筛选
+# Supported placeholders: ${CN_REGION} ${CN_COUNTRY} ${COUNTRY}
+# ${COUNTRYCODE} ${REGION} ${CITY} ${ISP} ${IP}
+rename_node = true
+rename_pattern = "${CN_REGION}_${CITY}_${ISP}"
+
+# Optional extra pool inputs.
 need_add_pool = false
-# 代理节点池
 pools = []
 
-# 测试分组大小
+# Connectivity test grouping size.
 test_group_size = 50
 
-# 连通性测试
+[artifacts]
+enabled = true
+dir = "artifacts"
+
+[source_registry]
+enabled = true
+path = "artifacts/source_registry.json"
+
 [connect_test]
 url = "http://www.google.com/generate_204"
 expected = 204
 timeout = 1000
 
-# 带宽测速配置
 [speed_test]
 enabled = false
 url = "https://speed.cloudflare.com/__down?bytes=104857600"

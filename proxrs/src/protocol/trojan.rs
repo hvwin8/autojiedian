@@ -53,15 +53,17 @@ impl ProxyAdapter for Trojan {
     where
         Self: Sized,
     {
+        let mut url = link
+            .strip_prefix("trojan://")
+            .ok_or_else(|| invalid_trojan_link("missing trojan:// prefix", &link))?;
         // trojan://4fee57cc-ee15-4800-888f-3493f7b261f2@hk1.ee2c9087-71b0-70af-7924-09d714b25b96.
         // 6df03129.the-best-airport.com:443?type=tcp&sni=new.download.the-best-airport.com&
         // allowInsecure=1#%F0%9F%87%AD%F0%9F%87%B0%E9%A6%99%E6%B8%AF%2001%20%7C%20%E4%B8%93%E7%BA%
         // BF%0D
-        let mut url = &link[9..];
         let mut name = String::from("");
         if let Some((v1, v2)) = url.rsplit_once("#") {
             url = v1;
-            name = urlencoding::decode(v2).unwrap().to_string();
+            name = urlencoding::decode(v2).unwrap_or_default().to_string();
         }
         // b7c0a9b4-0b85-4e93-921e-63bef702172b@111.38.53.159:41001
         // 4fee57cc-ee15-4800-888f-3493f7b261f2@hk1.ee2c9087-71b0-70af-7924-09d714b25b96.6df03129.
@@ -79,8 +81,7 @@ impl ProxyAdapter for Trojan {
             let mut params_map: HashMap<&str, String> = HashMap::new();
             for param in params.split("&") {
                 if let Some((key, value)) = param.split_once('=') {
-                    let value = value.parse::<String>().unwrap();
-                    params_map.insert(key, value);
+                    params_map.insert(key, value.to_string());
                 }
             }
             network = params_map.get("type").cloned();
@@ -91,18 +92,21 @@ impl ProxyAdapter for Trojan {
         let url = parts[0];
         // 4fee57cc-ee15-4800-888f-3493f7b261f2@hk1.ee2c9087-71b0-70af-7924-09d714b25b96.6df03129.
         // the-best-airport.com:443
-        let parts: Vec<&str> = url.split("@").collect();
-        let password = String::from(parts[0]);
-
-        let parts: Vec<&str> = parts[1].split(":").collect();
-        let server = String::from(parts[0]);
-        let port = parts[1].parse::<u16>().unwrap();
+        let (password, server_port) = url
+            .split_once('@')
+            .ok_or_else(|| invalid_trojan_link("missing password/server separator", &link))?;
+        let (server, port_str) = server_port
+            .rsplit_once(':')
+            .ok_or_else(|| invalid_trojan_link("missing server/port pair", &link))?;
+        let port = port_str
+            .parse::<u16>()
+            .map_err(|_| invalid_trojan_link("invalid port in trojan link", &link))?;
 
         Ok(Trojan {
             name,
-            server,
+            server: server.to_string(),
             port,
-            password,
+            password: password.to_string(),
             sni,
             skip_cert_verify,
             network,
@@ -129,6 +133,12 @@ impl ProxyAdapter for Trojan {
         self.server.hash(&mut state);
         self.port.hash(&mut state);
         self.password.hash(&mut state);
+    }
+}
+
+fn invalid_trojan_link(message: &str, link: &str) -> UnsupportedLinkError {
+    UnsupportedLinkError {
+        message: format!("invalid trojan link: {} ({})", message, link),
     }
 }
 
@@ -159,5 +169,12 @@ mod test {
     fn test_parse_trojan1() {
         let link = String::from("trojan://ed4f18fc-fdc9-4296-a69a-a2c908f9b09e@211.99.98.83:32039?security=tls&type=tcp&headerType=none#%F0%9F%87%A8%F0%9F%87%A6%20%E5%8A%A0%E6%8B%BF%E5%A4%A7-BGP");
         println!("{:?}", Trojan::from_link(link).unwrap().to_json());
+    }
+
+    #[test]
+    fn test_invalid_trojan_link_returns_err_instead_of_panicking() {
+        let link = String::from("trojan://password-only");
+        let result = Trojan::from_link(link);
+        assert!(result.is_err());
     }
 }

@@ -85,7 +85,10 @@ impl ProxyAdapter for SS {
     }
 
     fn from_link(link: String) -> Result<Self, UnsupportedLinkError> {
-        let url = base64decode(&link[5..]);
+        let raw_link = link
+            .strip_prefix("ss://")
+            .ok_or_else(|| invalid_ss_link("missing ss:// prefix", &link))?;
+        let url = base64decode(raw_link);
         // parse name
         let mut name = String::from("");
         let parts: Vec<&str> = url.split("#").collect();
@@ -106,8 +109,7 @@ impl ProxyAdapter for SS {
             let mut params_map: HashMap<&str, String> = HashMap::new();
             for param in params.split("&") {
                 if let Some((key, value)) = param.split_once('=') {
-                    let value = value.parse::<String>().unwrap();
-                    params_map.insert(key, value);
+                    params_map.insert(key, value.to_string());
                 }
             }
 
@@ -134,23 +136,32 @@ impl ProxyAdapter for SS {
         // parse server port
         let url = parts[0];
         let secret_server_port_parts: Vec<&str> = url.split("@").collect();
+        if secret_server_port_parts.len() != 2 {
+            return Err(invalid_ss_link(
+                "expected encoded secret and server address",
+                &link,
+            ));
+        }
 
         let secret = base64decode(secret_server_port_parts[0]);
-        let cipher_pwd_parts: Vec<&str> = secret.splitn(2, ":").collect();
-        let cipher = cipher_pwd_parts[0].parse().unwrap();
-        let password = cipher_pwd_parts[1].parse().unwrap();
+        let (cipher, password) = secret
+            .split_once(':')
+            .ok_or_else(|| invalid_ss_link("missing cipher/password pair", &link))?;
 
         let server_port = secret_server_port_parts[1];
-        let server_port_parts: Vec<&str> = server_port.split(":").collect();
-        let server = server_port_parts[0].parse::<String>().unwrap();
-        let port = server_port_parts[1].parse::<u16>().unwrap();
+        let (server, port_str) = server_port
+            .rsplit_once(':')
+            .ok_or_else(|| invalid_ss_link("missing server/port pair", &link))?;
+        let port = port_str
+            .parse::<u16>()
+            .map_err(|_| invalid_ss_link("invalid port in ss link", &link))?;
 
         Ok(SS {
             name,
-            server,
+            server: server.to_string(),
             port,
-            password,
-            cipher,
+            password: password.to_string(),
+            cipher: cipher.to_string(),
             plugin,
             plugin_opts,
         })
@@ -176,6 +187,12 @@ impl ProxyAdapter for SS {
         self.server.hash(&mut state);
         self.port.hash(&mut state);
         self.password.hash(&mut state);
+    }
+}
+
+fn invalid_ss_link(message: &str, link: &str) -> UnsupportedLinkError {
+    UnsupportedLinkError {
+        message: format!("invalid ss link: {} ({})", message, link),
     }
 }
 
@@ -283,5 +300,12 @@ mod test {
                 println!("{}", e);
             }
         };
+    }
+
+    #[test]
+    fn test_invalid_ss_link_returns_err_instead_of_panicking() {
+        let link = String::from("ss://YWVzLTI1Ni1nY206cGFzc3dvcmQ=@1.2.3.4:not-a-port#bad");
+        let result = SS::from_link(link);
+        assert!(result.is_err());
     }
 }

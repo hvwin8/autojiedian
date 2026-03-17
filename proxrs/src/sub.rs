@@ -8,6 +8,7 @@ use std::hash::Hasher;
 use std::io;
 use std::io::Read;
 use std::io::Write;
+use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::path::Path;
 use std::time::Duration;
 
@@ -17,6 +18,7 @@ use serde_json::Value as JsonValue;
 use serde_yaml::Mapping;
 use serde_yaml::Value;
 use tokio::time::sleep;
+use tracing::debug;
 use tracing::info;
 
 use crate::base64::base64decode;
@@ -223,7 +225,7 @@ impl SubManager {
             Regex::new(r#"(?i)(?:ssr?|vmess|vless|trojan|hysteria2|hy2)://[^\s"'<>]+"#).unwrap();
         for matched in link_regex.find_iter(content) {
             let link = Self::normalize_link_candidate(matched.as_str());
-            if let Ok(proxy) = Proxy::from_link(link) {
+            if let Some(proxy) = Self::parse_proxy_link_safely(link.as_str()) {
                 conf_proxies.push(proxy)
             }
         }
@@ -256,19 +258,24 @@ impl SubManager {
 
     fn collect_proxy_array(items: &[JsonValue], proxies: &mut Vec<Proxy>) {
         for item in items {
-            let result = Proxy::from_json(&item.to_string());
-            match result {
-                Ok(proxy) => proxies.push(proxy),
-                Err(e) => {
-                    println!("{} {:?}", e, item);
-                }
+            let is_proxy_like = item
+                .as_object()
+                .is_some_and(|value| value.contains_key("type") && value.contains_key("server"));
+            if !is_proxy_like {
+                continue;
+            }
+            if let Some(proxy) = Self::parse_proxy_json_safely(item) {
+                proxies.push(proxy);
             }
         }
     }
 
     fn normalize_link_candidate(link: &str) -> String {
         let trimmed = link.trim().trim_matches(|c| {
-            matches!(c, '"' | '\'' | '`' | ',' | ';' | ')' | ']' | '}' | '>' | '.')
+            matches!(
+                c,
+                '"' | '\'' | '`' | ',' | ';' | ')' | ']' | '}' | '>' | '.'
+            )
         });
         if let Some(rest) = trimmed.strip_prefix("hy2://") {
             return format!("hysteria2://{}", rest);
@@ -300,6 +307,35 @@ impl SubManager {
             }
         }
         urls
+    }
+
+    fn parse_proxy_link_safely(link: &str) -> Option<Proxy> {
+        match catch_unwind(AssertUnwindSafe(|| Proxy::from_link(link.to_string()))) {
+            Ok(Ok(proxy)) => Some(proxy),
+            Ok(Err(err)) => {
+                debug!("skip unsupported proxy link: {} {}", err, link);
+                None
+            }
+            Err(_) => {
+                debug!("skip panicking proxy link: {}", link);
+                None
+            }
+        }
+    }
+
+    fn parse_proxy_json_safely(item: &JsonValue) -> Option<Proxy> {
+        let raw = item.to_string();
+        match catch_unwind(AssertUnwindSafe(|| Proxy::from_json(&raw))) {
+            Ok(Ok(proxy)) => Some(proxy),
+            Ok(Err(err)) => {
+                debug!("skip unsupported proxy item: {} {}", err, raw);
+                None
+            }
+            Err(_) => {
+                debug!("skip panicking proxy item: {}", raw);
+                None
+            }
+        }
     }
 
     /// 移除重复节点
@@ -565,6 +601,18 @@ hy2://pass@127.0.0.1:8443/?insecure=1&sni=example.com#hy2-node
         assert!(proxies.iter().any(|proxy| proxy.get_name() == "ss-node"));
     }
 
+    #[test]
+    fn test_parse_links_skips_invalid_entries_without_panicking() {
+        let content = r#"
+ss://YWVzLTI1Ni1nY206cGFzc3dvcmQ=@1.2.3.4:not-a-port#broken
+ss://YWVzLTEyOC1nY206ZDljNTc3MzI4ZmIzNDlmZQ==@120.232.73.68:40676#good
+"#
+        .to_string();
+        let proxies = SubManager::parse_content(content).unwrap();
+        assert_eq!(proxies.len(), 1);
+        assert_eq!(proxies[0].get_name(), "good");
+    }
+
     #[tokio::test]
     async fn test_merge_config() {
         let urls = vec![
@@ -599,8 +647,12 @@ proxy-providers:
 "#;
         let urls = SubManager::extract_proxy_provider_urls(content);
         assert_eq!(urls.len(), 2);
-        assert!(urls.iter().any(|item| item == "https://example.com/one.yaml"));
-        assert!(urls.iter().any(|item| item == "https://example.com/two.yaml"));
+        assert!(urls
+            .iter()
+            .any(|item| item == "https://example.com/one.yaml"));
+        assert!(urls
+            .iter()
+            .any(|item| item == "https://example.com/two.yaml"));
     }
 
     #[tokio::test]

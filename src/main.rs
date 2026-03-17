@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::env;
@@ -8,6 +10,7 @@ use std::time::Duration;
 use clap::Parser;
 use proxrs::protocol::Proxy;
 use proxrs::sub::SubManager;
+use serde::Serialize;
 use tracing::error;
 use tracing::info;
 use tracing::Level;
@@ -17,20 +20,24 @@ use crate::clash::ClashMeta;
 use crate::clash::DelayTestConfig;
 use crate::settings::Settings;
 
+mod artifacts;
 mod cgi_trace;
 mod clash;
+mod discovery;
 mod ip;
+mod node_label;
+mod pipeline;
 mod risk;
 mod routes;
 mod server;
 mod settings;
+mod source_registry;
 mod speedtest;
 mod website;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Cli {
-    // Starts the Axum server
     #[arg(long)]
     server: bool,
 }
@@ -45,45 +52,167 @@ async fn main() {
             .finish(),
     )
     .expect("setting default subscriber failed");
+
     let args = Cli::parse();
     let config = Settings::new();
     match config {
         Ok(config) => {
-            // 创建订阅测试所用的目录结构
             create_folder();
             if args.server {
-                // 服务端
                 // server::start_server(config).await
             } else {
-                // 本地生成
                 run(config).await
             }
         }
-        Err(e) => {
-            error!("配置文件读取失败: {}", e)
-        }
+        Err(err) => error!("read config failed: {}", err),
     }
 }
 
 async fn run(config: Settings) {
+    let artifact_store = artifacts::ArtifactStore::new(&config.artifacts);
+    let mut source_registry =
+        source_registry::SourceRegistry::load_or_default(&config.source_registry.path);
+
     let test_yaml_path = "subs/test/config.yaml";
     let test_all_yaml_path = "subs/test/all.yaml";
     let release_yaml_path = env::current_dir().unwrap().join("clash.yaml");
-    // let release_base64_path = env::current_dir().unwrap().join("proxies.txt");
     let test_clash_template_path = "conf/clash_test.yaml";
     let release_clash_template_path = "conf/clash_release.yaml";
-    let mut urls = config.subs;
-    if config.need_add_pool {
-        urls.extend(config.pools)
+
+    let source_inputs = pipeline::SourceInputsArtifact {
+        direct_subs: config.subs.clone(),
+        discovery_enabled: config.discover_enabled,
+        discovery_feeds: config.discover_feeds.clone(),
+        pool_enabled: config.need_add_pool,
+        pool_sources: config.pools.clone(),
+    };
+    write_artifact_json(&artifact_store, "01_source_inputs.json", &source_inputs);
+
+    for source_url in &config.subs {
+        source_registry.mark_seed_source(source_url, "direct_subscription");
     }
-    let test_proxies = SubManager::get_proxies_from_urls(&urls).await;
-    info!("待测速节点个数：{}", &test_proxies.len());
+    if config.need_add_pool {
+        for pool_url in &config.pools {
+            source_registry.mark_seed_source(pool_url, "pool_subscription");
+        }
+    }
+    if config.discover_enabled {
+        for feed_url in &config.discover_feeds {
+            source_registry.mark_seed_source(feed_url, "discovery_feed");
+        }
+    }
+
+    let discovery_report = if config.discover_enabled {
+        discovery::discover_sub_urls_with_report(&config.discover_feeds).await
+    } else {
+        discovery::DiscoveryReport::default()
+    };
+    for feed_result in &discovery_report.feeds {
+        source_registry.mark_feed_scan(
+            &feed_result.feed,
+            &feed_result.discovered_urls,
+            feed_result.error.as_deref(),
+        );
+    }
+    write_artifact_json(
+        &artifact_store,
+        "02_discovery_report.json",
+        &discovery_report,
+    );
+
+    let mut urls = config.subs.clone();
+    if !discovery_report.unique_discovered_urls.is_empty() {
+        info!(
+            "found {} extra subscription sources from {} discovery feeds",
+            discovery_report.unique_discovered_urls.len(),
+            config.discover_feeds.len()
+        );
+        urls.extend(discovery_report.unique_discovered_urls.clone());
+    }
+    if config.need_add_pool {
+        urls.extend(config.pools.clone());
+    }
+    urls = dedupe_strings(urls);
+
+    let candidate_sources = pipeline::CandidateSourcesArtifact {
+        sources: urls.clone(),
+        total_count: urls.len(),
+    };
+    write_artifact_json(
+        &artifact_store,
+        "03_candidate_sources.json",
+        &candidate_sources,
+    );
+
+    let mut source_fetch_results = Vec::new();
+    let mut raw_test_proxies = Vec::new();
+    let mut fingerprint_sources: HashMap<String, BTreeSet<String>> = HashMap::new();
+    for source_url in &urls {
+        let fetched_proxies = SubManager::get_proxies_from_url(source_url.clone()).await;
+        source_registry.mark_fetch_result(source_url, fetched_proxies.len());
+        source_fetch_results.push(pipeline::SourceFetchArtifact {
+            source_url: source_url.clone(),
+            proxy_count: fetched_proxies.len(),
+            status: if fetched_proxies.is_empty() {
+                "empty".to_string()
+            } else {
+                "ok".to_string()
+            },
+        });
+
+        for proxy in fetched_proxies {
+            if let Some(fingerprint) = pipeline::proxy_fingerprint(&proxy) {
+                fingerprint_sources
+                    .entry(fingerprint)
+                    .or_default()
+                    .insert(source_url.clone());
+            }
+            raw_test_proxies.push(proxy);
+        }
+    }
+    write_artifact_json(
+        &artifact_store,
+        "04_source_fetch_results.json",
+        &source_fetch_results,
+    );
+
+    let raw_proxy_count = raw_test_proxies.len();
+    let mut test_proxies = raw_test_proxies;
+    if !test_proxies.is_empty() {
+        test_proxies = SubManager::exclude_dup_proxies(test_proxies);
+        SubManager::rename_dup_proxies_name(&mut test_proxies);
+    }
+    let unique_proxy_count = test_proxies.len();
+    let candidate_proxy_artifacts =
+        pipeline::build_proxy_artifacts(&test_proxies, &fingerprint_sources);
+    write_artifact_json_lines(
+        &artifact_store,
+        "05_candidate_proxies.jsonl",
+        &candidate_proxy_artifacts,
+    );
+
+    info!("pending test proxies: {}", &test_proxies.len());
     if test_proxies.is_empty() {
-        error!("当前无可用的待测试订阅连接，请修改配置文件添加订阅链接或确保当前网络通顺");
+        error!("no usable proxy candidates found");
+        source_registry.apply_last_validated_counts(&BTreeMap::new());
+        source_registry.apply_last_released_counts(&BTreeMap::new());
+        let summary = pipeline::PipelineSummaryArtifact {
+            candidate_source_count: urls.len(),
+            raw_proxy_count,
+            unique_proxy_count,
+            useful_proxy_count: 0,
+            final_release_proxy_count: 0,
+        };
+        write_artifact_json(&artifact_store, "09_pipeline_summary.json", &summary);
+        persist_source_registry(
+            &artifact_store,
+            &mut source_registry,
+            config.source_registry.enabled,
+            &config.source_registry.path,
+        );
         return;
     }
 
-    // 全部保存一下节点信息
     SubManager::save_proxies_into_clash_file(
         &test_proxies,
         test_clash_template_path.to_string(),
@@ -93,24 +222,24 @@ async fn run(config: Settings) {
     let chunk_size = config.test_group_size;
     let proxies_group: Vec<_> = test_proxies
         .chunks(chunk_size)
-        .map(|p| p.to_vec())
+        .map(|items| items.to_vec())
         .collect();
     let group_size = proxies_group.len();
     if group_size > 1 {
         info!(
-            "为加速测试速度，以 {} 为限制分为 {} 组测试",
-            chunk_size,
-            proxies_group.len()
+            "split proxies into {} groups with chunk size {}",
+            proxies_group.len(),
+            chunk_size
         );
     }
 
-    // 启动 Clash 内核
     let external_port = 9095;
     let mixed_port = 7998;
     let mut useful_proxies = Vec::new();
+    let mut delay_group_artifacts = Vec::new();
     for (index, proxies) in proxies_group.iter().enumerate() {
         if group_size > 1 {
-            info!("正在测试第 {} 组", index + 1)
+            info!("testing proxy group {}", index + 1);
         }
 
         SubManager::save_proxies_into_clash_file(
@@ -120,57 +249,91 @@ async fn run(config: Settings) {
         );
 
         let mut clash_meta = ClashMeta::new(external_port, mixed_port);
-        if let Err(e) = clash_meta.start().await {
-            error!("原神启动失败，第一次启动可能会下载 geo 相关的文件，重新启动即可，打开 logs/clash.log，查看具体错误原因，{}", e);
+        if let Err(err) = clash_meta.start().await {
+            error!("start clash meta failed: {}", err);
             clash_meta.stop().unwrap();
             continue;
         }
 
         match clash_meta.get_group(TEST_PROXY_GROUP_NAME).await {
-            Ok(nodes) => {
-                info!(
-                    "开始测试 subs/test/config.yaml 中节点的延迟速度，节点总数：{}",
-                    nodes.all.len()
-                )
-            }
-            Err(e) => {
-                error!("获取节点数失败，请检查 clash 日志文件和 subs/test/config.yaml 生成的节点是否正确, {}", e);
+            Ok(nodes) => info!("group nodes count: {}", nodes.all.len()),
+            Err(err) => {
+                error!("get group nodes failed: {}", err);
                 clash_meta.stop().unwrap();
                 continue;
             }
         }
 
-        info!("开始测试连通性");
         let delay_results = test_node_with_delay_config(&clash_meta, &config.connect_test).await;
         let nodes = get_all_tested_nodes(&delay_results);
-        info!("连通性测试结果：{} 个节点可用", nodes.len());
+        delay_group_artifacts.push(pipeline::DelayGroupArtifact {
+            group_index: index + 1,
+            input_proxy_count: proxies.len(),
+            delay_rounds: delay_results.clone(),
+            surviving_node_names: nodes.clone(),
+        });
+        info!("usable nodes in group {}: {}", index + 1, nodes.len());
         if !nodes.is_empty() {
-            let cur_useful_proxies = proxies
+            let current_useful = proxies
                 .iter()
-                .filter(|&proxy| nodes.contains(&proxy.get_name().to_string()))
+                .filter(|proxy| nodes.contains(&proxy.get_name().to_string()))
                 .cloned()
                 .collect::<Vec<Proxy>>();
-            info!("cur_useful_proxies len: {}", &cur_useful_proxies.len());
-            useful_proxies.extend(cur_useful_proxies);
-            info!("useful_proxies len: {}", useful_proxies.len());
+            useful_proxies.extend(current_useful);
         }
         clash_meta.stop().unwrap();
     }
+    write_artifact_json(
+        &artifact_store,
+        "06_delay_groups.json",
+        &delay_group_artifacts,
+    );
 
     if useful_proxies.is_empty() {
-        error!("当前无可用节点，请尝试更换订阅节点或重试");
+        error!("no proxies survived connectivity tests");
+        source_registry.apply_last_validated_counts(&BTreeMap::new());
+        source_registry.apply_last_released_counts(&BTreeMap::new());
+        let summary = pipeline::PipelineSummaryArtifact {
+            candidate_source_count: urls.len(),
+            raw_proxy_count,
+            unique_proxy_count,
+            useful_proxy_count: 0,
+            final_release_proxy_count: 0,
+        };
+        write_artifact_json(&artifact_store, "09_pipeline_summary.json", &summary);
+        persist_source_registry(
+            &artifact_store,
+            &mut source_registry,
+            config.source_registry.enabled,
+            &config.source_registry.path,
+        );
         return;
-    } else {
-        info!("当前总可用节点个数：{}", &useful_proxies.len());
     }
+
+    info!(
+        "useful proxies after connectivity test: {}",
+        useful_proxies.len()
+    );
+    let useful_source_counts =
+        pipeline::count_sources_for_proxies(&useful_proxies, &fingerprint_sources);
+    source_registry.apply_last_validated_counts(&useful_source_counts);
+    let useful_proxy_artifacts =
+        pipeline::build_proxy_artifacts(&useful_proxies, &fingerprint_sources);
+    write_artifact_json_lines(
+        &artifact_store,
+        "07_useful_proxies.jsonl",
+        &useful_proxy_artifacts,
+    );
+
     let timeout: Duration = Duration::from_millis(config.connect_test.timeout + 2000);
+    let mut release_proxies = useful_proxies.clone();
     if config.fast_mode {
         SubManager::save_proxies_into_clash_file(
-            &useful_proxies,
+            &release_proxies,
             release_clash_template_path.to_string(),
             release_yaml_path.to_string_lossy().to_string(),
         );
-        info!("release 文件地址：{}", release_yaml_path.to_string_lossy());
+        info!("release file: {}", release_yaml_path.to_string_lossy());
     } else {
         let mut clash_meta = ClashMeta::new(external_port, mixed_port);
         SubManager::save_proxies_into_clash_file(
@@ -179,27 +342,57 @@ async fn run(config: Settings) {
             test_yaml_path.to_string(),
         );
 
-        if let Err(e) = clash_meta.start().await {
-            error!("原神启动失败，第一次启动可能会下载 geo 相关的文件，重新启动即可，打开 logs/clash.log，查看具体错误原因，{}", e);
+        if let Err(err) = clash_meta.start().await {
+            error!("restart clash meta for rename stage failed: {}", err);
             clash_meta.stop().unwrap();
+            source_registry.apply_last_released_counts(&BTreeMap::new());
+            let summary = pipeline::PipelineSummaryArtifact {
+                candidate_source_count: urls.len(),
+                raw_proxy_count,
+                unique_proxy_count,
+                useful_proxy_count: useful_proxy_artifacts.len(),
+                final_release_proxy_count: 0,
+            };
+            write_artifact_json(&artifact_store, "09_pipeline_summary.json", &summary);
+            persist_source_registry(
+                &artifact_store,
+                &mut source_registry,
+                config.source_registry.enabled,
+                &config.source_registry.path,
+            );
             return;
         }
-        info!("当前节点个数为：{}", useful_proxies.len());
 
         let nodes = &mut useful_proxies
             .iter()
-            .map(|p| p.get_name().to_string())
+            .map(|proxy| proxy.get_name().to_string())
             .collect::<Vec<String>>();
         let mut node_rename_map: HashMap<String, String> = HashMap::new();
         if config.rename_node {
             if nodes.is_empty() {
-                error!("当前无可用节点，请尝试更换订阅节点或重试");
+                error!("no proxies available for rename stage");
                 clash_meta.stop().unwrap();
+                source_registry.apply_last_released_counts(&BTreeMap::new());
+                let summary = pipeline::PipelineSummaryArtifact {
+                    candidate_source_count: urls.len(),
+                    raw_proxy_count,
+                    unique_proxy_count,
+                    useful_proxy_count: useful_proxy_artifacts.len(),
+                    final_release_proxy_count: 0,
+                };
+                write_artifact_json(&artifact_store, "09_pipeline_summary.json", &summary);
+                persist_source_registry(
+                    &artifact_store,
+                    &mut source_registry,
+                    config.source_registry.enabled,
+                    &config.source_registry.path,
+                );
                 return;
             }
-            let mut i = 0;
-            while i < nodes.len() {
-                let node = &nodes[i];
+
+            let mut index = 0;
+            while index < nodes.len() {
+                let node = &nodes[index];
                 let ip_result = clash_meta
                     .set_group_proxy(TEST_PROXY_GROUP_NAME, node)
                     .await;
@@ -207,32 +400,30 @@ async fn run(config: Settings) {
                     let ip_result = cgi_trace::get_ip(&clash_meta.proxy_url, timeout).await;
                     if ip_result.is_ok() {
                         let (proxy_ip, from) = ip_result.unwrap();
-                        info!("「{}」ip: {} from: {}", node, proxy_ip, from);
+                        info!("node {} ip {} from {}", node, proxy_ip, from);
                         let mut gemini_is_ok = false;
                         match website::gemini_is_ok(&clash_meta.proxy_url, timeout).await {
                             Ok(_) => {
-                                info!("「{}」 gemini is ok", node);
+                                info!("node {} gemini ok", node);
                                 gemini_is_ok = true;
                             }
-                            Err(err) => {
-                                error!("「{}」 gemini is not ok, {:#}", node, err)
-                            }
+                            Err(err) => error!("node {} gemini failed: {:#}", node, err),
                         }
 
                         let mut claude_is_ok = false;
                         match website::claude_is_ok(&clash_meta.proxy_url, timeout).await {
                             Ok(_) => {
-                                info!("「{}」 claude is ok", node);
+                                info!("node {} claude ok", node);
                                 claude_is_ok = true;
                             }
-                            Err(err) => {
-                                error!("「{}」 claude is not ok, {:#}", node, err)
-                            }
+                            Err(err) => error!("node {} claude failed: {:#}", node, err),
                         }
+
                         if !gemini_is_ok && !claude_is_ok {
-                            nodes.remove(i);
+                            nodes.remove(index);
                             continue;
                         }
+
                         let ip_detail_result =
                             ip::get_ip_detail(&proxy_ip, &clash_meta.proxy_url).await;
                         let mut new_name = proxy_ip.to_string();
@@ -240,18 +431,16 @@ async fn run(config: Settings) {
                             Ok(ip_detail) => {
                                 info!("{:?}", ip_detail);
                                 if config.rename_node {
-                                    new_name = config
-                                        .rename_pattern
-                                        .replace("${IP}", &proxy_ip.to_string())
-                                        .replace("${COUNTRYCODE}", &ip_detail.country_code)
-                                        .replace("${ISP}", &ip_detail.isp)
-                                        .replace("${CITY}", &ip_detail.city);
+                                    new_name = node_label::render_node_name(
+                                        &config.rename_pattern,
+                                        &proxy_ip,
+                                        &ip_detail,
+                                    );
                                 }
                             }
-                            Err(e) => {
-                                error!("获取节点 {node} 的 IP 信息失败, {e}");
-                            }
+                            Err(err) => error!("get ip detail for {} failed: {}", node, err),
                         }
+
                         if gemini_is_ok {
                             new_name += "_Gemini";
                         }
@@ -261,20 +450,21 @@ async fn run(config: Settings) {
                         node_rename_map.insert(node.clone(), new_name);
                     } else {
                         let err_msg = ip_result.err().unwrap();
-                        error!("获取节点 {} 的 IP 失败, {}", node, err_msg);
-                        nodes.remove(i);
+                        error!("get ip for node {} failed: {}", node, err_msg);
+                        nodes.remove(index);
+                        continue;
                     }
                 } else {
                     let err_msg = ip_result.err().unwrap();
-                    error!("设置节点 {} 失败, {}", node, err_msg);
+                    error!("set group proxy {} failed: {}", node, err_msg);
                 }
-                i += 1;
+                index += 1;
             }
         }
 
-        let mut release_proxies = useful_proxies
+        release_proxies = useful_proxies
             .into_iter()
-            .filter(|proxy: &Proxy| nodes.contains(&proxy.get_name().to_string()))
+            .filter(|proxy| nodes.contains(&proxy.get_name().to_string()))
             .collect::<Vec<Proxy>>();
 
         if !node_rename_map.is_empty() {
@@ -294,9 +484,34 @@ async fn run(config: Settings) {
             release_clash_template_path.to_string(),
             release_yaml_path.to_string_lossy().to_string(),
         );
-        info!("release 文件地址：{}", release_yaml_path.to_string_lossy());
+        info!("release file: {}", release_yaml_path.to_string_lossy());
         clash_meta.stop().unwrap();
     }
+
+    let release_source_counts =
+        pipeline::count_sources_for_proxies(&release_proxies, &fingerprint_sources);
+    source_registry.apply_last_released_counts(&release_source_counts);
+    let release_proxy_artifacts =
+        pipeline::build_proxy_artifacts(&release_proxies, &fingerprint_sources);
+    write_artifact_json_lines(
+        &artifact_store,
+        "08_final_release_proxies.jsonl",
+        &release_proxy_artifacts,
+    );
+    let summary = pipeline::PipelineSummaryArtifact {
+        candidate_source_count: urls.len(),
+        raw_proxy_count,
+        unique_proxy_count,
+        useful_proxy_count: useful_proxy_artifacts.len(),
+        final_release_proxy_count: release_proxy_artifacts.len(),
+    };
+    write_artifact_json(&artifact_store, "09_pipeline_summary.json", &summary);
+    persist_source_registry(
+        &artifact_store,
+        &mut source_registry,
+        config.source_registry.enabled,
+        &config.source_registry.path,
+    );
 }
 
 #[allow(dead_code)]
@@ -331,18 +546,17 @@ async fn test_node_with_delay_config(
     delay_test_config: &DelayTestConfig,
 ) -> Vec<HashMap<String, i64>> {
     const ROUND: i32 = 5;
-    info!("测试配置：{:?}", delay_test_config);
+    info!("delay test config: {:?}", delay_test_config);
     let mut delay_results = vec![];
 
-    // 预热 2 轮，DNS lookup
     for _ in 0..2 {
         let _ = clash_meta
             .test_group(TEST_PROXY_GROUP_NAME, delay_test_config)
             .await;
     }
 
-    for n in 0..ROUND {
-        info!("测试第 {} 轮", n + 1);
+    for round in 0..ROUND {
+        info!("delay round {}", round + 1);
         let result = clash_meta
             .test_group(TEST_PROXY_GROUP_NAME, delay_test_config)
             .await;
@@ -350,19 +564,14 @@ async fn test_node_with_delay_config(
         match result {
             Ok(delay) => {
                 delay_results.push(delay.clone());
-                info!("有速度节点个数为：{}", delay.len())
+                info!("delay result node count {}", delay.len())
             }
-            Err(e) => {
-                info!("当前测试轮完全没有速度, {}", e)
-            }
+            Err(err) => info!("delay round failed: {}", err),
         }
     }
     delay_results
 }
 
-/*
-获取所有已测速有过一次速度的节点
- */
 fn get_all_tested_nodes(test_results: &Vec<HashMap<String, i64>>) -> Vec<String> {
     let mut keys_set = HashSet::new();
     for result in test_results {
@@ -373,12 +582,8 @@ fn get_all_tested_nodes(test_results: &Vec<HashMap<String, i64>>) -> Vec<String>
     keys_set.into_iter().collect()
 }
 
-/*
-获取测速稳定的节点
- */
 #[allow(dead_code)]
 fn get_stable_tested_nodes(test_results: &Vec<HashMap<String, i64>>) -> Vec<String> {
-    // 合并所有测试数据
     let mut combined_data: HashMap<String, Vec<i64>> = HashMap::new();
     for test in test_results {
         for (node, latency) in test {
@@ -389,7 +594,6 @@ fn get_stable_tested_nodes(test_results: &Vec<HashMap<String, i64>>) -> Vec<Stri
         }
     }
 
-    // 计算每个节点的平均延迟和标准差
     let mut node_stats: Vec<(String, f64)> = combined_data
         .clone()
         .into_iter()
@@ -405,13 +609,10 @@ fn get_stable_tested_nodes(test_results: &Vec<HashMap<String, i64>>) -> Vec<Stri
         })
         .collect();
 
-    // 根据平均延迟对稳定的节点进行排序
-    node_stats.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
-
+    node_stats.sort_by(|left, right| left.1.partial_cmp(&right.1).unwrap());
     node_stats.into_iter().map(|(node, _)| node).collect()
 }
 
-// 创建目录
 fn create_folder() {
     let logs_path = "logs";
     if !Path::new(logs_path).exists() {
@@ -434,24 +635,67 @@ fn create_folder() {
     }
 }
 
+fn dedupe_strings(items: Vec<String>) -> Vec<String> {
+    let mut deduped = Vec::new();
+    let mut seen = HashSet::new();
+    for item in items {
+        if seen.insert(item.clone()) {
+            deduped.push(item);
+        }
+    }
+    deduped
+}
+
+fn write_artifact_json<T: Serialize>(
+    artifact_store: &artifacts::ArtifactStore,
+    relative_path: &str,
+    value: &T,
+) {
+    if let Err(err) = artifact_store.write_json(relative_path, value) {
+        error!("write artifact {} failed: {}", relative_path, err);
+    }
+}
+
+fn write_artifact_json_lines<T: Serialize>(
+    artifact_store: &artifacts::ArtifactStore,
+    relative_path: &str,
+    values: &[T],
+) {
+    if let Err(err) = artifact_store.write_json_lines(relative_path, values) {
+        error!("write artifact {} failed: {}", relative_path, err);
+    }
+}
+
+fn persist_source_registry(
+    artifact_store: &artifacts::ArtifactStore,
+    source_registry: &mut source_registry::SourceRegistry,
+    persist_registry_file: bool,
+    registry_path: &str,
+) {
+    source_registry.updated_at_epoch_secs = current_epoch_secs();
+    write_artifact_json(
+        artifact_store,
+        "10_source_registry.json",
+        &source_registry.snapshot(),
+    );
+    if persist_registry_file && source_registry.persist(registry_path).is_err() {
+        error!("persist source registry failed: {}", registry_path);
+    }
+}
+
+fn current_epoch_secs() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|value| value.as_secs())
+        .unwrap_or_default()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn test_get_stable_nodes() {
-        // [
-        //     { "免费节点2": 829 },
-        //     { "免费节点3": 815, "免费节点2": 945, "免费节点1": 838 },
-        //     { "免费节点4": 835, "免费节点1": 850, "免费节点3": 819 },
-        //     { "免费节点1": 844, "免费节点3": 830, "免费节点2": 856 },
-        //     { "免费节点3": 857, "免费节点4": 796, "2": 911, "免费节点4": 816 },
-        //     { "免费节点1": 895, "免费节点3": 863, "免费节点4": 829 },
-        //     { "免费节点3": 837, "免费节点1": 809, "免费节点4": 849 },
-        //     { "免费节点3": 849, "免费节点2": 904, "免费节点4": 892 }
-        // ];
-
-        // 假设这是从十组测试中收集的数据
         let test_data = vec![
             HashMap::from([
                 ("node1".to_string(), 100),
@@ -476,6 +720,6 @@ mod tests {
         let count = "HongKong_Jordan_VertexConnectivityLLC62"
             .matches('_')
             .count();
-        println!("{count}")
+        println!("{count}");
     }
 }
