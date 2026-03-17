@@ -31,6 +31,31 @@
 3. 在自己项目中 conf/config.toml 中填写需要合并的链接，提交 commit 之后会自动触发构建。
 4. 等待 Actions 结束，项目中的 clash.yaml 就是最终筛选出来的节点信息。
 
+### 分发层
+
+当前建议的分发顺序：
+
+1. 主源：`https://raw.githubusercontent.com/<user>/<repo>/master/clash.yaml`
+2. 可控分发层：`https://<user>.github.io/<repo>/clash.yaml`
+3. 公共镜像后备：`https://fastly.jsdelivr.net/gh/<user>/<repo>@master/clash.yaml`
+
+说明：
+
+- `raw.githubusercontent.com` 通常是最新版本，适合当主源。
+- GitHub Pages 作为我们可控的分发层，内容来自仓库内已提交的产物，适合作为稳定后备。
+- `jsDelivr` 适合做兜底镜像，但可能因为 CDN 缓存而滞后于 `raw`。
+
+仓库内新增了 `pages` workflow：
+
+- 每次 `master` 有新提交时自动生成静态分发站点
+- 站点会发布：
+  - `clash.yaml`
+  - `summary.json`
+  - `source-registry.json`
+  - `latest.json`
+
+如果是第一次使用 GitHub Pages，需要在仓库设置里允许 Actions 部署 Pages。
+
 ### 本地构建
 
 > [!WARNING]
