@@ -12,12 +12,6 @@
 
 建议的拉取顺序：
 
-1. 主源  
-   `https://raw.githubusercontent.com/hvwin8/autojiedian/master/clash.yaml`
-2. 可控分发层  
-   `https://hvwin8.github.io/autojiedian/clash.yaml`
-3. CDN 镜像兜底  
-   `https://fastly.jsdelivr.net/gh/hvwin8/autojiedian@master/clash.yaml`
 
 GitHub Pages 还会同步发布：
 
