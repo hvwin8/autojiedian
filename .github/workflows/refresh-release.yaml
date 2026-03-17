@@ -1,0 +1,51 @@
+name: refresh-release
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+env:
+  CARGO_TERM_COLOR: always
+
+concurrency:
+  group: refresh-release
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/master'
+    name: Refresh Release
+    runs-on: macos-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build workspace
+        run: cargo build --workspace --verbose
+
+      - name: Refresh release artifacts
+        run: cargo run
+
+      - name: Commit refreshed outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add clash.yaml artifacts conf/clash_release.yaml
+          if git diff --cached --quiet; then
+            echo "No artifact changes detected."
+            exit 0
+          fi
+          git commit -m "chore: refresh clash outputs"
+          git push origin HEAD:master

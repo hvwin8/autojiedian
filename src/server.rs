@@ -41,7 +41,7 @@ pub async fn start_server(_config: Settings) {
 }
 
 async fn root() -> &'static str {
-    "👋 Clash-Butler!"
+    "👋 autojiedian"
 }
 //
 // #[derive(Deserialize, Debug)]
@@ -71,7 +71,7 @@ async fn root() -> &'static str {
 //
 //     let exclude_nodes = check_and_get_useless_nodes().await;
 //
-//     let release_config_url = "https://gist.githubusercontent.com/ReaJason/633414d3b39af7dbbfcbdc08c8093d47/raw/a7d322b7c195db716435e93ca0b3a33d9c65a90b/gistfile1.txt";
+//     let release_config_url = "https://hvwin8.github.io/autojiedian/clash.yaml";
 //     let release_sub_url = format!("http://127.0.0.1:25500/sub?target=clash\
 //                                             &url=http://localhost:3003/subs/test/config.yaml\
 //                                             &config={}\

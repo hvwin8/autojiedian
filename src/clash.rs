@@ -23,7 +23,7 @@ const CORE_DIR: &str = "clash-meta";
 const UNIX_CORE_NAME: &str = "mihomo";
 const WINDOWS_CORE_NAME: &str = "mihomo.exe";
 const MIHOMO_RELEASE_API: &str = "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest";
-const GITHUB_USER_AGENT: &str = "clash-butler/0.1";
+const GITHUB_USER_AGENT: &str = "autojiedian/0.1";
 
 pub struct ClashMeta {
     pub external_port: u64,

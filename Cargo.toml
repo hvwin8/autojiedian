@@ -1,7 +1,13 @@
 [package]
-name = "clash-butler"
+name = "autojiedian"
 version = "0.1.0"
 edition = "2021"
+authors = ["hvwin8"]
+description = "Self-hosted Clash / Mihomo subscription aggregation and distribution pipeline."
+license = "Apache-2.0"
+repository = "https://github.com/hvwin8/autojiedian"
+homepage = "https://hvwin8.github.io/autojiedian/"
+publish = false
 
 [workspace]
 members = ["proxrs", "proxrs-wasm"]

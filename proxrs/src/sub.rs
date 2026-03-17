@@ -480,6 +480,7 @@ impl SubManager {
 
 #[cfg(test)]
 mod test {
+    use std::fs;
     use std::path::PathBuf;
 
     use super::*;
@@ -488,13 +489,28 @@ mod test {
     use crate::protocol::ProxyType::Vless;
     use crate::protocol::ProxyType::Vmess;
 
+    fn repo_root() -> PathBuf {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .expect("workspace root")
+            .to_path_buf()
+    }
+
+    fn repo_path(relative: &str) -> String {
+        repo_root().join(relative).to_string_lossy().into_owned()
+    }
+
+    fn test_output_path(name: &str) -> String {
+        let dir = repo_root().join("target").join("test-artifacts");
+        fs::create_dir_all(&dir).expect("create test artifact dir");
+        dir.join(name).to_string_lossy().into_owned()
+    }
+
     #[test]
     fn test_get_clash_config_content() {
         let path = "conf/clash_release.yaml";
-        let mut proxies = SubManager::parse_from_path(
-            "/Users/reajason/RustroverProjects/clash-butler/subs/0c1149d13476bbe3b62eecb7c9b895f4",
-        )
-        .unwrap();
+        let mut proxies =
+            SubManager::parse_from_path(repo_path("tests/res/base64_proxies")).unwrap();
         SubManager::unset_proxies_name(&mut proxies);
         let content = SubManager::get_clash_config_content(path.to_string(), &proxies).unwrap();
         println!("{}", content);
@@ -626,11 +642,8 @@ ss://YWVzLTEyOC1nY206ZDljNTc3MzI4ZmIzNDlmZQ==@120.232.73.68:40676#good
             "vmess://YXV0bzo5MjA0YWZjZC0wMjNlLTc4MWYtMWFiYy1jMTJlZmNjZDEzNDRANDMuMjQ4LjExOS4xNDU6MzM0MDc?remarks=%E9%A6%99%E6%B8%AF%E9%98%BF%E9%87%8C%E4%BA%91-H&path=/ray&obfs=websocket&tls=1&alterId=0".to_string(),
         ];
         let proxies = SubManager::get_proxies_from_urls(&urls).await;
-        let release_clash_template_path =
-            "/Users/reajason/RustroverProjects/clash-butler/conf/clash_release.yaml".to_string();
-        let save_path =
-            "/Users/reajason/RustroverProjects/clash-butler/subs/release/proxy-merge.yaml"
-                .to_string();
+        let release_clash_template_path = repo_path("conf/clash_release.yaml");
+        let save_path = test_output_path("proxy-merge.yaml");
         SubManager::save_proxies_into_clash_file(&proxies, release_clash_template_path, save_path);
     }
 
@@ -657,19 +670,18 @@ proxy-providers:
 
     #[tokio::test]
     async fn test_rename() {
-        let urls = vec!["/Users/reajason/RustroverProjects/clash-butler/clash.yaml".to_string()];
+        let urls = vec![repo_path("clash.yaml")];
         let mut proxies = SubManager::get_proxies_from_urls(&urls).await;
         SubManager::rename_dup_proxies_name(&mut proxies);
-        let release_clash_template_path =
-            "/Users/reajason/RustroverProjects/clash-butler/conf/clash_release.yaml".to_string();
-        let save_path = "/Users/reajason/RustroverProjects/clash-butler/clash1.yaml".to_string();
+        let release_clash_template_path = repo_path("conf/clash_release.yaml");
+        let save_path = test_output_path("clash1.yaml");
         SubManager::save_proxies_into_clash_file(&proxies, release_clash_template_path, save_path)
     }
 
     #[tokio::test]
+    #[ignore = "manual exploratory fixture test"]
     async fn test_merge_uuids() {
-        let url = "/Users/reajason/.config/clash.meta/template4.yaml";
-        let mut proxies = SubManager::get_proxies_from_url(url.to_string()).await;
+        let mut proxies = SubManager::get_proxies_from_url(repo_path("clash.yaml")).await;
 
         let mut result = vec![];
         let uuids = vec![
@@ -723,8 +735,8 @@ proxy-providers:
 
         SubManager::save_proxies_into_clash_file(
             &result,
-            "/Users/reajason/RustroverProjects/clash-butler/conf/clash_release.yaml".to_string(),
-            "/Users/reajason/RustroverProjects/clash-butler/2025.02.17.yaml".to_string(),
+            repo_path("conf/clash_release.yaml"),
+            test_output_path("2025.02.17.yaml"),
         );
 
         println!("{:?}", result.len());

@@ -99,6 +99,12 @@ def build_index_html(base_url: str, latest: dict[str, Any]) -> str:
     clash = files.get("clash") or {}
     summary_json = files.get("summary") or {}
     registry_json = files.get("source_registry") or {}
+    rules = files.get("rules") or {}
+    rules_link = (
+        f'<li><a href="{rules.get("path", "rules/")}">rules/</a></li>'
+        if rules
+        else ""
+    )
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -213,6 +219,7 @@ def build_index_html(base_url: str, latest: dict[str, Any]) -> str:
       <li><a href="{clash.get('path', 'clash.yaml')}">clash.yaml</a></li>
       <li><a href="{summary_json.get('path', 'summary.json')}">summary.json</a></li>
       <li><a href="{registry_json.get('path', 'source-registry.json')}">source-registry.json</a></li>
+      {rules_link}
       <li><a href="latest.json">latest.json</a></li>
     </ul>
     <p>Base URL: <code>{base_url or '-'}</code></p>
@@ -234,6 +241,7 @@ def main() -> int:
         raise FileNotFoundError(f"release file not found: {release_file}")
 
     source_registry_path = registry_file if registry_file.exists() else fallback_registry_file
+    rules_dir = (ROOT / "rules").resolve()
     summary, summary_source = load_summary(summary_file, release_file)
     ensure_clean_dir(output_dir)
 
@@ -245,6 +253,8 @@ def main() -> int:
     )
     if source_registry_path.exists():
         shutil.copy2(source_registry_path, output_dir / "source-registry.json")
+    if rules_dir.exists() and rules_dir.is_dir():
+        shutil.copytree(rules_dir, output_dir / "rules", dirs_exist_ok=True)
 
     base_url = str(args.base_url or "").rstrip("/")
     latest = {
@@ -272,6 +282,11 @@ def main() -> int:
             "path": "source-registry.json",
             "url": f"{base_url}/source-registry.json" if base_url else "source-registry.json",
             "size": source_registry_path.stat().st_size,
+        }
+    if rules_dir.exists() and rules_dir.is_dir():
+        latest["files"]["rules"] = {
+            "path": "rules/",
+            "url": f"{base_url}/rules/" if base_url else "rules/",
         }
 
     (output_dir / "latest.json").write_text(

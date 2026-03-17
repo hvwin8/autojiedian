@@ -10944,14 +10944,14 @@ rule-providers:
     behavior: domain
     format: mrs
     path: ./rules/gemini.mrs
-    url: https://github.com/ReaJason/Clash-Butler/raw/refs/heads/master/rules/gemini/gemini.mrs
+    url: https://hvwin8.github.io/autojiedian/rules/gemini/gemini.mrs
     interval: 86400
   claude:
     type: http
     behavior: domain
     format: mrs
     path: ./rules/claude.mrs
-    url: https://github.com/ReaJason/Clash-Butler/raw/refs/heads/master/rules/claude/claude.mrs
+    url: https://hvwin8.github.io/autojiedian/rules/claude/claude.mrs
     interval: 86400
   youtube:
     type: http

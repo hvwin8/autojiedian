@@ -1,80 +1,81 @@
-## Clash Butler
+# autojiedian
 
-现在 Clash 配置文件如日中天，各种节点都有 Clash 配置文件格式，不过 Clash
-对于用户界面的开发迭代并没有很快。
+`autojiedian` 是一个自建的 Clash / Mihomo 订阅聚合、筛选和可控分发仓库。
 
-想之前用得最舒服的一个电脑端的代理软件还得是 [V2rayN](https://github.com/2dust/v2rayN)
-，支持节点测速，测延迟，删除导出，自动排序等等（指节点管理这一块）。
+它当前承担三件事：
 
-作为一个「忠实的白嫖节点的人」，Clash 节点不允许做删除和新增，只能添加额外的配置，在大佬发新的节点会导致配置列表就会巨长，管理成本变高。
+- 汇总多路公益与镜像订阅源，生成新的 `clash.yaml`
+- 保留 `artifacts` 与 `source-registry`，方便排查来源质量
+- 通过 GitHub Pages 提供稳定的分发落点，作为 `raw` 之外的可控兜底层
 
-并且分享的节点基本是日抛类型，很快就会失效，不过一个订阅中个别链接又是可用的，
-此时就急需一个工具来测速合并多个配置文件，且为了更好和 Clash 客户端配合，生成的链接需要固定的，似乎没有这方面的工具，不如咱就写一个吧？！
+## 分发地址
 
-![design.png](docs/design.png)
+建议的拉取顺序：
 
-> [!IMPORTANT]
-> 作为 Rust 初学者，这个项目一定会被做成好玩的模样，期待一起讨论一起学习 🎉
+1. 主源  
+   `https://raw.githubusercontent.com/hvwin8/autojiedian/master/clash.yaml`
+2. 可控分发层  
+   `https://hvwin8.github.io/autojiedian/clash.yaml`
+3. CDN 镜像兜底  
+   `https://fastly.jsdelivr.net/gh/hvwin8/autojiedian@master/clash.yaml`
 
-<p align="center">
-  <img alt="vscode" src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=flat-square&logo=visual-studio-code&logoColor=white" >
-  <img alt="Rust" src="https://img.shields.io/badge/Rust 2021-%23000000.svg?style=flat-square&logo=rust&logoColor=white" >
-  <img alt="MacOS" src="https://img.shields.io/badge/Sequoia%2015.0-000000?style=flat-square&logo=macos&logoColor=F0F0F0" />
-</p>
+GitHub Pages 还会同步发布：
 
-## 快速开始
+- `summary.json`
+- `source-registry.json`
+- `latest.json`
+- `rules/`
 
-### 使用 GitHub Actions
+项目页入口：
 
-1. Fork 当前项目。
-2. 在自己项目中点击 Actions ，同意并打开 GitHub Actions 功能。
-3. 在自己项目中 conf/config.toml 中填写需要合并的链接，提交 commit 之后会自动触发构建。
-4. 等待 Actions 结束，项目中的 clash.yaml 就是最终筛选出来的节点信息。
+- `https://hvwin8.github.io/autojiedian/`
 
-### 分发层
+## 工作流
 
-当前建议的分发顺序：
+仓库当前分成三条独立链路：
 
-1. 主源：`https://raw.githubusercontent.com/<user>/<repo>/master/clash.yaml`
-2. 可控分发层：`https://<user>.github.io/<repo>/clash.yaml`
-3. 公共镜像后备：`https://fastly.jsdelivr.net/gh/<user>/<repo>@master/clash.yaml`
+- `ci`
+  - 负责格式检查、静态检查、构建验证
+  - 面向 `push` / `pull_request` / 手动触发
+- `refresh-release`
+  - 负责定时执行 `cargo run`，刷新 `clash.yaml` 与 `artifacts`
+  - 仅手动或定时触发，不再跟每次推送绑死
+- `pages`
+  - 负责把最新提交内容打包成 GitHub Pages 站点
 
-说明：
+这样的拆分可以避免每次普通提交都跑重型刷新任务，同时保留自动产物更新能力。
 
-- `raw.githubusercontent.com` 通常是最新版本，适合当主源。
-- GitHub Pages 作为我们可控的分发层，内容来自仓库内已提交的产物，适合作为稳定后备。
-- `jsDelivr` 适合做兜底镜像，但可能因为 CDN 缓存而滞后于 `raw`。
+## 本地使用
 
-仓库内新增了 `pages` workflow：
+### 1. 修改源配置
 
-- 每次 `master` 有新提交时自动生成静态分发站点
-- 站点会发布：
-  - `clash.yaml`
-  - `summary.json`
-  - `source-registry.json`
-  - `latest.json`
+编辑 `conf/config.toml`，补充或替换你要聚合的订阅源。
 
-如果是第一次使用 GitHub Pages，需要在仓库设置里允许 Actions 部署 Pages。
+### 2. 生成产物
 
-### 本地构建
+```powershell
+cargo run
+```
 
-> [!WARNING]
-> 精力有限，目前仅支持 MacOS 使用
+运行后会更新：
 
-1. 修改 config.toml，加入自己订阅地址
-    ```yaml
-   # 待测速的订阅节点
-   # 支持网络地址 https://xxx
-   # 支持本地地址（绝对地址）/User/xxx/xx.yml
-   # 支持单个订阅链接，ss://xxx
-   subs = [
-      "https://xxx",
-      "/User/xxx/xx.yml",
-      "ss://xxx",
-   ]
-   ```
+- `clash.yaml`
+- `artifacts/*.json`
 
-2. (可选) 关闭 clash tun 模式或全局模式
-3. 使用 `cargo run` 启动，即可自动开始节点测速过滤
+### 3. 本地构建 Pages 产物
 
-预计先写 CLI 批量跑完现有节点筛选节点的功能，再考虑后续写成 Web 部署自动化形式
+```powershell
+python scripts/build_pages.py --output-dir _site --base-url https://hvwin8.github.io/autojiedian
+```
+
+## 仓库约定
+
+- `clash.yaml` 是当前对外发布的主产物
+- `artifacts/` 存放每轮聚合过程中的中间结果
+- `rules/` 存放仓库自托管的规则文件
+- GitHub Pages 是对外稳定分发层，不依赖上游仓库页面
+
+## 维护说明
+
+- 当前仓库已切换到自有分发地址与自有规则地址
+- 若未来要进一步“脱 fork”，那是 GitHub 仓库关系层面的动作，需要单独处理；代码、文档、工作流层面已经可以独立维护

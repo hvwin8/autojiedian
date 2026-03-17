@@ -2,9 +2,12 @@
 name = "proxrs-wasm"
 version = "0.1.0"
 edition = "2021"
-authors = ["ReaJason <reajason1225@gmail.com>"]
-description = "A short description of my package"
-license = "MIT"
+authors = ["hvwin8"]
+description = "WASM bindings for internal proxy parsing utilities."
+license = "Apache-2.0"
+repository = "https://github.com/hvwin8/autojiedian"
+homepage = "https://hvwin8.github.io/autojiedian/"
+publish = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]

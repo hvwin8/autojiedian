@@ -1,46 +1,51 @@
 name: ci
 
 on:
-  schedule:
-  - cron: '0 */6 * * *'
+  workflow_dispatch:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
+    paths-ignore:
+      - "clash.yaml"
+      - "artifacts/**"
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 env:
   CARGO_TERM_COLOR: always
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.number || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  check:
-    name: Check
-    runs-on: macos-latest
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Install toolchain
-        uses: dtolnay/rust-toolchain@nightly
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
         with:
-          components: rustfmt,clippy
-      - uses: Swatinem/rust-cache@v2
-      - run: cargo +nightly clippy
-      - run: cargo +nightly fmt --all
-  build:
-    name: Build
-    runs-on: macos-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: Swatinem/rust-cache@v2
-      - name: Build
-        run: cargo build --verbose
-      - name: Run
-        run: cargo run
-      - name: Upload
-        uses: stefanzweifel/git-auto-commit-action@v6
+          components: rustfmt, clippy
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Check formatting
+        run: cargo fmt --all --check
+
+      - name: Run clippy
+        run: cargo clippy --workspace --all-targets
+
+      - name: Build workspace
+        run: cargo build --workspace --verbose
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          commit_message: "docs: update yaml"
+          python-version: "3.x"
+
+      - name: Validate Pages builder
+        run: python -m py_compile scripts/build_pages.py
