@@ -17,6 +17,7 @@ GitHub Pages 还会同步发布：
 
 - `summary.json`
 - `source-registry.json`
+- `validated_pool.json`
 - `latest.json`
 - `rules/`
 
@@ -65,6 +66,7 @@ python scripts/build_pages.py --output-dir _site --base-url https://hvwin8.githu
 ## 仓库约定
 
 - `clash.yaml` 是当前对外发布的主产物
+- `validated_pool.json` 是面向自动任务消费的候选池产物
 - `artifacts/` 存放每轮聚合过程中的中间结果
 - `rules/` 存放仓库自托管的规则文件
 - GitHub Pages 是对外稳定分发层，不依赖上游仓库页面

@@ -38,6 +38,46 @@ pub struct ProxyArtifact {
     pub json: String,
 }
 
+
+#[derive(Debug, Clone, Serialize)]
+pub struct ValidatedPoolItem {
+    pub fingerprint: String,
+    pub proxy_type: String,
+    pub name: String,
+    pub server: String,
+    pub source_urls: Vec<String>,
+    pub json: String,
+}
+
+pub fn build_validated_pool(
+    proxies: &[Proxy],
+    fingerprint_sources: &HashMap<String, BTreeSet<String>>,
+) -> Vec<ValidatedPoolItem> {
+    let mut items = Vec::new();
+    for proxy in proxies {
+        let Some(fingerprint) = proxy_fingerprint(proxy) else {
+            continue;
+        };
+        let json = match proxy.to_json() {
+            Ok(json) => json,
+            Err(_) => continue,
+        };
+        let source_urls = fingerprint_sources
+            .get(&fingerprint)
+            .map(|items| items.iter().cloned().collect::<Vec<_>>())
+            .unwrap_or_default();
+        items.push(ValidatedPoolItem {
+            fingerprint,
+            proxy_type: format!("{:?}", proxy.proxy_type),
+            name: proxy.get_name().to_string(),
+            server: proxy.get_server().to_string(),
+            source_urls,
+            json,
+        });
+    }
+    items
+}
+
 #[derive(Debug, Clone, Serialize)]
 pub struct DelayGroupArtifact {
     pub group_index: usize,

@@ -4,7 +4,7 @@ name: refresh-release
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */3 * * *"
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,7 +17,7 @@ jobs:
   refresh:
     if: github.ref == 'refs/heads/master'
     name: Refresh Release
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
       contents: write

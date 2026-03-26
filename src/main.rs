@@ -498,6 +498,8 @@ async fn run(config: Settings) {
         "08_final_release_proxies.jsonl",
         &release_proxy_artifacts,
     );
+    let validated_pool = pipeline::build_validated_pool(&release_proxies, &fingerprint_sources);
+    write_artifact_json(&artifact_store, "11_validated_pool.json", &validated_pool);
     let summary = pipeline::PipelineSummaryArtifact {
         candidate_source_count: urls.len(),
         raw_proxy_count,
