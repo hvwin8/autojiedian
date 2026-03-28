@@ -1,5 +1,5 @@
 {
-  "updated_at_epoch_secs": 1774673334,
+  "updated_at_epoch_secs": 1774680602,
   "records": [
     {
       "url": "https://raw.githubusercontent.com/dongchengjie/airport/main/subs/merged/tested_within.yaml",
@@ -21,8 +21,8 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673334,
+      "first_seen_epoch_secs": 1774680599,
+      "last_seen_epoch_secs": 1774680602,
       "score": 65.0
     },
     {
@@ -43,15 +43,15 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673333,
+      "first_seen_epoch_secs": 1774680598,
+      "last_seen_epoch_secs": 1774680600,
       "score": 65.0
     },
     {
-      "url": "https://raw.githubusercontent.com/mfuu/v2ray/master/clash.yaml",
+      "url": "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml",
       "source_kind": "direct_subscription",
       "discovered_from_feeds": [
-        "https://github.com/mfuu/v2ray"
+        "https://github.com/snakem982/proxypool/tree/main/source"
       ],
       "seen_count": 2,
       "discover_hits": 0,
@@ -59,16 +59,16 @@
       "fetch_attempts": 1,
       "fetch_successes": 1,
       "fetch_empty_results": 0,
-      "total_proxy_count": 70,
-      "max_proxy_count": 70,
-      "last_proxy_count": 70,
+      "total_proxy_count": 74,
+      "max_proxy_count": 74,
+      "last_proxy_count": 74,
       "total_validated_proxy_count": 0,
       "last_validated_proxy_count": 0,
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673333,
+      "first_seen_epoch_secs": 1774680598,
+      "last_seen_epoch_secs": 1774680600,
       "score": 65.0
     },
     {
@@ -91,8 +91,8 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673333,
+      "first_seen_epoch_secs": 1774680598,
+      "last_seen_epoch_secs": 1774680599,
       "score": 65.0
     },
     {
@@ -115,33 +115,9 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673333,
+      "first_seen_epoch_secs": 1774680599,
+      "last_seen_epoch_secs": 1774680600,
       "score": 65.0
-    },
-    {
-      "url": "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml",
-      "source_kind": "direct_subscription",
-      "discovered_from_feeds": [
-        "https://github.com/snakem982/proxypool/tree/main/source"
-      ],
-      "seen_count": 2,
-      "discover_hits": 0,
-      "feed_scan_count": 0,
-      "fetch_attempts": 1,
-      "fetch_successes": 1,
-      "fetch_empty_results": 0,
-      "total_proxy_count": 35,
-      "max_proxy_count": 35,
-      "last_proxy_count": 35,
-      "total_validated_proxy_count": 0,
-      "last_validated_proxy_count": 0,
-      "total_released_proxy_count": 0,
-      "last_released_proxy_count": 0,
-      "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673333,
-      "score": 59.0
     },
     {
       "url": "https://github.com/snakem982/proxypool/tree/main/source",
@@ -161,8 +137,8 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673332,
+      "first_seen_epoch_secs": 1774680598,
+      "last_seen_epoch_secs": 1774680599,
       "score": 0.75
     },
     {
@@ -183,8 +159,8 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673332,
+      "first_seen_epoch_secs": 1774680598,
+      "last_seen_epoch_secs": 1774680599,
       "score": 0.5000000000000001
     },
     {
@@ -205,8 +181,8 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": null,
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673332,
+      "first_seen_epoch_secs": 1774680598,
+      "last_seen_epoch_secs": 1774680599,
       "score": 0.5000000000000001
     },
     {
@@ -229,8 +205,32 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": "empty_result",
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673334,
+      "first_seen_epoch_secs": 1774680599,
+      "last_seen_epoch_secs": 1774680602,
+      "score": 0.0
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mfuu/v2ray/master/clash.yaml",
+      "source_kind": "direct_subscription",
+      "discovered_from_feeds": [
+        "https://github.com/mfuu/v2ray"
+      ],
+      "seen_count": 2,
+      "discover_hits": 0,
+      "feed_scan_count": 0,
+      "fetch_attempts": 1,
+      "fetch_successes": 0,
+      "fetch_empty_results": 1,
+      "total_proxy_count": 0,
+      "max_proxy_count": 0,
+      "last_proxy_count": 0,
+      "total_validated_proxy_count": 0,
+      "last_validated_proxy_count": 0,
+      "total_released_proxy_count": 0,
+      "last_released_proxy_count": 0,
+      "last_error": "empty_result",
+      "first_seen_epoch_secs": 1774680598,
+      "last_seen_epoch_secs": 1774680600,
       "score": 0.0
     },
     {
@@ -253,8 +253,8 @@
       "total_released_proxy_count": 0,
       "last_released_proxy_count": 0,
       "last_error": "empty_result",
-      "first_seen_epoch_secs": 1774673332,
-      "last_seen_epoch_secs": 1774673334,
+      "first_seen_epoch_secs": 1774680599,
+      "last_seen_epoch_secs": 1774680602,
       "score": 0.0
     }
   ]
