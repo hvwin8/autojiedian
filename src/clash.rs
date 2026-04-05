@@ -3,12 +3,15 @@
 use std::collections::HashMap;
 use std::fs::{self, File};
 use std::io::{Cursor, Read, Write};
+#[cfg(unix)]
+use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 use std::process::Child;
 use std::process::Command;
 use std::process::Stdio;
 use std::time::Duration;
 
+use flate2::read::GzDecoder;
 use reqwest::header::USER_AGENT;
 use reqwest::Client;
 use serde::Deserialize;
@@ -195,8 +198,13 @@ impl ClashMeta {
         fs::create_dir_all(CORE_DIR)?;
 
         if is_valid_core_binary(&expected_path)? {
+            ensure_executable_permissions(&expected_path)?;
             return Ok(());
         }
+
+        let platform = current_release_os().ok_or_else(|| {
+            std::io::Error::other("unsupported platform for official mihomo download")
+        })?;
 
         if cfg!(windows) {
             let legacy_path = Path::new(CORE_DIR).join(UNIX_CORE_NAME);
@@ -209,33 +217,32 @@ impl ClashMeta {
                 fs::copy(&legacy_path, &expected_path)?;
                 return Ok(());
             }
+        }
 
-            if expected_path.exists() {
-                warn!(
-                    "existing mihomo core at {} is not a valid Windows executable, downloading a fresh one",
-                    expected_path.display()
-                );
-            } else {
-                info!(
-                    "mihomo core missing at {}, downloading a Windows build from the official release",
-                    expected_path.display()
-                );
-            }
+        if expected_path.exists() {
+            warn!(
+                "existing mihomo core at {} is not a valid {} executable, downloading a fresh one",
+                expected_path.display(),
+                platform
+            );
+        } else {
+            info!(
+                "mihomo core missing at {}, downloading a {} build from the official release",
+                expected_path.display(),
+                platform
+            );
+        }
 
-            download_windows_core(&expected_path).await?;
-            if is_valid_core_binary(&expected_path)? {
-                return Ok(());
-            }
-
-            return Err(Box::new(std::io::Error::other(format!(
-                "downloaded mihomo core at {} is still invalid",
-                expected_path.display()
-            ))));
+        download_core_for_current_platform(&expected_path).await?;
+        ensure_executable_permissions(&expected_path)?;
+        if is_valid_core_binary(&expected_path)? {
+            return Ok(());
         }
 
         Err(Box::new(std::io::Error::other(format!(
-            "mihomo core missing or invalid at {}",
-            expected_path.display()
+            "downloaded mihomo core at {} is still invalid for {}",
+            expected_path.display(),
+            platform
         ))))
     }
 
@@ -349,7 +356,41 @@ fn binary_matches_platform(header: &[u8], os: &str) -> bool {
     }
 }
 
-async fn download_windows_core(target_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
+fn current_release_os() -> Option<&'static str> {
+    if cfg!(windows) {
+        Some("windows")
+    } else if cfg!(target_os = "macos") {
+        Some("darwin")
+    } else if cfg!(target_os = "linux") {
+        Some("linux")
+    } else {
+        None
+    }
+}
+
+fn archive_extension_for_os(os: &str) -> &'static str {
+    if os == "windows" {
+        ".zip"
+    } else {
+        ".gz"
+    }
+}
+
+fn ensure_executable_permissions(path: &Path) -> std::io::Result<()> {
+    #[cfg(not(unix))]
+    let _ = path;
+    #[cfg(unix)]
+    {
+        let mut permissions = fs::metadata(path)?.permissions();
+        permissions.set_mode(0o755);
+        fs::set_permissions(path, permissions)?;
+    }
+    Ok(())
+}
+
+async fn download_core_for_current_platform(
+    target_path: &Path,
+) -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::builder()
         .timeout(Duration::from_secs(120))
         .build()?;
@@ -363,15 +404,18 @@ async fn download_windows_core(target_path: &Path) -> Result<(), Box<dyn std::er
         .json::<GithubRelease>()
         .await?;
 
+    let os = current_release_os().ok_or_else(|| {
+        std::io::Error::other("unsupported platform for official mihomo download")
+    })?;
     let asset =
-        select_windows_asset_for_arch(&release, std::env::consts::ARCH).ok_or_else(|| {
+        select_asset_for_platform(&release, os, std::env::consts::ARCH).ok_or_else(|| {
             std::io::Error::other(format!(
-                "could not find a suitable Windows mihomo asset in release {}",
-                release.tag_name
+                "could not find a suitable {} mihomo asset in release {}",
+                os, release.tag_name
             ))
         })?;
 
-    info!("downloading official mihomo Windows core: {}", asset.name);
+    info!("downloading official mihomo {} core: {}", os, asset.name);
 
     let zip_bytes = client
         .get(&asset.browser_download_url)
@@ -382,28 +426,41 @@ async fn download_windows_core(target_path: &Path) -> Result<(), Box<dyn std::er
         .bytes()
         .await?;
 
-    extract_mihomo_from_zip(zip_bytes.as_ref(), target_path)?;
+    if asset.name.ends_with(".zip") {
+        extract_mihomo_from_zip(zip_bytes.as_ref(), target_path)?;
+    } else if asset.name.ends_with(".gz") {
+        extract_mihomo_from_gzip(zip_bytes.as_ref(), target_path)?;
+    } else {
+        return Err(Box::new(std::io::Error::other(format!(
+            "unsupported mihomo asset format: {}",
+            asset.name
+        ))));
+    }
+
+    ensure_executable_permissions(target_path)?;
     info!("mihomo core saved to {}", target_path.display());
     Ok(())
 }
 
-fn select_windows_asset_for_arch<'a>(
+fn select_asset_for_platform<'a>(
     release: &'a GithubRelease,
+    os: &str,
     arch: &str,
 ) -> Option<&'a GithubAsset> {
     let tag = release.tag_name.as_str();
-    let exact_candidates = preferred_windows_asset_names(arch, tag);
+    let exact_candidates = preferred_asset_names(os, arch, tag);
     for candidate in &exact_candidates {
         if let Some(asset) = release.assets.iter().find(|asset| asset.name == *candidate) {
             return Some(asset);
         }
     }
 
-    let prefixes = preferred_windows_asset_prefixes(arch);
+    let prefixes = preferred_asset_prefixes(os, arch);
+    let extension = archive_extension_for_os(os);
     for prefix in prefixes {
         if let Some(asset) = release.assets.iter().find(|asset| {
-            asset.name.starts_with(prefix)
-                && asset.name.ends_with(".zip")
+            asset.name.starts_with(&prefix)
+                && asset.name.ends_with(extension)
                 && !asset.name.contains("-go")
         }) {
             return Some(asset);
@@ -411,38 +468,51 @@ fn select_windows_asset_for_arch<'a>(
     }
 
     release.assets.iter().find(|asset| {
-        asset.name.starts_with("mihomo-windows-")
-            && asset.name.ends_with(".zip")
+        asset.name.starts_with(&format!("mihomo-{}-", os))
+            && asset.name.ends_with(extension)
             && !asset.name.contains("-go")
     })
 }
 
-fn preferred_windows_asset_names(arch: &str, tag: &str) -> Vec<String> {
-    match arch {
-        "x86_64" => vec![
-            format!("mihomo-windows-amd64-compatible-{}.zip", tag),
-            format!("mihomo-windows-amd64-{}.zip", tag),
-            format!("mihomo-windows-amd64-v1-{}.zip", tag),
-            format!("mihomo-windows-amd64-v2-{}.zip", tag),
-            format!("mihomo-windows-amd64-v3-{}.zip", tag),
+fn preferred_asset_names(os: &str, arch: &str, tag: &str) -> Vec<String> {
+    let extension = archive_extension_for_os(os);
+    match (os, arch) {
+        ("windows", "x86_64") | ("linux", "x86_64") | ("darwin", "x86_64") => vec![
+            format!("mihomo-{}-amd64-compatible-{}{}", os, tag, extension),
+            format!("mihomo-{}-amd64-{}{}", os, tag, extension),
+            format!("mihomo-{}-amd64-v1-{}{}", os, tag, extension),
+            format!("mihomo-{}-amd64-v2-{}{}", os, tag, extension),
+            format!("mihomo-{}-amd64-v3-{}{}", os, tag, extension),
         ],
-        "aarch64" => vec![format!("mihomo-windows-arm64-{}.zip", tag)],
-        "x86" => vec![format!("mihomo-windows-386-{}.zip", tag)],
+        ("windows", "aarch64") | ("linux", "aarch64") | ("darwin", "aarch64") => {
+            vec![format!("mihomo-{}-arm64-{}{}", os, tag, extension)]
+        }
+        (_, "x86") => vec![format!("mihomo-{}-386-{}{}", os, tag, extension)],
+        ("linux", "arm") => vec![
+            format!("mihomo-linux-armv7-{}{}", tag, extension),
+            format!("mihomo-linux-armv6-{}{}", tag, extension),
+        ],
         _ => Vec::new(),
     }
 }
 
-fn preferred_windows_asset_prefixes(arch: &str) -> Vec<&'static str> {
-    match arch {
-        "x86_64" => vec![
-            "mihomo-windows-amd64-compatible-",
-            "mihomo-windows-amd64-",
-            "mihomo-windows-amd64-v1-",
-            "mihomo-windows-amd64-v2-",
-            "mihomo-windows-amd64-v3-",
+fn preferred_asset_prefixes(os: &str, arch: &str) -> Vec<String> {
+    match (os, arch) {
+        ("windows", "x86_64") | ("linux", "x86_64") | ("darwin", "x86_64") => vec![
+            format!("mihomo-{}-amd64-compatible-", os),
+            format!("mihomo-{}-amd64-", os),
+            format!("mihomo-{}-amd64-v1-", os),
+            format!("mihomo-{}-amd64-v2-", os),
+            format!("mihomo-{}-amd64-v3-", os),
         ],
-        "aarch64" => vec!["mihomo-windows-arm64-"],
-        "x86" => vec!["mihomo-windows-386-"],
+        ("windows", "aarch64") | ("linux", "aarch64") | ("darwin", "aarch64") => {
+            vec![format!("mihomo-{}-arm64-", os)]
+        }
+        (_, "x86") => vec![format!("mihomo-{}-386-", os)],
+        ("linux", "arm") => vec![
+            "mihomo-linux-armv7-".to_string(),
+            "mihomo-linux-armv6-".to_string(),
+        ],
         _ => Vec::new(),
     }
 }
@@ -489,6 +559,29 @@ fn extract_mihomo_from_zip(
     )))
 }
 
+fn extract_mihomo_from_gzip(
+    gzip_bytes: &[u8],
+    target_path: &Path,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let temp_path = target_path.with_extension("download");
+    if temp_path.exists() {
+        fs::remove_file(&temp_path)?;
+    }
+
+    let mut decoder = GzDecoder::new(Cursor::new(gzip_bytes));
+    let mut output = File::create(&temp_path)?;
+    std::io::copy(&mut decoder, &mut output)?;
+    output.flush()?;
+    ensure_executable_permissions(&temp_path)?;
+
+    if target_path.exists() {
+        fs::remove_file(target_path)?;
+    }
+
+    fs::rename(&temp_path, target_path)?;
+    Ok(())
+}
+
 fn is_mihomo_archive_entry(file_name: &str) -> bool {
     let normalized = file_name.to_ascii_lowercase();
     normalized == WINDOWS_CORE_NAME
@@ -500,7 +593,7 @@ fn is_mihomo_archive_entry(file_name: &str) -> bool {
 mod tests {
     use crate::clash::binary_matches_platform;
     use crate::clash::is_mihomo_archive_entry;
-    use crate::clash::select_windows_asset_for_arch;
+    use crate::clash::select_asset_for_platform;
     use crate::clash::ClashMeta;
     use crate::clash::DelayTestConfig;
     use crate::clash::GithubAsset;
@@ -530,7 +623,7 @@ mod tests {
             ],
         };
 
-        let selected = select_windows_asset_for_arch(&release, "x86_64").unwrap();
+        let selected = select_asset_for_platform(&release, "windows", "x86_64").unwrap();
         assert_eq!(selected.name, "mihomo-windows-amd64-compatible-v1.2.3.zip");
     }
 
@@ -550,7 +643,7 @@ mod tests {
             ],
         };
 
-        let selected = select_windows_asset_for_arch(&release, "x86_64").unwrap();
+        let selected = select_asset_for_platform(&release, "windows", "x86_64").unwrap();
         assert_eq!(selected.name, "mihomo-windows-amd64-v2-v1.2.3.zip");
     }
 
@@ -561,6 +654,26 @@ mod tests {
         ));
         assert!(is_mihomo_archive_entry("mihomo.exe"));
         assert!(!is_mihomo_archive_entry("readme.txt"));
+    }
+
+    #[test]
+    fn test_select_linux_asset_prefers_compatible_gzip_build() {
+        let release = GithubRelease {
+            tag_name: "v1.2.3".to_string(),
+            assets: vec![
+                GithubAsset {
+                    name: "mihomo-linux-amd64-v2-v1.2.3.gz".to_string(),
+                    browser_download_url: "https://example.com/v2.gz".to_string(),
+                },
+                GithubAsset {
+                    name: "mihomo-linux-amd64-compatible-v1.2.3.gz".to_string(),
+                    browser_download_url: "https://example.com/compatible.gz".to_string(),
+                },
+            ],
+        };
+
+        let selected = select_asset_for_platform(&release, "linux", "x86_64").unwrap();
+        assert_eq!(selected.name, "mihomo-linux-amd64-compatible-v1.2.3.gz");
     }
 
     #[tokio::test]

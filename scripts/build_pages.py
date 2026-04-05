@@ -29,7 +29,15 @@ def parse_args() -> argparse.Namespace:
 
 
 def read_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
+    raw = path.read_text(encoding="utf-8")
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError as exc:
+        if any(marker in raw for marker in ("<<<<<<<", "=======", ">>>>>>>")):
+            raise RuntimeError(f"invalid JSON in {path}: merge conflict markers detected") from exc
+        raise RuntimeError(
+            f"invalid JSON in {path}: {exc.msg} at line {exc.lineno} column {exc.colno}"
+        ) from exc
 
 
 def count_release_proxies(release_file: Path) -> int:

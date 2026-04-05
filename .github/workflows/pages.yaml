@@ -30,6 +30,35 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Validate Pages inputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          required = [Path("artifacts/09_pipeline_summary.json")]
+          registry_candidates = [
+              Path("artifacts/10_source_registry.json"),
+              Path("artifacts/source_registry.json"),
+          ]
+          markers = ("<<<<<<<", "=======", ">>>>>>>")
+
+          registry_path = next((path for path in registry_candidates if path.exists()), None)
+          if registry_path is None:
+              raise SystemExit("no valid source registry input found for Pages build")
+
+          for path in required + [registry_path]:
+              if not path.exists():
+                  if path in required:
+                      raise SystemExit(f"required Pages input missing: {path}")
+                  continue
+              text = path.read_text(encoding="utf-8")
+              if any(marker in text for marker in markers):
+                  raise SystemExit(f"merge conflict markers detected in {path}")
+              json.loads(text)
+              print(f"validated {path}")
+          PY
+
       - name: Build Pages artifact
         run: |
           python scripts/build_pages.py \

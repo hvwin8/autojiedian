@@ -39,6 +39,30 @@ jobs:
       - name: Refresh release artifacts
         run: cargo run
 
+      - name: Verify downloaded mihomo core
+        run: |
+          chmod +x clash-meta/mihomo || true
+          ./clash-meta/mihomo -v
+
+      - name: Validate refreshed outputs
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          summary_path = Path("artifacts/09_pipeline_summary.json")
+          summary = json.loads(summary_path.read_text(encoding="utf-8"))
+          final_count = int(summary.get("final_release_proxy_count", 0) or 0)
+          useful_count = int(summary.get("useful_proxy_count", 0) or 0)
+          if useful_count <= 0 or final_count <= 0:
+              raise SystemExit(
+                  f"refresh-release produced no usable output: useful={useful_count}, final={final_count}"
+              )
+          print(
+              f"validated refresh summary: useful={useful_count}, final={final_count}"
+          )
+          PY
+
       - name: Commit refreshed outputs
         run: |
           git config user.name "github-actions[bot]"
