@@ -2,20 +2,30 @@
 fast_mode = false
 
 # Seed subscription sources.
+# Tier 1: stable direct YAML outputs that are worth always ingesting.
+# Keep this list conservative so the validation stage stays affordable.
 subs = [
     "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta.yaml",
     "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml",
     "https://raw.githubusercontent.com/dongchengjie/airport/refs/heads/main/subs/merged/tested_within.yaml",
     "https://raw.githubusercontent.com/mfuu/v2ray/master/clash.yaml",
+    "https://raw.githubusercontent.com/anaer/Sub/main/proxies.yaml",
+    "https://raw.githubusercontent.com/xiaoji235/airport-free/main/clash/clashnodecc.txt",
+    "https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.meta.yml",
+    "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml",
 ]
 
 # Discovery feeds can be repo pages, tree pages, or readme pages that link to
 # frequently changing public subscription files.
+# Tier 2: discovery only. These pages may expose more raw outputs over time, but
+# they should not block the final release if one page changes structure.
 discover_enabled = true
 discover_feeds = [
     "https://github.com/snakem982/proxypool/tree/main/source",
     "https://github.com/dongchengjie/airport/tree/main/subs/merged",
     "https://github.com/mfuu/v2ray",
+    "https://github.com/xiaoji235/airport-free/tree/main/clash",
+    "https://github.com/anaer/Sub/tree/main",
 ]
 
 # Supported placeholders: ${CN_REGION} ${CN_COUNTRY} ${COUNTRY}

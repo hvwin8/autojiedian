@@ -14,6 +14,7 @@ Cargo.lock
 *.pdb
 
 .idea/**
+.codex/
 
 subs/**
 
@@ -28,3 +29,4 @@ scripts/__pycache__/
 !artifacts/09_pipeline_summary.json
 !artifacts/10_source_registry.json
 !artifacts/11_validated_pool.json
+!artifacts/12_validated_pool_mihomo.json

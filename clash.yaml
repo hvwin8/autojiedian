@@ -71,308 +71,779 @@ dns:
   - https://dns.alidns.com/dns-query
 proxies:
 - cipher: aes-256-cfb
-  name: 103.186.154.200_Claude
+  name: 103.186.154.139_Claude1
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.154.200
+  server: 103.186.154.163
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.154.233_Claude
+  name: 103.186.154.139_Claude2
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.154.233
+  server: 103.186.154.149
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.154.58_Claude
+  name: 103.186.154.139_Claude3
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.154.58
+  server: 103.186.154.150
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.155.204_Gemini_Claude
+  name: 103.186.154.226_Claude
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.155.204
+  server: 103.186.154.226
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.155.214_Gemini_Claude
+  name: 103.186.154.239_Claude
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.155.214
+  server: 103.186.154.239
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.155.21_Gemini_Claude
+  name: 103.186.154.42_Claude
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.155.21
+  server: 103.186.154.42
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.155.230_Claude
+  name: 103.186.154.43_Claude
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.155.230
+  server: 103.186.154.43
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.155.42_Claude
+  name: 103.186.154.63_Claude
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.155.42
+  server: 103.186.154.63
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.155.50_Claude
+  name: 103.186.155.108_Claude
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.155.50
+  server: 103.186.155.108
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.155.60_Gemini_Claude
+  name: 103.186.155.111_Gemini_Claude
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.155.60
+  server: 103.186.155.111
   type: ss
 - cipher: aes-256-cfb
-  name: 103.186.155.77_Claude
+  name: 103.186.155.117_Claude
   password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
   port: 38388
-  server: 103.186.155.77
+  server: 103.186.155.117
   type: ss
-- flow: xtls-rprx-vision-udp443
-  name: 132.145.89.30_Claude
+- cipher: aes-256-cfb
+  name: 103.186.155.127_Claude
+  password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
+  port: 38388
+  server: 103.186.155.127
+  type: ss
+- cipher: aes-256-cfb
+  name: 103.186.155.17_Claude
+  password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
+  port: 38388
+  server: 103.186.155.17
+  type: ss
+- cipher: aes-256-cfb
+  name: 103.186.155.31_Claude
+  password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
+  port: 38388
+  server: 103.186.155.31
+  type: ss
+- cipher: aes-256-cfb
+  name: 103.186.155.37_Gemini
+  password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
+  port: 38388
+  server: 103.186.155.37
+  type: ss
+- cipher: aes-256-cfb
+  name: 103.186.155.57_Claude
+  password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
+  port: 38388
+  server: 103.186.155.57
+  type: ss
+- cipher: aes-256-cfb
+  name: 103.186.155.9_Claude
+  password: Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV
+  port: 38388
+  server: 103.186.155.9
+  type: ss
+- flow: xtls-rprx-vision
+  name: 113.30.152.46_Claude
   network: tcp
   port: 443
-  server: ako.pagate.top
-  servername: ako.pagate.top
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: e6d8d743-a9bc-48c9-be99-8f3cc94d16e1
-- name: 2607:f130:0:193:216:3cff:fe7c:f83e_Gemini
-  network: ws
-  port: 443
-  server: 8.35.211.69
-  servername: snip.ere.de5.net
-  tls: true
-  type: vless
-  udp: true
-  uuid: 4d6fa520-b8c1-4811-93f6-a91fd6f87b59
-  ws-opts:
-    headers:
-      Host: snip.ere.de5.net
-    path: /zrf?ed=2560
-- alterId: 0
-  cipher: auto
-  name: 51.89.11.94_Claude
-  network: http
-  port: 443
-  server: 51.89.11.94
-  tls: false
-  type: vmess
-  udp: true
-  uuid: e5408561-3874-4d41-a744-0cd0dfdb86c8
-- name: 64.118.144.177_Gemini
-  password: b1b9acea-4627-11ed-a8bf-f23c91cfbbc9
-  port: 443
-  server: e51b8ecd-tcm9s0-te2uko-1g47a.jp.oshuawei.com
-  tls: true
-  type: http
-  username: b1b9acea-4627-11ed-a8bf-f23c91cfbbc9
-- name: 86.104.75.51_Claude
-  network: ws
-  port: 443
-  server: 192.200.160.20
-  servername: 639073677243791121.camry-perma.info
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 92b82d0f-d2f8-4f6f-b177-08f681a337e6
-  ws-opts:
-    headers:
-      Host: 639073677243791121.camry-perma.info
-    path: /njvqoews?ed=2560
-- grpc-opts:
-    grpc-service-name: TestChatGRPC
-  name: 其他地区_Chisinau_WorkTitans B.V._Claude
-  network: grpc
-  port: 2443
   reality-opts:
-    public-key: ZMvMtsHKNd39qVM9CuPLMEXUL19ViL4Qqqk1y5mMjko
-    short-id: a1b2c3d4
-  server: 45.67.229.119
+    public-key: WvNaAxI0W__qfUKbtysH4IwF155YENlv3PG6crCmPkA
+  server: 113.30.152.46
+  servername: telegavpn.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: e5d866f6-f999-44c9-9ba0-e88d466ab6a2
+- cipher: none
+  name: 143.20.204.5_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: 14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    tls: true
+  port: 11738
+  server: 202.84.53.85
+  type: ss
+- flow: xtls-rprx-vision
+  name: 144.31.94.4_Claude
+  network: tcp
+  port: 42428
+  reality-opts:
+    public-key: ccICtTNR2BXmdCzazGcyci16c7O1kJIv6ugDM6xY2XY
+    short-id: 24adcebe
+  server: a3.buzz-vpn.com
   servername: eh.vk.com
   skip-cert-verify: false
   tls: true
   type: vless
-  uuid: c01733dd-3e58-4da9-910b-cdd4560295bc
-- name: 其他地区_Warsaw_G-Core Labs S.A._Claude
-  network: tcp
-  password: WF42809561
-  port: 443
-  server: funky-platypus.rooster465.autos
-  skip-cert-verify: false
-  sni: funky-platypus.rooster465.autos
-  type: trojan
-- name: 加拿大_Toronto_DigitalOcean, LLC_Claude
+  uuid: 27d0c642-693c-4070-83b4-0e9803ba71b3
+- name: 155.248.202.141_Gemini
   network: ws
-  port: 2096
-  server: 94.247.142.238
-  servername: sni.jpmj.dev
+  port: 443
+  server: 172.66.47.204
+  servername: Gxb.pAgES.DEV
+  tls: true
+  type: vless
+  uuid: 89b3cbba-e6ac-485a-9481-976a0415eab9
+  ws-opts:
+    headers:
+      Host: gXb.pagES.dev
+    path: /%2F
+- name: 164.52.1.179_Claude1
+  network: ws
+  port: 443
+  server: 192.0.54.29
+  servername: snippet.danfeng.loc.cc
+  tls: true
+  type: vless
+  udp: true
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.danfeng.loc.cc
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36
+    path: /danfeng
+- name: 164.52.1.179_Claude2
+  network: ws
+  port: 443
+  server: 192.0.63.115
+  servername: snippet.danfeng.theworkpc.com
+  tls: true
+  type: vless
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.danfeng.theworkpc.com
+    path: /danfeng
+- name: 164.52.1.179_Gemini
+  network: ws
+  port: 10035
+  server: 27.119.233.90
+  servername: snippet.danfeng.theworkpc.com
   skip-cert-verify: false
   tls: true
   type: vless
-  uuid: 6202b230-417c-4d8e-b624-0f71afa9c75d
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
   ws-opts:
     headers:
-      Host: sni.jpmj.dev
-    path: /?ed=2560&Telegram🇨🇳+@WangCai2
-- client-fingerprint: chrome
-  name: 加拿大_Toronto_HostPapa_Claude
-  password: b35f732d-ac86-4280-8117-5d35ac38b144
-  port: 8444
-  server: hjnd.0101.pw
-  skip-cert-verify: false
-  sni: hjnd.0101.pw
-  type: hysteria2
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg001222869.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg0011993za.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom_Claude
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg00129437x.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude1
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg0071643p7.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude2
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg001287h3p.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude3
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg007144ll4.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude4
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg001286ek2.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude5
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg0071465vz.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude6
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg001233myh.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Pingzhen_Chunghwa Telecom_Gemini_Claude
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: n8mrcg006016ehj.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taichung_Chunghwa Telecom_Gemini_Claude
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: ncmrcg000116egb.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taipei_Chunghwa Telecom Co., Ltd._Gemini_Claude
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: n8mrcg005977h4d.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taipei_Chunghwa Telecom_Claude
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg0011606bh.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taipei_Chunghwa Telecom_Gemini_Claude1
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg001142988.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taipei_Chunghwa Telecom_Gemini_Claude2
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg001188p8v.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taipei_Chunghwa Telecom_Gemini_Claude3
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: nbmrcg003437cgb.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taipei_Chunghwa Telecom_Gemini_Claude4
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg00121233v.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taipei_Chunghwa Telecom_Gemini_Claude5
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: r3mrcg007150y7y.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude1
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: nbmrcg003494xuj.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude2
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: nbmrcg0034305hx.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Xizhi District_Chunghwa Telecom_Claude
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: n8mrcg005969zt4.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 台湾_Zhongli District_Chunghwa Telecom_Gemini_Claude
-  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
-  port: 50099
-  server: n8mrcg0060183sf.cybervena.com
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 新加坡_Singapore_G-Core Labs S.A_Gemini_Claude
-  password: f8582f56-85e5-48f0-9909-163d473e2296
-  port: 28902
-  server: efzhuzhu02.idsduf.com
+      Host: snippet.danfeng.theworkpc.com
+    path: /danfeng
+- name: 164.52.1.182_Claude1
+  network: ws
+  port: 443
+  server: 192.0.63.56
+  servername: snippet.danfeng.kozow.com
+  tls: true
+  type: vless
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.danfeng.kozow.com
+    path: /danfeng
+- name: 164.52.1.182_Claude2
+  network: ws
+  port: 39738
+  server: 185.238.189.89
+  servername: snippet.danfeng.dedyn.io
+  tls: true
+  type: vless
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.danfeng.dedyn.io
+    path: /danfeng
+- cipher: none
+  name: 168.138.46.67_Claude1
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 37.128.207.179
   type: ss
 - cipher: none
-  name: 日本_Osaka_Oracle Corporation_Claude
+  name: 168.138.46.67_Claude2
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 8443
+  server: 77.110.96.166
+  type: ss
+- flow: xtls-rprx-vision
+  name: 188.132.184.148_Claude
+  port: 8443
+  reality-opts:
+    public-key: 7gzxsxnqwoh1HEfp02BQpEmMaIFHqz4RL8h68hZqsjc
+    short-id: 6ea3daaac3d6bede
+  server: 188.132.184.148
+  servername: greenpepper.ir
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: d6cbf3e4-b7ca-a4b2-0b04-eacbdc28bc5a
+- flow: xtls-rprx-vision-udp443
+  name: 188.253.17.104_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: rwZxMeKJhN-LkKkP-u6qXYFzSlbuyqxYzloqaOpFLUM
+    short-id: e98e89a0
+  server: 188.253.17.104
+  servername: yahoo.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 63f26629-a4a4-4550-bffc-afabb3b5b3c3
+- cipher: chacha20-ietf-poly1305
+  name: 195.93.253.240_Claude
+  password: QpEgKAKfzdt5K0JbbvEEl9
+  port: 14130
+  server: 195.93.253.240
+  type: ss
+- flow: xtls-rprx-vision
+  name: 202.155.11.73_Claude
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: FVL0r87K3-vUP2KXQX1juLMFEHJtvxwKM-nm6_PYllc
+    short-id: deadbeef42
+  server: 202.155.11.73
+  servername: www.apple.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 4b056394-2f40-11f1-bffe-46c4782ac1a7
+- name: 216.126.233.253_Gemini_Claude
+  network: tcp
+  port: 15891
+  reality-opts:
+    public-key: HE7KqlqqGWi191-GhuRH3MfwIc_wXu_amp1gSxD_234
+    short-id: ''
+  server: n03.948905.xyz
+  servername: www.python.org
+  tls: true
+  type: vless
+  udp: true
+  uuid: fabe1eb5-8700-44c4-ab87-41040573c3af
+- flow: xtls-rprx-vision
+  name: 216.57.107.92_Claude1
+  port: 443
+  reality-opts:
+    public-key: j5sQbSLF4SeU7XHU27W56ZuveT-O6HwxX2wi5neM4UM
+    short-id: abcdef00
+  server: vleesvpn-app-nl01.gw-vpn.click
+  servername: plus.im
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: b605b776-b676-430e-8957-00f1e0166bee
+- flow: xtls-rprx-vision
+  name: 216.57.107.92_Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: j5sQbSLF4SeU7XHU27W56ZuveT-O6HwxX2wi5neM4UM
+    short-id: abcdef00
+  server: vleesvpn-app-nl01.gw-vpn.click
+  servername: plus.im
+  tls: true
+  type: vless
+  uuid: b605b776-b676-430e-8957-00f1e0166bee
+- flow: xtls-rprx-vision
+  name: 216.57.110.76_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: j5sQbSLF4SeU7XHU27W56ZuveT-O6HwxX2wi5neM4UM
+    short-id: abcdef00
+  server: vleesvpn-app-nl02.gw-vpn.click
+  servername: plus.im
+  tls: true
+  type: vless
+  uuid: b605b776-b676-430e-8957-00f1e0166bee
+- flow: xtls-rprx-vision
+  name: 45.143.167.170_Claude
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: FVL0r87K3-vUP2KXQX1juLMFEHJtvxwKM-nm6_PYllc
+    short-id: a1b2c3d4e5f6
+  server: 45.143.167.170
+  servername: www.apple.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 4b056394-2f40-11f1-bffe-46c4782ac1a7
+- flow: xtls-rprx-vision
+  name: 45.148.117.94_Claude
+  port: 443
+  reality-opts:
+    public-key: yZh74kxd_k5PvamyrFDIS_rYRLUhy5xpc4v1lU_Gdk0
+    short-id: f085548164eba3de
+  server: 45.148.117.94
+  servername: yandex.ru
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 443fd8ea-3cfd-4286-a4e2-91276e41fe51
+- cipher: none
+  name: 45.76.107.78_Claude
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 46.32.186.85
+  type: ss
+- cipher: none
+  name: 47.79.94.192_Claude
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 46.32.185.152
+  type: ss
+- cipher: none
+  name: 8.210.230.139_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: 14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 2083
+  server: 129.154.220.126
+  type: ss
+- flow: xtls-rprx-vision
+  name: 84.17.55.237_Claude
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: 9Y-_jCI3Z1x6SXK2tHdZ6V1CN9IJPNPnoxSW0cbXxD8
+    short-id: 764f497dda21c4fc
+  server: 83.166.236.24
+  servername: rbc.ru
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 21cbd7af-5c02-44dc-9d00-38b0ff92f6b0
+- flow: xtls-rprx-vision
+  name: 85.192.42.103_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: WvNaAxI0W__qfUKbtysH4IwF155YENlv3PG6crCmPkA
+  server: node1.telegavpn.org
+  servername: node1.telegavpn.org
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: f0aa060e-6e84-4999-8871-72c26420f757
+- cipher: none
+  name: 中国_Changqiao_263 Global Communications Limited_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: 14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 164.52.2.98
+  type: ss
+- grpc-opts:
+    grpc-service-name: xyz
+  name: 其他地区_Helsinki_H2nexus LTD_Claude
+  network: grpc
+  port: 443
+  reality-opts:
+    public-key: zz1etKRzRA4fwe0Te0p6jAlHorNJs4mmcljA3oL520E
+    short-id: 4f14ebfa5f3f335f
+  server: 45.144.52.104
+  servername: moktana.digital
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: c5e7fd76-e2b8-48ca-8e2d-4bbb033eca33
+- flow: xtls-rprx-vision
+  name: 其他地区_Helsinki_Hetzner Online GmbH_Claude
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: pAhnpY7vMjtxAyaURcfFc5gD9q2SPWBG2niWOny_xnk
+    short-id: f1
+  server: 204.168.156.21
+  servername: www.tesla.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 60e011e1-acec-49f3-bd43-4d30f77ab375
+- flow: xtls-rprx-vision
+  name: 其他地区_Helsinki_Scalaxy B.V._Claude
+  network: tcp
+  port: 443
+  server: 185.93.105.113
+  servername: sub.sbrf-cdn342.ru
+  tls: true
+  type: vless
+  udp: true
+  uuid: c4f2dee2-14e3-4c02-91e9-31c7917e239c
+- flow: xtls-rprx-vision
+  name: 其他地区_Prague_FDCservers.net_Claude
+  network: tcp
+  port: 48444
+  reality-opts:
+    public-key: FApUbcJurXfV5Y3PG2xRycl1R7y0CxwmUU7FRgUpzG0
+    short-id: 3e4f5a6b
+  server: 67.159.18.4
+  servername: eh.vk.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: c20b7307-b110-4505-a197-301ee9975b53
+- flow: xtls-rprx-vision
+  name: 其他地区_Riga_Sia Nano IT_Claude
+  network: tcp
+  port: 52809
+  reality-opts:
+    public-key: nPDGL3SzkfBu3yN1nFo4Cnkvb_vOBiYAw2vm_BdZ9Fk
+  server: 5.188.224.191
+  servername: max.ru
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 5c1aa0fb-a26c-4649-bc1d-1da3ab14a222
+- flow: xtls-rprx-vision
+  name: 其他地区_Stockholm_xorek.cloud International LTD_Claude
+  network: tcp
+  port: 10965
+  reality-opts:
+    public-key: lHxeD2nYtDb1V7JseV-sUTEuqH6_jie7U_iOARX7cT0
+    short-id: 9f3a7c6d2e8b41af
+  server: us1.axinode.sbs
+  servername: deepl.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: d1209ffb-c159-48d5-b40d-542ce11fc768
+- flow: xtls-rprx-vision
+  name: 德国_Frankfurt am Main_Anton Levin_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: yZh74kxd_k5PvamyrFDIS_rYRLUhy5xpc4v1lU_Gdk0
+    short-id: f085548164eba3de
+  server: 45.148.117.94
+  servername: yandex.ru
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 443fd8ea-3cfd-4286-a4e2-91276e41fe51
+- name: 德国_Frankfurt am Main_Ultahost, Inc._Claude1
+  password: 0f771058-7892-4d46-b77e-a69e811b9cbc
+  port: 443
+  server: 84.201.25.156
+  skip-cert-verify: true
+  sni: hls-svod.itunes.apple.com
+  type: hysteria2
+- name: 德国_Frankfurt am Main_Ultahost, Inc._Claude2
+  password: 0f771058-7892-4d46-b77e-a69e811b9cbc
+  port: 443
+  server: 84.200.91.118
+  skip-cert-verify: true
+  sni: hls-svod.itunes.apple.com
+  type: hysteria2
+- flow: xtls-rprx-vision
+  name: 新加坡_Singapore_Akamai Technologies, Inc._Claude
+  network: tcp
+  port: 1443
+  reality-opts:
+    public-key: 0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo
+    short-id: 1a
+  server: t27.qifei.app
+  servername: www.amazon.com
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: false
+  uuid: 7f6394fd-58e0-3b12-a840-93c5a46c3a2f
+- name: 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude1
+  network: ws
+  port: 443
+  server: 192.0.54.136
+  servername: snippet.fgfw.indevs.in
+  tls: true
+  type: vless
+  udp: true
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.fgfw.indevs.in
+      User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.237 Safari/534.10
+    path: /danfeng
+- name: 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude2
+  network: ws
+  port: 443
+  server: 192.0.54.254
+  servername: snippet.fgfw.ccwu.cc
+  tls: true
+  type: vless
+  udp: true
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.fgfw.ccwu.cc
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36
+    path: /danfeng
+- name: 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude3
+  network: ws
+  port: 443
+  server: 192.0.63.180
+  servername: snippet.danfeng.loc.cc
+  tls: true
+  type: vless
+  udp: true
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.danfeng.loc.cc
+      User-Agent: Mozilla/5.0 (Linux; Android 7.0; TRT-LX2 Build/HUAWEITRT-LX2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/59.0.3071.125 Mobile Safari/537.36
+    path: /danfeng
+- name: 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude4
+  network: ws
+  port: 443
+  server: 192.0.63.49
+  servername: snippet.danfeng.theworkpc.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.danfeng.theworkpc.com
+    path: /danfeng
+- name: 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude5
+  network: ws
+  port: 443
+  server: 192.0.63.18
+  servername: snippet.danfeng.loc.cc
+  tls: true
+  type: vless
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.danfeng.loc.cc
+    path: /danfeng
+- name: 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude6
+  network: ws
+  port: 443
+  server: 192.0.63.76
+  servername: snippet.danfeng.theworkpc.com
+  tls: true
+  type: vless
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.danfeng.theworkpc.com
+    path: /danfeng
+- name: 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude7
+  network: ws
+  port: 443
+  server: 192.0.54.216
+  servername: snippet.fgfw.ndjp.net
+  tls: true
+  type: vless
+  uuid: 948fac3c-42bf-41a6-a5f9-704d36ff0d8d
+  ws-opts:
+    headers:
+      Host: snippet.fgfw.ndjp.net
+    path: /danfeng
+- cipher: chacha20-ietf
+  name: 新加坡_Singapore_Greywolf Networks Pte. Ltd._Gemini
+  password: asd123456
+  port: 8388
+  server: 103.36.91.32
+  type: ss
+- alterId: 0
+  cipher: auto
+  name: 新加坡_Singapore_LINODE_Claude1
+  port: 30812
+  server: v12.hdacd.com
+  skip-cert-verify: true
+  tls: false
+  type: vmess
+  udp: true
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+- alterId: 0
+  cipher: auto
+  name: 新加坡_Singapore_LINODE_Claude2
+  network: tcp
+  port: 30812
+  server: v12.hdacd.com
+  skip-cert-verify: true
+  tls: false
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+- cipher: none
+  name: 日本_Minamishinagawa_The Constant Company_Claude
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 192.99.169.176
+  type: ss
+- cipher: none
+  name: 日本_Minamishinagawa_Vultr_Gemini
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 8443
+  server: 3.112.89.102
+  type: ss
+- cipher: none
+  name: 日本_Minamishinagawa_Vultr_Gemini_Claude
+  password: 79960b0b-7d31-4263-8915-6511b0e137a8
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: woshinidie-et3.pages.dev
+    mode: websocket
+    mux: false
+    path: /79960b0b-7d31-4263-8915-6511b0e137a8/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: saas.sin.fan
+  type: ss
+- name: 日本_Osaka_Oracle Cloud_Gemini_Claude
+  network: tcp
+  port: 15891
+  reality-opts:
+    public-key: CO85tErWDxMxYAGeJsHzEU44mte7QyY21h-jO0bjTnA
+    short-id: ''
+  server: n12.948905.xyz
+  servername: www.python.org
+  tls: true
+  type: vless
+  udp: true
+  uuid: 2c5584e1-6546-4db2-811d-356d0c7b2028
+- cipher: none
+  name: 日本_Osaka_Oracle Corporation_Claude1
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 8443
+  server: 193.68.89.220
+  type: ss
+- cipher: none
+  name: 日本_Osaka_Oracle Corporation_Claude2
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 123.202.201.128
+  type: ss
+- name: 日本_Osaka_Oracle Corporation_Gemini_Claude1
+  network: tcp
+  port: 15891
+  reality-opts:
+    public-key: FXvqQ3w7t0DkcAcLZGTLLHr3LwblunXFZNI4sph-DAI
+    short-id: ''
+  server: n11.948905.xyz
+  servername: www.python.org
+  tls: true
+  type: vless
+  udp: true
+  uuid: 582b307f-51b4-4ee7-9308-813aae9f4e5f
+- cipher: none
+  name: 日本_Osaka_Oracle Corporation_Gemini_Claude2
   password: 3e96ef7d-8637-42c2-ac73-75182196e755
   plugin: v2ray-plugin
   plugin-opts:
@@ -382,154 +853,726 @@ proxies:
     path: /3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
     tls: true
   port: 443
-  server: mfa.gov.ua
+  server: store.ubi.com
   type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 法国_Paris_WorkTitans B.V._Claude
-  password: b235696d-7873-4b15-9b22-7dae3a0b6747
-  port: 20004
-  server: fr.network-cdn-gw-yd.net
+- cipher: none
+  name: 日本_Osaka_Oracle Corporation_Gemini_Claude3
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 2053
+  server: 31.58.50.110
   type: ss
-- name: 澳大利亚_Sydney_Akamai Technologies_Claude
-  password: e1527b46-ef79-11ef-98bc-f23c93141fad
-  port: 3258
-  server: a9778a9b-tcmw00-tdflss-cw6o.h2audc1.cdnbytescm.com
-  tls: true
-  type: http
-  username: e1527b46-ef79-11ef-98bc-f23c93141fad
-- name: 澳大利亚_Sydney_G-Core Labs S.A._Claude
+- cipher: none
+  name: 日本_Osaka_Oracle Corporation_Gemini_Claude4
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    tls: true
+  port: 8443
+  server: 31.58.226.196
+  type: ss
+- flow: xtls-rprx-vision
+  name: 日本_Osaka_SAKURA Internet Inc._Claude
   network: tcp
-  password: WF42809561
   port: 443
-  server: evolving-kangaroo.rooster465.autos
-  sni: evolving-kangaroo.rooster465.autos
-  type: trojan
-- name: 美国_Buffalo_HostPapa_Gemini_Claude
-  network: ws
+  reality-opts:
+    public-key: 0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo
+    short-id: 1a
+  server: t13.qifei.app
+  servername: www.amazon.com
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: false
+  uuid: 7f6394fd-58e0-3b12-a840-93c5a46c3a2f
+- cipher: none
+  name: 日本_Osaka_The Constant Company, LLC_Gemini_Claude
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    tls: true
   port: 443
-  server: 172.64.52.57
-  servername: snip.ddly.dpdns.org
+  server: 199.181.197.38
+  type: ss
+- cipher: none
+  name: 日本_Shibuya City_M247 Europe SRL_Claude
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 8443
+  server: 57.129.137.51
+  type: ss
+- cipher: none
+  name: 日本_Shibuya City_M247 Europe SRL_Gemini_Claude
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    tls: true
+  port: 443
+  server: 170.114.45.38
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude1
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 2053
+  server: 94.183.190.73
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude2
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 8.223.63.189
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_Alibaba_Claude
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 13.230.34.30
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_Alibaba_Gemini
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 206.190.235.108
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_DDPS Networks, LLC_Claude
+  password: 79960b0b-7d31-4263-8915-6511b0e137a8
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: woshinidie-et3.pages.dev
+    mode: websocket
+    mux: false
+    path: /79960b0b-7d31-4263-8915-6511b0e137a8/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: cf.877774.xyz
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_DDPS Networks, LLC_Gemini
+  password: 79960b0b-7d31-4263-8915-6511b0e137a8
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: woshinidie-et3.pages.dev
+    mode: websocket
+    mux: false
+    path: /79960b0b-7d31-4263-8915-6511b0e137a8/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: cf.008500.xyz
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_DDPS Networks, LLC_Gemini_Claude
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 50443
+  server: 155.248.177.246
+  type: ss
+- name: 日本_Tokyo_Oracle Corporation_Claude1
+  network: tcp
+  port: 15891
+  reality-opts:
+    public-key: RngaF4A1qjhkZguozpxmnfgMsaZtYxFa0pXsulWPBWw
+    short-id: ''
+  server: n07.948905.xyz
+  servername: www.python.org
   tls: true
   type: vless
   udp: true
-  uuid: 4d6fa520-b8c1-4811-93f6-a91fd6f87b59
+  uuid: 2c5584e1-6546-4db2-811d-356d0c7b2028
+- cipher: none
+  name: 日本_Tokyo_Oracle Corporation_Claude2
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 8443
+  server: 188.126.77.155
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_Oracle Corporation_Claude3
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    tls: true
+  port: 443
+  server: 5.253.189.215
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_Oracle Corporation_Claude4
+  password: 79960b0b-7d31-4263-8915-6511b0e137a8
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: woshinidie-et3.pages.dev
+    mode: websocket
+    mux: false
+    path: /79960b0b-7d31-4263-8915-6511b0e137a8/?ed=2560
+    tls: true
+  port: 443
+  server: cdns.doon.eu.org
+  type: ss
+- cipher: none
+  name: 日本_Tokyo_Oracle Corporation_Claude5
+  password: 3e96ef7d-8637-42c2-ac73-75182196e755
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: mfvpn.fuchen.indevs.in
+    mode: websocket
+    mux: false
+    path: 3e96ef7d-8637-42c2-ac73-75182196e755/?ed=2560
+    tls: true
+  port: 2053
+  server: 45.43.88.13
+  type: ss
+- flow: xtls-rprx-vision
+  name: 日本_Tokyo_SAKURA Internet_Claude1
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: 0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo
+    short-id: 1a
+  server: t11.qifei.app
+  servername: www.amazon.com
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: false
+  uuid: 7f6394fd-58e0-3b12-a840-93c5a46c3a2f
+- flow: xtls-rprx-vision
+  name: 日本_Tokyo_SAKURA Internet_Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: 0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo
+    short-id: 1a
+  server: t14.qifei.app
+  servername: www.amazon.com
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: false
+  uuid: 7f6394fd-58e0-3b12-a840-93c5a46c3a2f
+- flow: xtls-rprx-vision
+  name: 法国_Paris_Global Connectivity Solutions LLP_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: F-isG6llu_Z1jONhrH-WkXzJGY43KIyMGICEPJ85wzA
+    short-id: a1b2c3d4
+  server: vpn-uk01-app-vlees.gw-vpn.click
+  servername: plus.im
+  tls: true
+  type: vless
+  udp: true
+  uuid: 0c8a9f50-51b3-43b5-b1fb-09fc3131a800
+- alterId: 2
+  cipher: auto
+  fingerprint: chrome
+  name: 法国_Strasbourg_velia.net Internetdienste GmbH_Claude
+  network: tcp
+  port: 30835
+  server: v35.hdacd.com
+  skip-cert-verify: true
+  tls: false
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+- name: 美国_Charlotte_Aeza International LTD_Claude
+  network: tcp
+  port: 26946
+  server: 77.110.122.205
+  skip-cert-verify: false
+  tls: false
+  type: vless
+  uuid: 99f06929-4311-489c-91cc-ef1c582e5dfa
+- name: 美国_Dallas_UnReal Servers, LLC_Claude
+  network: ws
+  port: 80
+  server: saas.sin.fan
+  skip-cert-verify: false
+  type: vless
+  uuid: 5af2eed4-4c01-4393-8b11-cd69ef37cf12
   ws-opts:
     headers:
-      Host: snip.ddly.dpdns.org
-    path: /zrf?ed=2560
-- name: 美国_Los Angeles_DMIT Cloud Services_Gemini_Claude
+      Host: run.xiaomayi.nyc.mn
+    path: /5af2eed4
+- name: 美国_Houston_Snaju Development_Gemini_Claude
   network: tcp
-  password: 4123ae62-0999-4984-8ead-091630e594a9
-  port: 443
-  server: n1.chateditimage.com
+  port: 15891
+  reality-opts:
+    public-key: FsetXR1f8LJLgNWNIzvcxcmrHj6Znv2FrBT_1zq9Rzs
+    short-id: ''
+  server: n17.948905.xyz
+  servername: www.python.org
+  tls: true
+  type: vless
+  udp: true
+  uuid: c5504124-d90c-4055-9d86-e1ec358977af
+- name: 美国_Los Angeles_Cogent Communications_Claude
+  password: fGIvSUXOYn7WYPNAc2PmjYuIKbw
+  port: 29794
+  server: 38.165.21.126
   skip-cert-verify: true
-  sni: n1.chateditimage.com
-  type: trojan
+  sni: bing.com
+  type: hysteria2
 - alterId: 0
   cipher: auto
-  name: 美国_Los Angeles_Datacamp Limited_Claude
+  name: 美国_Los Angeles_Datacamp Limited_Claude1
   network: tcp
   port: 180
-  server: 82.198.246.97
+  server: 82.198.246.46
   skip-cert-verify: false
   tls: false
   type: vmess
   uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
-- name: 美国_Los Angeles_Multacom Corporation_Claude1
-  network: ws
-  port: 443
-  server: 104.16.164.7
-  servername: snip.zrf.ee.cd
-  tls: true
-  type: vless
+- alterId: 0
+  cipher: auto
+  name: 美国_Los Angeles_Datacamp Limited_Claude2
+  network: 'tcp '
+  port: 180
+  server: 82.198.246.250
+  skip-cert-verify: false
+  tls: false
+  type: vmess
   udp: true
-  uuid: 4d6fa520-b8c1-4811-93f6-a91fd6f87b59
-  ws-opts:
-    headers:
-      Host: snip.zrf.ee.cd
-    path: /zrf?ed=2560
-- name: 美国_Los Angeles_Multacom Corporation_Claude2
-  network: ws
-  port: 443
-  server: 8.39.125.51
-  servername: snip.wif.pp.ua
-  skip-cert-verify: true
-  tls: true
-  type: vless
-  udp: true
-  uuid: 4d6fa520-b8c1-4811-93f6-a91fd6f87b59
-  ws-opts:
-    headers:
-      host: snip.wif.pp.ua
-    path: /zrf?ed=2560
-- name: 美国_Sacramento_GTT Americas_Gemini
-  password: e4895ea3-7b4a-3f46-ba5a-44ac4a691635
-  port: 56251
-  server: fbxt0765gh0pielsss.ftisthebest.com
-  skip-cert-verify: true
-  type: trojan
-- name: 英国_Erith_OVH SAS_Claude
-  network: ws
-  port: 8085
-  server: 88.218.0.184
-  servername: sub.mot.ip-ddns.com
+  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
+- alterId: 0
+  cipher: auto
+  name: 美国_Los Angeles_Datacamp Limited_Claude3
+  network: tcp
+  port: 180
+  server: 82.198.246.250
+  tls: false
+  type: vmess
+  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
+- flow: xtls-rprx-vision
+  name: 美国_Los Angeles_WorkTitans B.V._Claude
+  network: tcp
+  port: 59999
+  reality-opts:
+    public-key: x0t1otRGBv62aJKGNbsQRJGtwh-sp6CEScFS6S8y3EM
+    short-id: 7c8d9e0f
+  server: 45.136.129.109
+  servername: yastatic.net
   skip-cert-verify: false
   tls: true
   type: vless
-  uuid: 00000000-0000-4000-8000-000000000000
-  ws-opts:
-    headers:
-      Host: sub.mot.ip-ddns.com
-    path: /
-- name: 荷兰_Amsterdam_G-Core Labs S.A._Claude
+  uuid: ee6817f6-50fe-4114-b7ff-ce853b144282
+- name: 美国_Manassas_Leaseweb USA, Inc._Gemini_Claude
   network: tcp
-  password: WF42809561
-  port: 443
-  server: model-stingray.crayfish192.xyz
-  sni: model-stingray.crayfish192.xyz
-  type: trojan
-- flow: xtls-rprx-vision
-  name: 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
-  network: tcp
-  port: 853
+  port: 15891
   reality-opts:
-    public-key: UOPACBba4vgjdJglUksPMLBuNllDlqthy3sklLNJjj4
-    short-id: aCE47eEaCa4c8B3b
-  server: 95.85.248.95
-  servername: unfiltered.adguard-dns.com
+    public-key: YvCfMJ3Cu3Z4_sVX3k14Mq3xUhw9IFzuB0cNiUyRHDQ
+    short-id: ''
+  server: n05.948905.xyz
+  servername: www.python.org
   tls: true
   type: vless
   udp: true
-  uuid: d08a63e7-dbea-4a36-a239-9f0b37a46b40
-- cipher: chacha20-ietf-poly1305
-  name: 菲律宾_Manila_Infinivan Inc_Gemini_Claude
-  password: b235696d-7873-4b15-9b22-7dae3a0b6747
-  port: 20005
-  server: ph.network-cdn-gw-yd.net
+  uuid: 582b307f-51b4-4ee7-9308-813aae9f4e5f
+- flow: xtls-rprx-vision
+  name: 美国_Minkler_Alibaba (US) Technology Co., Ltd._Gemini
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: 0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo
+    short-id: 1a
+  server: t16.qifei.app
+  servername: www.amazon.com
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: false
+  uuid: 7f6394fd-58e0-3b12-a840-93c5a46c3a2f
+- name: 美国_Ogden_WebNX, Inc._Gemini_Claude
+  network: tcp
+  port: 15891
+  reality-opts:
+    public-key: Bhwv1oUQtLSVINZ07m1dhLEjFFfi_eXSKcybUC3kNho
+    short-id: ''
+  server: n02.948905.xyz
+  servername: www.python.org
+  tls: true
+  type: vless
+  udp: true
+  uuid: 449fdfb8-d73d-4d83-89c1-8ba6ca08d6ee
+- name: 美国_San Jose_Eons Data Communications Limited_Gemini
+  network: tcp
+  port: 15892
+  reality-opts:
+    public-key: RRLeeOAI9MWDXispQt-CWbrLjTA6msFikm4b2URTF1c
+    short-id: ''
+  server: n06.948905.xyz
+  servername: www.python.org
+  tls: true
+  type: vless
+  udp: true
+  uuid: c5504124-d90c-4055-9d86-e1ec358977af
+- cipher: rc4-md5
+  name: 英国_City of London_M247 Europe SRL_Claude
+  password: 14fFPrbezE3HDZzsMOr6
+  port: 8080
+  server: 146.70.61.37
   type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 香港_Hong Kong_Akile LTD_Gemini_Claude1
-  password: b235696d-7873-4b15-9b22-7dae3a0b6747
-  port: 48819
-  server: hkp9.network-cdn-gw-yd.net
+- flow: xtls-rprx-vision
+  name: 英国_City of London_WorkTitans B.V._Claude
+  network: tcp
+  port: 6443
+  reality-opts:
+    public-key: x-VSf_bBIC1iELDvaoM4SKMTK2YAAnUlVkhAWBbvpSc
+    short-id: b9605803fb4b
+  server: gbr1.frostbot.ru
+  servername: gbr1.frostbot.ru
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 5b77fb18-cece-4759-9a81-571f1be53e0c
+- alterId: 2
+  cipher: auto
+  fingerprint: chrome
+  name: 英国_London_Akamai Technologies, Inc._Claude
+  network: tcp
+  port: 30836
+  server: v36.hdacd.com
+  skip-cert-verify: true
+  tls: false
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
+- flow: xtls-rprx-vision
+  name: 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude1
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: BYIwezB0Z3A8NwBvdBvpaKUHpcddiY6Y76agKiEdLTc
+    short-id: 93c1e7b5a0d4f268
+  server: fl01.grani.site
+  servername: spliceflowtech.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 81d82277-c095-4613-ba51-cafd0e413e69
+- flow: xtls-rprx-vision
+  name: 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: CaUiCF3-CEZbL9fLFVL9g12qcrKMX1FW4Qe7EsASPUY
+    short-id: 3d9a1c7f5e2b8460
+  server: 2.56.178.124
+  servername: eh.vk.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 81d82277-c095-4613-ba51-cafd0e413e69
+- name: 荷兰_Meppel_WorkTitans B.V._Claude
+  password: strong-secret-pass-777
+  port: 4443
+  server: 94.131.105.125
+  skip-cert-verify: true
+  type: trojan
+- name: 韩国_Chuncheon_Oracle Cloud_Claude
+  password: test.+
+  port: 30446
+  server: testkr3.ssv.vc
+  skip-cert-verify: true
+  tls: true
+  type: http
+  username: test
+- name: 韩国_Chuncheon_Oracle Corporation_Gemini1
+  network: ws
+  port: 443
+  server: worker-5n2.pages.dev
+  servername: WoRKer-5n2.pAGEs.DEv
+  tls: true
+  type: vless
+  uuid: 89b3cbba-e6ac-485a-9481-976a0415eab9
+  ws-opts:
+    headers:
+      Host: wOrker-5N2.pAgeS.DEv
+    path: /%2F
+- name: 韩国_Chuncheon_Oracle Corporation_Gemini2
+  network: ws
+  port: 443
+  server: 172.66.44.134
+  servername: XizI-bo8.pageS.dEV
+  tls: true
+  type: vless
+  uuid: 89b3cbba-e6ac-485a-9481-976a0415eab9
+  ws-opts:
+    headers:
+      Host: Xizi-bo8.pAGEs.dEv
+    path: /%2F
+- name: 韩国_Hwaseong-si_Korea Telecom_Claude
+  port: 1090
+  server: 121.169.46.116
+  tls: false
+  type: socks5
+  username: T2clM0QlM0Q6
+- flow: xtls-rprx-vision
+  name: 韩国_Seoul_MOACK.Co.LTD_Gemini_Claude
+  network: tcp
+  port: 19001
+  reality-opts:
+    public-key: UtL7E0Gmxj3X5JdcPAutpTRKo7K2hugkR0vwk2XroUM
+    short-id: ''
+  server: krp01.jumperservice.com
+  servername: addons.mozilla.org
+  tls: true
+  type: vless
+  udp: true
+  uuid: 455fc271-3ee2-493b-8c75-9324b4851e2f
+- cipher: none
+  name: 香港_Central_PCCW IMS Limited_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: 14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 185.36.192.43
   type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 香港_Hong Kong_Akile LTD_Gemini_Claude2
-  password: b235696d-7873-4b15-9b22-7dae3a0b6747
-  port: 47707
-  server: hk17.network-cdn-gw-yd.net
+- cipher: none
+  name: 香港_Hong Kong_Aceville Pte.ltd_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: /14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 140.238.50.134
   type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 香港_Hong Kong_Akile LTD_Gemini_Claude3
-  password: b235696d-7873-4b15-9b22-7dae3a0b6747
-  port: 48816
-  server: hkp6.network-cdn-gw-yd.net
+- cipher: none
+  name: 香港_Hong Kong_Alibaba Cloud LLC_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: /14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 69.84.182.16
   type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 香港_Hong Kong_LuoGeLang France Limited_Gemini_Claude
-  password: f8582f56-85e5-48f0-9909-163d473e2296
-  port: 27893
-  server: efzhuzhu01.whtjdasha.com
+- cipher: none
+  name: 香港_Hong Kong_Alibaba.com LLC_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: 14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    tls: true
+  port: 443
+  server: 103.181.177.88
+  type: ss
+- cipher: none
+  name: 香港_Hong Kong_Cogent Communications_Gemini1
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: 14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 140.238.51.35
+  type: ss
+- cipher: none
+  name: 香港_Hong Kong_Cogent Communications_Gemini2
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: /14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 104.238.70.16
+  type: ss
+- cipher: none
+  name: 香港_Hong Kong_UCLOUD INFORMATION TECHNOLOGY (HK) LIMITED_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: 14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 2053
+  server: 140.245.42.216
+  type: ss
+- cipher: none
+  name: 香港_Kwai Chung_Hong Kong Broadband Network Ltd_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: /14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    tls: true
+  port: 443
+  server: 160.153.137.16
+  type: ss
+- cipher: none
+  name: 香港_Mong Kok_VH-GLOBAL_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: /14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 198.12.144.16
+  type: ss
+- cipher: none
+  name: 香港_Tsing Yi_HGC Global Communications Limited_Gemini
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: /14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    tls: true
+  port: 49678
+  server: 103.15.90.134
+  type: ss
+- cipher: none
+  name: 香港_Tsuen Wan_Alice Networks LTD_Gemini1
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: 14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 45.77.178.100
+  type: ss
+- cipher: none
+  name: 香港_Tsuen Wan_Alice Networks LTD_Gemini2
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: /14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 198.71.188.16
+  type: ss
+- cipher: none
+  name: 香港_Tsuen Wan_Alice Networks LTD_Gemini3
+  password: 14b02e2a-8930-4afb-8412-ea4a4954ca5b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: ylnhh.us.ci
+    mode: websocket
+    mux: false
+    path: /14b02e2a-8930-4afb-8412-ea4a4954ca5b/?ed=2560
+    skip-cert-verify: false
+    tls: true
+  port: 443
+  server: 154.194.0.16
   type: ss
 proxy-groups:
 - name: PROXY
@@ -547,67 +1590,136 @@ proxy-groups:
   type: select
   filter: .*
   proxies:
-  - 103.186.154.200_Claude
-  - 103.186.154.233_Claude
-  - 103.186.154.58_Claude
-  - 103.186.155.204_Gemini_Claude
-  - 103.186.155.214_Gemini_Claude
-  - 103.186.155.21_Gemini_Claude
-  - 103.186.155.230_Claude
-  - 103.186.155.42_Claude
-  - 103.186.155.50_Claude
-  - 103.186.155.60_Gemini_Claude
-  - 103.186.155.77_Claude
-  - 132.145.89.30_Claude
-  - 2607:f130:0:193:216:3cff:fe7c:f83e_Gemini
-  - 51.89.11.94_Claude
-  - 64.118.144.177_Gemini
-  - 86.104.75.51_Claude
-  - 其他地区_Chisinau_WorkTitans B.V._Claude
-  - 其他地区_Warsaw_G-Core Labs S.A._Claude
-  - 加拿大_Toronto_DigitalOcean, LLC_Claude
-  - 加拿大_Toronto_HostPapa_Claude
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Claude
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude6
-  - 台湾_Pingzhen_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taichung_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom Co., Ltd._Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Xizhi District_Chunghwa Telecom_Claude
-  - 台湾_Zhongli District_Chunghwa Telecom_Gemini_Claude
-  - 新加坡_Singapore_G-Core Labs S.A_Gemini_Claude
-  - 日本_Osaka_Oracle Corporation_Claude
-  - 法国_Paris_WorkTitans B.V._Claude
-  - 澳大利亚_Sydney_Akamai Technologies_Claude
-  - 澳大利亚_Sydney_G-Core Labs S.A._Claude
-  - 美国_Buffalo_HostPapa_Gemini_Claude
-  - 美国_Los Angeles_DMIT Cloud Services_Gemini_Claude
-  - 美国_Los Angeles_Datacamp Limited_Claude
-  - 美国_Los Angeles_Multacom Corporation_Claude1
-  - 美国_Los Angeles_Multacom Corporation_Claude2
-  - 美国_Sacramento_GTT Americas_Gemini
-  - 英国_Erith_OVH SAS_Claude
-  - 荷兰_Amsterdam_G-Core Labs S.A._Claude
-  - 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
-  - 菲律宾_Manila_Infinivan Inc_Gemini_Claude
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude1
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude2
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude3
-  - 香港_Hong Kong_LuoGeLang France Limited_Gemini_Claude
+  - 103.186.154.139_Claude1
+  - 103.186.154.139_Claude2
+  - 103.186.154.139_Claude3
+  - 103.186.154.226_Claude
+  - 103.186.154.239_Claude
+  - 103.186.154.42_Claude
+  - 103.186.154.43_Claude
+  - 103.186.154.63_Claude
+  - 103.186.155.108_Claude
+  - 103.186.155.111_Gemini_Claude
+  - 103.186.155.117_Claude
+  - 103.186.155.127_Claude
+  - 103.186.155.17_Claude
+  - 103.186.155.31_Claude
+  - 103.186.155.37_Gemini
+  - 103.186.155.57_Claude
+  - 103.186.155.9_Claude
+  - 113.30.152.46_Claude
+  - 143.20.204.5_Gemini
+  - 144.31.94.4_Claude
+  - 155.248.202.141_Gemini
+  - 164.52.1.179_Claude1
+  - 164.52.1.179_Claude2
+  - 164.52.1.179_Gemini
+  - 164.52.1.182_Claude1
+  - 164.52.1.182_Claude2
+  - 168.138.46.67_Claude1
+  - 168.138.46.67_Claude2
+  - 188.132.184.148_Claude
+  - 188.253.17.104_Claude
+  - 195.93.253.240_Claude
+  - 202.155.11.73_Claude
+  - 216.126.233.253_Gemini_Claude
+  - 216.57.107.92_Claude1
+  - 216.57.107.92_Claude2
+  - 216.57.110.76_Claude
+  - 45.143.167.170_Claude
+  - 45.148.117.94_Claude
+  - 45.76.107.78_Claude
+  - 47.79.94.192_Claude
+  - 8.210.230.139_Gemini
+  - 84.17.55.237_Claude
+  - 85.192.42.103_Claude
+  - 中国_Changqiao_263 Global Communications Limited_Gemini
+  - 其他地区_Helsinki_H2nexus LTD_Claude
+  - 其他地区_Helsinki_Hetzner Online GmbH_Claude
+  - 其他地区_Helsinki_Scalaxy B.V._Claude
+  - 其他地区_Prague_FDCservers.net_Claude
+  - 其他地区_Riga_Sia Nano IT_Claude
+  - 其他地区_Stockholm_xorek.cloud International LTD_Claude
+  - 德国_Frankfurt am Main_Anton Levin_Claude
+  - 德国_Frankfurt am Main_Ultahost, Inc._Claude1
+  - 德国_Frankfurt am Main_Ultahost, Inc._Claude2
+  - 新加坡_Singapore_Akamai Technologies, Inc._Claude
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude1
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude2
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude3
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude4
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude5
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude6
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude7
+  - 新加坡_Singapore_Greywolf Networks Pte. Ltd._Gemini
+  - 新加坡_Singapore_LINODE_Claude1
+  - 新加坡_Singapore_LINODE_Claude2
+  - 日本_Minamishinagawa_The Constant Company_Claude
+  - 日本_Minamishinagawa_Vultr_Gemini
+  - 日本_Minamishinagawa_Vultr_Gemini_Claude
+  - 日本_Osaka_Oracle Cloud_Gemini_Claude
+  - 日本_Osaka_Oracle Corporation_Claude1
+  - 日本_Osaka_Oracle Corporation_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude1
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude3
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude4
+  - 日本_Osaka_SAKURA Internet Inc._Claude
+  - 日本_Osaka_The Constant Company, LLC_Gemini_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Gemini_Claude
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude1
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude2
+  - 日本_Tokyo_Alibaba_Claude
+  - 日本_Tokyo_Alibaba_Gemini
+  - 日本_Tokyo_DDPS Networks, LLC_Claude
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini_Claude
+  - 日本_Tokyo_Oracle Corporation_Claude1
+  - 日本_Tokyo_Oracle Corporation_Claude2
+  - 日本_Tokyo_Oracle Corporation_Claude3
+  - 日本_Tokyo_Oracle Corporation_Claude4
+  - 日本_Tokyo_Oracle Corporation_Claude5
+  - 日本_Tokyo_SAKURA Internet_Claude1
+  - 日本_Tokyo_SAKURA Internet_Claude2
+  - 法国_Paris_Global Connectivity Solutions LLP_Claude
+  - 法国_Strasbourg_velia.net Internetdienste GmbH_Claude
+  - 美国_Charlotte_Aeza International LTD_Claude
+  - 美国_Dallas_UnReal Servers, LLC_Claude
+  - 美国_Houston_Snaju Development_Gemini_Claude
+  - 美国_Los Angeles_Cogent Communications_Claude
+  - 美国_Los Angeles_Datacamp Limited_Claude1
+  - 美国_Los Angeles_Datacamp Limited_Claude2
+  - 美国_Los Angeles_Datacamp Limited_Claude3
+  - 美国_Los Angeles_WorkTitans B.V._Claude
+  - 美国_Manassas_Leaseweb USA, Inc._Gemini_Claude
+  - 美国_Minkler_Alibaba (US) Technology Co., Ltd._Gemini
+  - 美国_Ogden_WebNX, Inc._Gemini_Claude
+  - 美国_San Jose_Eons Data Communications Limited_Gemini
+  - 英国_City of London_M247 Europe SRL_Claude
+  - 英国_City of London_WorkTitans B.V._Claude
+  - 英国_London_Akamai Technologies, Inc._Claude
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude1
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude2
+  - 荷兰_Meppel_WorkTitans B.V._Claude
+  - 韩国_Chuncheon_Oracle Cloud_Claude
+  - 韩国_Chuncheon_Oracle Corporation_Gemini1
+  - 韩国_Chuncheon_Oracle Corporation_Gemini2
+  - 韩国_Hwaseong-si_Korea Telecom_Claude
+  - 韩国_Seoul_MOACK.Co.LTD_Gemini_Claude
+  - 香港_Central_PCCW IMS Limited_Gemini
+  - 香港_Hong Kong_Aceville Pte.ltd_Gemini
+  - 香港_Hong Kong_Alibaba Cloud LLC_Gemini
+  - 香港_Hong Kong_Alibaba.com LLC_Gemini
+  - 香港_Hong Kong_Cogent Communications_Gemini1
+  - 香港_Hong Kong_Cogent Communications_Gemini2
+  - 香港_Hong Kong_UCLOUD INFORMATION TECHNOLOGY (HK) LIMITED_Gemini
+  - 香港_Kwai Chung_Hong Kong Broadband Network Ltd_Gemini
+  - 香港_Mong Kok_VH-GLOBAL_Gemini
+  - 香港_Tsing Yi_HGC Global Communications Limited_Gemini
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini1
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini2
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini3
 - name: Best
   type: url-test
   url: https://www.gstatic.com/generate_204
@@ -618,37 +1730,28 @@ proxy-groups:
   tolerance: 50
   filter: _Gemini_Claude
   proxies:
-  - 103.186.155.204_Gemini_Claude
-  - 103.186.155.214_Gemini_Claude
-  - 103.186.155.21_Gemini_Claude
-  - 103.186.155.60_Gemini_Claude
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude6
-  - 台湾_Pingzhen_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taichung_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom Co., Ltd._Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Zhongli District_Chunghwa Telecom_Gemini_Claude
-  - 新加坡_Singapore_G-Core Labs S.A_Gemini_Claude
-  - 美国_Buffalo_HostPapa_Gemini_Claude
-  - 美国_Los Angeles_DMIT Cloud Services_Gemini_Claude
-  - 菲律宾_Manila_Infinivan Inc_Gemini_Claude
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude1
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude2
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude3
-  - 香港_Hong Kong_LuoGeLang France Limited_Gemini_Claude
+  - 103.186.155.111_Gemini_Claude
+  - 216.126.233.253_Gemini_Claude
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude1
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude2
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude3
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude4
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude5
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude6
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude7
+  - 日本_Minamishinagawa_Vultr_Gemini_Claude
+  - 日本_Osaka_Oracle Cloud_Gemini_Claude
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude1
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude3
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude4
+  - 日本_Osaka_The Constant Company, LLC_Gemini_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Gemini_Claude
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini_Claude
+  - 美国_Houston_Snaju Development_Gemini_Claude
+  - 美国_Manassas_Leaseweb USA, Inc._Gemini_Claude
+  - 美国_Ogden_WebNX, Inc._Gemini_Claude
+  - 韩国_Seoul_MOACK.Co.LTD_Gemini_Claude
 - name: Fallback
   type: fallback
   url: https://www.gstatic.com/generate_204
@@ -659,67 +1762,136 @@ proxy-groups:
   tolerance: 50
   filter: .*
   proxies:
-  - 103.186.154.200_Claude
-  - 103.186.154.233_Claude
-  - 103.186.154.58_Claude
-  - 103.186.155.204_Gemini_Claude
-  - 103.186.155.214_Gemini_Claude
-  - 103.186.155.21_Gemini_Claude
-  - 103.186.155.230_Claude
-  - 103.186.155.42_Claude
-  - 103.186.155.50_Claude
-  - 103.186.155.60_Gemini_Claude
-  - 103.186.155.77_Claude
-  - 132.145.89.30_Claude
-  - 2607:f130:0:193:216:3cff:fe7c:f83e_Gemini
-  - 51.89.11.94_Claude
-  - 64.118.144.177_Gemini
-  - 86.104.75.51_Claude
-  - 其他地区_Chisinau_WorkTitans B.V._Claude
-  - 其他地区_Warsaw_G-Core Labs S.A._Claude
-  - 加拿大_Toronto_DigitalOcean, LLC_Claude
-  - 加拿大_Toronto_HostPapa_Claude
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Claude
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude6
-  - 台湾_Pingzhen_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taichung_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom Co., Ltd._Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Xizhi District_Chunghwa Telecom_Claude
-  - 台湾_Zhongli District_Chunghwa Telecom_Gemini_Claude
-  - 新加坡_Singapore_G-Core Labs S.A_Gemini_Claude
-  - 日本_Osaka_Oracle Corporation_Claude
-  - 法国_Paris_WorkTitans B.V._Claude
-  - 澳大利亚_Sydney_Akamai Technologies_Claude
-  - 澳大利亚_Sydney_G-Core Labs S.A._Claude
-  - 美国_Buffalo_HostPapa_Gemini_Claude
-  - 美国_Los Angeles_DMIT Cloud Services_Gemini_Claude
-  - 美国_Los Angeles_Datacamp Limited_Claude
-  - 美国_Los Angeles_Multacom Corporation_Claude1
-  - 美国_Los Angeles_Multacom Corporation_Claude2
-  - 美国_Sacramento_GTT Americas_Gemini
-  - 英国_Erith_OVH SAS_Claude
-  - 荷兰_Amsterdam_G-Core Labs S.A._Claude
-  - 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
-  - 菲律宾_Manila_Infinivan Inc_Gemini_Claude
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude1
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude2
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude3
-  - 香港_Hong Kong_LuoGeLang France Limited_Gemini_Claude
+  - 103.186.154.139_Claude1
+  - 103.186.154.139_Claude2
+  - 103.186.154.139_Claude3
+  - 103.186.154.226_Claude
+  - 103.186.154.239_Claude
+  - 103.186.154.42_Claude
+  - 103.186.154.43_Claude
+  - 103.186.154.63_Claude
+  - 103.186.155.108_Claude
+  - 103.186.155.111_Gemini_Claude
+  - 103.186.155.117_Claude
+  - 103.186.155.127_Claude
+  - 103.186.155.17_Claude
+  - 103.186.155.31_Claude
+  - 103.186.155.37_Gemini
+  - 103.186.155.57_Claude
+  - 103.186.155.9_Claude
+  - 113.30.152.46_Claude
+  - 143.20.204.5_Gemini
+  - 144.31.94.4_Claude
+  - 155.248.202.141_Gemini
+  - 164.52.1.179_Claude1
+  - 164.52.1.179_Claude2
+  - 164.52.1.179_Gemini
+  - 164.52.1.182_Claude1
+  - 164.52.1.182_Claude2
+  - 168.138.46.67_Claude1
+  - 168.138.46.67_Claude2
+  - 188.132.184.148_Claude
+  - 188.253.17.104_Claude
+  - 195.93.253.240_Claude
+  - 202.155.11.73_Claude
+  - 216.126.233.253_Gemini_Claude
+  - 216.57.107.92_Claude1
+  - 216.57.107.92_Claude2
+  - 216.57.110.76_Claude
+  - 45.143.167.170_Claude
+  - 45.148.117.94_Claude
+  - 45.76.107.78_Claude
+  - 47.79.94.192_Claude
+  - 8.210.230.139_Gemini
+  - 84.17.55.237_Claude
+  - 85.192.42.103_Claude
+  - 中国_Changqiao_263 Global Communications Limited_Gemini
+  - 其他地区_Helsinki_H2nexus LTD_Claude
+  - 其他地区_Helsinki_Hetzner Online GmbH_Claude
+  - 其他地区_Helsinki_Scalaxy B.V._Claude
+  - 其他地区_Prague_FDCservers.net_Claude
+  - 其他地区_Riga_Sia Nano IT_Claude
+  - 其他地区_Stockholm_xorek.cloud International LTD_Claude
+  - 德国_Frankfurt am Main_Anton Levin_Claude
+  - 德国_Frankfurt am Main_Ultahost, Inc._Claude1
+  - 德国_Frankfurt am Main_Ultahost, Inc._Claude2
+  - 新加坡_Singapore_Akamai Technologies, Inc._Claude
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude1
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude2
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude3
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude4
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude5
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude6
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude7
+  - 新加坡_Singapore_Greywolf Networks Pte. Ltd._Gemini
+  - 新加坡_Singapore_LINODE_Claude1
+  - 新加坡_Singapore_LINODE_Claude2
+  - 日本_Minamishinagawa_The Constant Company_Claude
+  - 日本_Minamishinagawa_Vultr_Gemini
+  - 日本_Minamishinagawa_Vultr_Gemini_Claude
+  - 日本_Osaka_Oracle Cloud_Gemini_Claude
+  - 日本_Osaka_Oracle Corporation_Claude1
+  - 日本_Osaka_Oracle Corporation_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude1
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude3
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude4
+  - 日本_Osaka_SAKURA Internet Inc._Claude
+  - 日本_Osaka_The Constant Company, LLC_Gemini_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Gemini_Claude
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude1
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude2
+  - 日本_Tokyo_Alibaba_Claude
+  - 日本_Tokyo_Alibaba_Gemini
+  - 日本_Tokyo_DDPS Networks, LLC_Claude
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini_Claude
+  - 日本_Tokyo_Oracle Corporation_Claude1
+  - 日本_Tokyo_Oracle Corporation_Claude2
+  - 日本_Tokyo_Oracle Corporation_Claude3
+  - 日本_Tokyo_Oracle Corporation_Claude4
+  - 日本_Tokyo_Oracle Corporation_Claude5
+  - 日本_Tokyo_SAKURA Internet_Claude1
+  - 日本_Tokyo_SAKURA Internet_Claude2
+  - 法国_Paris_Global Connectivity Solutions LLP_Claude
+  - 法国_Strasbourg_velia.net Internetdienste GmbH_Claude
+  - 美国_Charlotte_Aeza International LTD_Claude
+  - 美国_Dallas_UnReal Servers, LLC_Claude
+  - 美国_Houston_Snaju Development_Gemini_Claude
+  - 美国_Los Angeles_Cogent Communications_Claude
+  - 美国_Los Angeles_Datacamp Limited_Claude1
+  - 美国_Los Angeles_Datacamp Limited_Claude2
+  - 美国_Los Angeles_Datacamp Limited_Claude3
+  - 美国_Los Angeles_WorkTitans B.V._Claude
+  - 美国_Manassas_Leaseweb USA, Inc._Gemini_Claude
+  - 美国_Minkler_Alibaba (US) Technology Co., Ltd._Gemini
+  - 美国_Ogden_WebNX, Inc._Gemini_Claude
+  - 美国_San Jose_Eons Data Communications Limited_Gemini
+  - 英国_City of London_M247 Europe SRL_Claude
+  - 英国_City of London_WorkTitans B.V._Claude
+  - 英国_London_Akamai Technologies, Inc._Claude
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude1
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude2
+  - 荷兰_Meppel_WorkTitans B.V._Claude
+  - 韩国_Chuncheon_Oracle Cloud_Claude
+  - 韩国_Chuncheon_Oracle Corporation_Gemini1
+  - 韩国_Chuncheon_Oracle Corporation_Gemini2
+  - 韩国_Hwaseong-si_Korea Telecom_Claude
+  - 韩国_Seoul_MOACK.Co.LTD_Gemini_Claude
+  - 香港_Central_PCCW IMS Limited_Gemini
+  - 香港_Hong Kong_Aceville Pte.ltd_Gemini
+  - 香港_Hong Kong_Alibaba Cloud LLC_Gemini
+  - 香港_Hong Kong_Alibaba.com LLC_Gemini
+  - 香港_Hong Kong_Cogent Communications_Gemini1
+  - 香港_Hong Kong_Cogent Communications_Gemini2
+  - 香港_Hong Kong_UCLOUD INFORMATION TECHNOLOGY (HK) LIMITED_Gemini
+  - 香港_Kwai Chung_Hong Kong Broadband Network Ltd_Gemini
+  - 香港_Mong Kok_VH-GLOBAL_Gemini
+  - 香港_Tsing Yi_HGC Global Communications Limited_Gemini
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini1
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini2
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini3
 - name: HK
   type: url-test
   url: https://www.gstatic.com/generate_204
@@ -729,10 +1901,19 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude1
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude2
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude3
-  - 香港_Hong Kong_LuoGeLang France Limited_Gemini_Claude
+  - 香港_Central_PCCW IMS Limited_Gemini
+  - 香港_Hong Kong_Aceville Pte.ltd_Gemini
+  - 香港_Hong Kong_Alibaba Cloud LLC_Gemini
+  - 香港_Hong Kong_Alibaba.com LLC_Gemini
+  - 香港_Hong Kong_Cogent Communications_Gemini1
+  - 香港_Hong Kong_Cogent Communications_Gemini2
+  - 香港_Hong Kong_UCLOUD INFORMATION TECHNOLOGY (HK) LIMITED_Gemini
+  - 香港_Kwai Chung_Hong Kong Broadband Network Ltd_Gemini
+  - 香港_Mong Kok_VH-GLOBAL_Gemini
+  - 香港_Tsing Yi_HGC Global Communications Limited_Gemini
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini1
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini2
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini3
   filter: (?i)港|HK|HongKong|hong kong
 - name: TW
   type: url-test
@@ -743,29 +1924,7 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Claude
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude6
-  - 台湾_Pingzhen_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taichung_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom Co., Ltd._Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Xizhi District_Chunghwa Telecom_Claude
-  - 台湾_Zhongli District_Chunghwa Telecom_Gemini_Claude
-  - 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
+  - DIRECT
   filter: 台湾|TW|Tw|Taiwan|新北|彰化|CHT|HINET
 - name: JP
   type: url-test
@@ -776,7 +1935,34 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 日本_Osaka_Oracle Corporation_Claude
+  - 日本_Minamishinagawa_The Constant Company_Claude
+  - 日本_Minamishinagawa_Vultr_Gemini
+  - 日本_Minamishinagawa_Vultr_Gemini_Claude
+  - 日本_Osaka_Oracle Cloud_Gemini_Claude
+  - 日本_Osaka_Oracle Corporation_Claude1
+  - 日本_Osaka_Oracle Corporation_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude1
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude3
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude4
+  - 日本_Osaka_SAKURA Internet Inc._Claude
+  - 日本_Osaka_The Constant Company, LLC_Gemini_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Gemini_Claude
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude1
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude2
+  - 日本_Tokyo_Alibaba_Claude
+  - 日本_Tokyo_Alibaba_Gemini
+  - 日本_Tokyo_DDPS Networks, LLC_Claude
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini_Claude
+  - 日本_Tokyo_Oracle Corporation_Claude1
+  - 日本_Tokyo_Oracle Corporation_Claude2
+  - 日本_Tokyo_Oracle Corporation_Claude3
+  - 日本_Tokyo_Oracle Corporation_Claude4
+  - 日本_Tokyo_Oracle Corporation_Claude5
+  - 日本_Tokyo_SAKURA Internet_Claude1
+  - 日本_Tokyo_SAKURA Internet_Claude2
   filter: (?i)日|东京|大阪|JP|Japan|Tokyo|Osaka|Saitama
 - name: SG
   type: url-test
@@ -787,7 +1973,17 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 新加坡_Singapore_G-Core Labs S.A_Gemini_Claude
+  - 新加坡_Singapore_Akamai Technologies, Inc._Claude
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude1
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude2
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude3
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude4
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude5
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude6
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude7
+  - 新加坡_Singapore_Greywolf Networks Pte. Ltd._Gemini
+  - 新加坡_Singapore_LINODE_Claude1
+  - 新加坡_Singapore_LINODE_Claude2
   filter: (?i)新|狮城|SG|Singapore
 - name: US
   type: url-test
@@ -798,12 +1994,21 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 美国_Buffalo_HostPapa_Gemini_Claude
-  - 美国_Los Angeles_DMIT Cloud Services_Gemini_Claude
-  - 美国_Los Angeles_Datacamp Limited_Claude
-  - 美国_Los Angeles_Multacom Corporation_Claude1
-  - 美国_Los Angeles_Multacom Corporation_Claude2
-  - 美国_Sacramento_GTT Americas_Gemini
+  - 其他地区_Helsinki_H2nexus LTD_Claude
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude1
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude2
+  - 美国_Charlotte_Aeza International LTD_Claude
+  - 美国_Dallas_UnReal Servers, LLC_Claude
+  - 美国_Houston_Snaju Development_Gemini_Claude
+  - 美国_Los Angeles_Cogent Communications_Claude
+  - 美国_Los Angeles_Datacamp Limited_Claude1
+  - 美国_Los Angeles_Datacamp Limited_Claude2
+  - 美国_Los Angeles_Datacamp Limited_Claude3
+  - 美国_Los Angeles_WorkTitans B.V._Claude
+  - 美国_Manassas_Leaseweb USA, Inc._Gemini_Claude
+  - 美国_Minkler_Alibaba (US) Technology Co., Ltd._Gemini
+  - 美国_Ogden_WebNX, Inc._Gemini_Claude
+  - 美国_San Jose_Eons Data Communications Limited_Gemini
   filter: (?i)美|洛杉矶|芝加哥|西雅图|America|US|United.*?States
 - name: Claude
   type: url-test
@@ -813,64 +2018,109 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 103.186.154.200_Claude
-  - 103.186.154.233_Claude
-  - 103.186.154.58_Claude
-  - 103.186.155.204_Gemini_Claude
-  - 103.186.155.214_Gemini_Claude
-  - 103.186.155.21_Gemini_Claude
-  - 103.186.155.230_Claude
-  - 103.186.155.42_Claude
-  - 103.186.155.50_Claude
-  - 103.186.155.60_Gemini_Claude
-  - 103.186.155.77_Claude
-  - 132.145.89.30_Claude
-  - 51.89.11.94_Claude
-  - 86.104.75.51_Claude
-  - 其他地区_Chisinau_WorkTitans B.V._Claude
-  - 其他地区_Warsaw_G-Core Labs S.A._Claude
-  - 加拿大_Toronto_DigitalOcean, LLC_Claude
-  - 加拿大_Toronto_HostPapa_Claude
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Claude
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude6
-  - 台湾_Pingzhen_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taichung_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom Co., Ltd._Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Xizhi District_Chunghwa Telecom_Claude
-  - 台湾_Zhongli District_Chunghwa Telecom_Gemini_Claude
-  - 新加坡_Singapore_G-Core Labs S.A_Gemini_Claude
-  - 日本_Osaka_Oracle Corporation_Claude
-  - 法国_Paris_WorkTitans B.V._Claude
-  - 澳大利亚_Sydney_Akamai Technologies_Claude
-  - 澳大利亚_Sydney_G-Core Labs S.A._Claude
-  - 美国_Buffalo_HostPapa_Gemini_Claude
-  - 美国_Los Angeles_DMIT Cloud Services_Gemini_Claude
-  - 美国_Los Angeles_Datacamp Limited_Claude
-  - 美国_Los Angeles_Multacom Corporation_Claude1
-  - 美国_Los Angeles_Multacom Corporation_Claude2
-  - 英国_Erith_OVH SAS_Claude
-  - 荷兰_Amsterdam_G-Core Labs S.A._Claude
-  - 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
-  - 菲律宾_Manila_Infinivan Inc_Gemini_Claude
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude1
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude2
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude3
-  - 香港_Hong Kong_LuoGeLang France Limited_Gemini_Claude
+  - 103.186.154.139_Claude1
+  - 103.186.154.139_Claude2
+  - 103.186.154.139_Claude3
+  - 103.186.154.226_Claude
+  - 103.186.154.239_Claude
+  - 103.186.154.42_Claude
+  - 103.186.154.43_Claude
+  - 103.186.154.63_Claude
+  - 103.186.155.108_Claude
+  - 103.186.155.111_Gemini_Claude
+  - 103.186.155.117_Claude
+  - 103.186.155.127_Claude
+  - 103.186.155.17_Claude
+  - 103.186.155.31_Claude
+  - 103.186.155.57_Claude
+  - 103.186.155.9_Claude
+  - 113.30.152.46_Claude
+  - 144.31.94.4_Claude
+  - 164.52.1.179_Claude1
+  - 164.52.1.179_Claude2
+  - 164.52.1.182_Claude1
+  - 164.52.1.182_Claude2
+  - 168.138.46.67_Claude1
+  - 168.138.46.67_Claude2
+  - 188.132.184.148_Claude
+  - 188.253.17.104_Claude
+  - 195.93.253.240_Claude
+  - 202.155.11.73_Claude
+  - 216.126.233.253_Gemini_Claude
+  - 216.57.107.92_Claude1
+  - 216.57.107.92_Claude2
+  - 216.57.110.76_Claude
+  - 45.143.167.170_Claude
+  - 45.148.117.94_Claude
+  - 45.76.107.78_Claude
+  - 47.79.94.192_Claude
+  - 84.17.55.237_Claude
+  - 85.192.42.103_Claude
+  - 其他地区_Helsinki_H2nexus LTD_Claude
+  - 其他地区_Helsinki_Hetzner Online GmbH_Claude
+  - 其他地区_Helsinki_Scalaxy B.V._Claude
+  - 其他地区_Prague_FDCservers.net_Claude
+  - 其他地区_Riga_Sia Nano IT_Claude
+  - 其他地区_Stockholm_xorek.cloud International LTD_Claude
+  - 德国_Frankfurt am Main_Anton Levin_Claude
+  - 德国_Frankfurt am Main_Ultahost, Inc._Claude1
+  - 德国_Frankfurt am Main_Ultahost, Inc._Claude2
+  - 新加坡_Singapore_Akamai Technologies, Inc._Claude
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude1
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude2
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude3
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude4
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude5
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude6
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude7
+  - 新加坡_Singapore_LINODE_Claude1
+  - 新加坡_Singapore_LINODE_Claude2
+  - 日本_Minamishinagawa_The Constant Company_Claude
+  - 日本_Minamishinagawa_Vultr_Gemini_Claude
+  - 日本_Osaka_Oracle Cloud_Gemini_Claude
+  - 日本_Osaka_Oracle Corporation_Claude1
+  - 日本_Osaka_Oracle Corporation_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude1
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude3
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude4
+  - 日本_Osaka_SAKURA Internet Inc._Claude
+  - 日本_Osaka_The Constant Company, LLC_Gemini_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Gemini_Claude
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude1
+  - 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude2
+  - 日本_Tokyo_Alibaba_Claude
+  - 日本_Tokyo_DDPS Networks, LLC_Claude
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini_Claude
+  - 日本_Tokyo_Oracle Corporation_Claude1
+  - 日本_Tokyo_Oracle Corporation_Claude2
+  - 日本_Tokyo_Oracle Corporation_Claude3
+  - 日本_Tokyo_Oracle Corporation_Claude4
+  - 日本_Tokyo_Oracle Corporation_Claude5
+  - 日本_Tokyo_SAKURA Internet_Claude1
+  - 日本_Tokyo_SAKURA Internet_Claude2
+  - 法国_Paris_Global Connectivity Solutions LLP_Claude
+  - 法国_Strasbourg_velia.net Internetdienste GmbH_Claude
+  - 美国_Charlotte_Aeza International LTD_Claude
+  - 美国_Dallas_UnReal Servers, LLC_Claude
+  - 美国_Houston_Snaju Development_Gemini_Claude
+  - 美国_Los Angeles_Cogent Communications_Claude
+  - 美国_Los Angeles_Datacamp Limited_Claude1
+  - 美国_Los Angeles_Datacamp Limited_Claude2
+  - 美国_Los Angeles_Datacamp Limited_Claude3
+  - 美国_Los Angeles_WorkTitans B.V._Claude
+  - 美国_Manassas_Leaseweb USA, Inc._Gemini_Claude
+  - 美国_Ogden_WebNX, Inc._Gemini_Claude
+  - 英国_City of London_M247 Europe SRL_Claude
+  - 英国_City of London_WorkTitans B.V._Claude
+  - 英国_London_Akamai Technologies, Inc._Claude
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude1
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude2
+  - 荷兰_Meppel_WorkTitans B.V._Claude
+  - 韩国_Chuncheon_Oracle Cloud_Claude
+  - 韩国_Hwaseong-si_Korea Telecom_Claude
+  - 韩国_Seoul_MOACK.Co.LTD_Gemini_Claude
   filter: _Claude
 - name: Gemini
   type: url-test
@@ -880,40 +2130,55 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 103.186.155.204_Gemini_Claude
-  - 103.186.155.214_Gemini_Claude
-  - 103.186.155.21_Gemini_Claude
-  - 103.186.155.60_Gemini_Claude
-  - 2607:f130:0:193:216:3cff:fe7c:f83e_Gemini
-  - 64.118.144.177_Gemini
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_New Taipei City_Chunghwa Telecom_Gemini_Claude6
-  - 台湾_Pingzhen_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taichung_Chunghwa Telecom_Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom Co., Ltd._Gemini_Claude
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude3
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude4
-  - 台湾_Taipei_Chunghwa Telecom_Gemini_Claude5
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude1
-  - 台湾_Taoyuan District_Chunghwa Telecom_Gemini_Claude2
-  - 台湾_Zhongli District_Chunghwa Telecom_Gemini_Claude
-  - 新加坡_Singapore_G-Core Labs S.A_Gemini_Claude
-  - 美国_Buffalo_HostPapa_Gemini_Claude
-  - 美国_Los Angeles_DMIT Cloud Services_Gemini_Claude
-  - 美国_Sacramento_GTT Americas_Gemini
-  - 菲律宾_Manila_Infinivan Inc_Gemini_Claude
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude1
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude2
-  - 香港_Hong Kong_Akile LTD_Gemini_Claude3
-  - 香港_Hong Kong_LuoGeLang France Limited_Gemini_Claude
+  - 103.186.155.111_Gemini_Claude
+  - 103.186.155.37_Gemini
+  - 143.20.204.5_Gemini
+  - 155.248.202.141_Gemini
+  - 164.52.1.179_Gemini
+  - 216.126.233.253_Gemini_Claude
+  - 8.210.230.139_Gemini
+  - 中国_Changqiao_263 Global Communications Limited_Gemini
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude1
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude2
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude3
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude4
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude5
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude6
+  - 新加坡_Singapore_CDS Global Cloud Co., Ltd_Gemini_Claude7
+  - 新加坡_Singapore_Greywolf Networks Pte. Ltd._Gemini
+  - 日本_Minamishinagawa_Vultr_Gemini
+  - 日本_Minamishinagawa_Vultr_Gemini_Claude
+  - 日本_Osaka_Oracle Cloud_Gemini_Claude
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude1
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude2
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude3
+  - 日本_Osaka_Oracle Corporation_Gemini_Claude4
+  - 日本_Osaka_The Constant Company, LLC_Gemini_Claude
+  - 日本_Shibuya City_M247 Europe SRL_Gemini_Claude
+  - 日本_Tokyo_Alibaba_Gemini
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini
+  - 日本_Tokyo_DDPS Networks, LLC_Gemini_Claude
+  - 美国_Houston_Snaju Development_Gemini_Claude
+  - 美国_Manassas_Leaseweb USA, Inc._Gemini_Claude
+  - 美国_Minkler_Alibaba (US) Technology Co., Ltd._Gemini
+  - 美国_Ogden_WebNX, Inc._Gemini_Claude
+  - 美国_San Jose_Eons Data Communications Limited_Gemini
+  - 韩国_Chuncheon_Oracle Corporation_Gemini1
+  - 韩国_Chuncheon_Oracle Corporation_Gemini2
+  - 韩国_Seoul_MOACK.Co.LTD_Gemini_Claude
+  - 香港_Central_PCCW IMS Limited_Gemini
+  - 香港_Hong Kong_Aceville Pte.ltd_Gemini
+  - 香港_Hong Kong_Alibaba Cloud LLC_Gemini
+  - 香港_Hong Kong_Alibaba.com LLC_Gemini
+  - 香港_Hong Kong_Cogent Communications_Gemini1
+  - 香港_Hong Kong_Cogent Communications_Gemini2
+  - 香港_Hong Kong_UCLOUD INFORMATION TECHNOLOGY (HK) LIMITED_Gemini
+  - 香港_Kwai Chung_Hong Kong Broadband Network Ltd_Gemini
+  - 香港_Mong Kok_VH-GLOBAL_Gemini
+  - 香港_Tsing Yi_HGC Global Communications Limited_Gemini
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini1
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini2
+  - 香港_Tsuen Wan_Alice Networks LTD_Gemini3
   filter: _Gemini
 rules:
 - RULE-SET,ads,REJECT

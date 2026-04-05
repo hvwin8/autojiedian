@@ -327,6 +327,15 @@ async fn run(config: Settings) {
 
     let timeout: Duration = Duration::from_millis(config.connect_test.timeout + 2000);
     let mut release_proxies = useful_proxies.clone();
+    let useful_proxy_fingerprints = useful_proxies
+        .iter()
+        .filter_map(|proxy| {
+            pipeline::proxy_fingerprint(proxy)
+                .map(|fingerprint| (proxy.get_name().to_string(), fingerprint))
+        })
+        .collect::<HashMap<String, String>>();
+    let mut validated_pool_metadata: HashMap<String, pipeline::ValidatedPoolMetadata> =
+        HashMap::new();
     if config.fast_mode {
         SubManager::save_proxies_into_clash_file(
             &release_proxies,
@@ -392,9 +401,9 @@ async fn run(config: Settings) {
 
             let mut index = 0;
             while index < nodes.len() {
-                let node = &nodes[index];
+                let node = nodes[index].clone();
                 let ip_result = clash_meta
-                    .set_group_proxy(TEST_PROXY_GROUP_NAME, node)
+                    .set_group_proxy(TEST_PROXY_GROUP_NAME, &node)
                     .await;
                 if ip_result.is_ok() {
                     let ip_result = cgi_trace::get_ip(&clash_meta.proxy_url, timeout).await;
@@ -426,6 +435,17 @@ async fn run(config: Settings) {
 
                         let ip_detail_result =
                             ip::get_ip_detail(&proxy_ip, &clash_meta.proxy_url).await;
+                        if let Some(fingerprint) = useful_proxy_fingerprints.get(&node) {
+                            validated_pool_metadata.insert(
+                                fingerprint.clone(),
+                                pipeline::ValidatedPoolMetadata::from_probe_result(
+                                    &proxy_ip.to_string(),
+                                    ip_detail_result.as_ref().ok(),
+                                    gemini_is_ok,
+                                    claude_is_ok,
+                                ),
+                            );
+                        }
                         let mut new_name = proxy_ip.to_string();
                         match ip_detail_result {
                             Ok(ip_detail) => {
@@ -500,6 +520,16 @@ async fn run(config: Settings) {
     );
     let validated_pool = pipeline::build_validated_pool(&release_proxies, &fingerprint_sources);
     write_artifact_json(&artifact_store, "11_validated_pool.json", &validated_pool);
+    let validated_pool_mihomo = pipeline::build_validated_pool_mihomo(
+        &release_proxies,
+        &fingerprint_sources,
+        &validated_pool_metadata,
+    );
+    write_artifact_json(
+        &artifact_store,
+        "12_validated_pool_mihomo.json",
+        &validated_pool_mihomo,
+    );
     let summary = pipeline::PipelineSummaryArtifact {
         candidate_source_count: urls.len(),
         raw_proxy_count,
