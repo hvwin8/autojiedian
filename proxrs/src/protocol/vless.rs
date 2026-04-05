@@ -63,7 +63,70 @@ impl ProxyAdapter for Vless {
     }
 
     fn to_link(&self) -> String {
-        todo!()
+        let server = if self.server.contains(':') && !self.server.starts_with('[') {
+            format!("[{}]", self.server)
+        } else {
+            self.server.clone()
+        };
+
+        let mut params = vec!["encryption=none".to_string()];
+        let security = if self.reality_opts.is_some() {
+            "reality"
+        } else if self.tls.unwrap_or(false) {
+            "tls"
+        } else {
+            "none"
+        };
+        params.push(format!("security={}", security));
+
+        if let Some(servername) = &self.servername {
+            params.push(format!("sni={}", urlencoding::encode(servername)));
+        }
+        if let Some(flow) = &self.flow {
+            params.push(format!("flow={}", urlencoding::encode(flow)));
+        }
+        if let Some(fingerprint) = &self.fingerprint {
+            params.push(format!("fp={}", urlencoding::encode(fingerprint)));
+        }
+        if self.skip_cert_verify.unwrap_or(false) {
+            params.push("allowInsecure=1".to_string());
+        }
+        if let Some(network) = &self.network {
+            params.push(format!("type={}", urlencoding::encode(network)));
+        }
+        if let Some(ws_opts) = &self.ws_opts {
+            if let Some(path) = &ws_opts.path {
+                params.push(format!("path={}", urlencoding::encode(path)));
+            }
+            if let Some(headers) = &ws_opts.headers {
+                if let Some(host) = headers.get("host") {
+                    params.push(format!("host={}", urlencoding::encode(host)));
+                }
+            }
+        }
+        if let Some(reality_opts) = &self.reality_opts {
+            if let Some(public_key) = &reality_opts.public_key {
+                params.push(format!("pbk={}", urlencoding::encode(public_key)));
+            }
+            if let Some(short_id) = &reality_opts.short_id {
+                params.push(format!("sid={}", urlencoding::encode(short_id)));
+            }
+        }
+        if let Some(grpc_opts) = &self.grpc_opts {
+            params.push("mode=gun".to_string());
+            if let Some(service_name) = &grpc_opts.grpc_service_name {
+                params.push(format!("serviceName={}", urlencoding::encode(service_name)));
+            }
+        }
+
+        format!(
+            "vless://{}@{}:{}?{}#{}",
+            self.uuid,
+            server,
+            self.port,
+            params.join("&"),
+            urlencoding::encode(&self.name)
+        )
     }
 
     fn from_link(link: String) -> Result<Self, UnsupportedLinkError>

@@ -4,12 +4,16 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::env;
 use std::fs;
+use std::fs::File;
+use std::io::BufRead;
+use std::io::BufReader;
 use std::path::Path;
 use std::time::Duration;
 
 use clap::Parser;
 use proxrs::protocol::Proxy;
 use proxrs::sub::SubManager;
+use serde::Deserialize;
 use serde::Serialize;
 use tracing::error;
 use tracing::info;
@@ -40,9 +44,14 @@ mod website;
 struct Cli {
     #[arg(long)]
     server: bool,
+
+    #[arg(long)]
+    export_v2rayn_from_jsonl: Option<String>,
 }
 
 const TEST_PROXY_GROUP_NAME: &str = "PROXY";
+const V2RAYN_SUB_PATH: &str = "v2rayn.txt";
+const V2RAYN_LINKS_PATH: &str = "v2rayn-links.txt";
 
 #[tokio::main]
 async fn main() {
@@ -54,6 +63,18 @@ async fn main() {
     .expect("setting default subscriber failed");
 
     let args = Cli::parse();
+    if let Some(jsonl_path) = args.export_v2rayn_from_jsonl.as_deref() {
+        create_folder();
+        match export_v2rayn_from_jsonl(jsonl_path) {
+            Ok(exported_count) => info!(
+                "exported {} proxies into {} and {}",
+                exported_count, V2RAYN_SUB_PATH, V2RAYN_LINKS_PATH
+            ),
+            Err(err) => error!("export v2rayN outputs failed: {}", err),
+        }
+        return;
+    }
+
     let config = Settings::new();
     match config {
         Ok(config) => {
@@ -76,6 +97,8 @@ async fn run(config: Settings) {
     let test_yaml_path = "subs/test/config.yaml";
     let test_all_yaml_path = "subs/test/all.yaml";
     let release_yaml_path = env::current_dir().unwrap().join("clash.yaml");
+    let v2rayn_sub_path = env::current_dir().unwrap().join(V2RAYN_SUB_PATH);
+    let v2rayn_links_path = env::current_dir().unwrap().join(V2RAYN_LINKS_PATH);
     let test_clash_template_path = "conf/clash_test.yaml";
     let release_clash_template_path = "conf/clash_release.yaml";
 
@@ -342,6 +365,11 @@ async fn run(config: Settings) {
             release_clash_template_path.to_string(),
             release_yaml_path.to_string_lossy().to_string(),
         );
+        write_v2rayn_outputs(
+            &release_proxies,
+            v2rayn_sub_path.to_string_lossy().to_string(),
+            v2rayn_links_path.to_string_lossy().to_string(),
+        );
         info!("release file: {}", release_yaml_path.to_string_lossy());
     } else {
         let mut clash_meta = ClashMeta::new(external_port, mixed_port);
@@ -504,6 +532,11 @@ async fn run(config: Settings) {
             release_clash_template_path.to_string(),
             release_yaml_path.to_string_lossy().to_string(),
         );
+        write_v2rayn_outputs(
+            &release_proxies,
+            v2rayn_sub_path.to_string_lossy().to_string(),
+            v2rayn_links_path.to_string_lossy().to_string(),
+        );
         info!("release file: {}", release_yaml_path.to_string_lossy());
         clash_meta.stop().unwrap();
     }
@@ -665,6 +698,51 @@ fn create_folder() {
     if !Path::new(release_path).exists() {
         fs::create_dir(release_path).unwrap();
     }
+}
+
+#[derive(Deserialize)]
+struct ReleaseProxyJsonLine {
+    json: String,
+}
+
+fn export_v2rayn_from_jsonl(path: &str) -> Result<usize, Box<dyn std::error::Error>> {
+    let file = File::open(path)?;
+    let reader = BufReader::new(file);
+    let mut proxies = Vec::new();
+
+    for (line_no, line) in reader.lines().enumerate() {
+        let line = line?;
+        if line.trim().is_empty() {
+            continue;
+        }
+        let item: ReleaseProxyJsonLine = serde_json::from_str(&line).map_err(|err| {
+            std::io::Error::other(format!(
+                "parse release proxy jsonl line {} failed: {}",
+                line_no + 1,
+                err
+            ))
+        })?;
+        let proxy = Proxy::from_json(&item.json).map_err(|err| {
+            std::io::Error::other(format!(
+                "rebuild proxy from line {} failed: {}",
+                line_no + 1,
+                err
+            ))
+        })?;
+        proxies.push(proxy);
+    }
+
+    write_v2rayn_outputs(
+        &proxies,
+        V2RAYN_SUB_PATH.to_string(),
+        V2RAYN_LINKS_PATH.to_string(),
+    );
+    Ok(proxies.len())
+}
+
+fn write_v2rayn_outputs(proxies: &[Proxy], base64_path: String, links_path: String) {
+    SubManager::save_proxies_into_base64_file(proxies, base64_path);
+    SubManager::save_proxies_into_links_file(proxies, links_path);
 }
 
 fn dedupe_strings(items: Vec<String>) -> Vec<String> {

@@ -8,6 +8,7 @@ use serde::Serialize;
 use serde_json::Error;
 
 use crate::base64::base64decode;
+use crate::base64::base64encode;
 use crate::protocol::deserialize_u16_or_string;
 use crate::protocol::ProxyAdapter;
 use crate::protocol::UnsupportedLinkError;
@@ -48,7 +49,28 @@ impl ProxyAdapter for Ssr {
     }
 
     fn to_link(&self) -> String {
-        todo!()
+        let password = base64encode(self.password.clone());
+        let mut params = vec![format!("remarks={}", base64encode(self.name.clone()))];
+        if let Some(obfs_param) = &self.obfs_param {
+            params.push(format!("obfsparam={}", base64encode(obfs_param.clone())));
+        }
+        if let Some(protocol_param) = &self.protocol_param {
+            params.push(format!(
+                "protoparam={}",
+                base64encode(protocol_param.clone())
+            ));
+        }
+        let payload = format!(
+            "{}:{}:{}:{}:{}:{}/?{}",
+            self.server,
+            self.port,
+            self.protocol,
+            self.cipher,
+            self.obfs,
+            password,
+            params.join("&")
+        );
+        format!("ssr://{}", base64encode(payload))
     }
 
     fn from_link(link: String) -> Result<Self, UnsupportedLinkError>

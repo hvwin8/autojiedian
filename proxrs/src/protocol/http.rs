@@ -55,7 +55,36 @@ impl ProxyAdapter for Http {
     }
 
     fn to_link(&self) -> String {
-        todo!()
+        let scheme = if self.tls.unwrap_or(false) {
+            "https"
+        } else {
+            "http"
+        };
+        let auth = match (&self.username, &self.password) {
+            (Some(username), Some(password)) => {
+                format!(
+                    "{}:{}@",
+                    urlencoding::encode(username),
+                    urlencoding::encode(password)
+                )
+            }
+            (Some(username), None) => format!("{}@", urlencoding::encode(username)),
+            _ => String::new(),
+        };
+        let server = if self.server.contains(':') && !self.server.starts_with('[') {
+            format!("[{}]", self.server)
+        } else {
+            self.server.clone()
+        };
+
+        format!(
+            "{}://{}{}:{}#{}",
+            scheme,
+            auth,
+            server,
+            self.port,
+            urlencoding::encode(&self.name)
+        )
     }
 
     fn from_link(_link: String) -> Result<Self, UnsupportedLinkError>

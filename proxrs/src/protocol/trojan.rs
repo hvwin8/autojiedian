@@ -46,7 +46,37 @@ impl ProxyAdapter for Trojan {
     }
 
     fn to_link(&self) -> String {
-        todo!()
+        let server = if self.server.contains(':') && !self.server.starts_with('[') {
+            format!("[{}]", self.server)
+        } else {
+            self.server.clone()
+        };
+
+        let mut params = Vec::new();
+        if let Some(network) = &self.network {
+            params.push(format!("type={}", urlencoding::encode(network)));
+        }
+        if let Some(sni) = &self.sni {
+            params.push(format!("sni={}", urlencoding::encode(sni)));
+        }
+        if self.skip_cert_verify.unwrap_or(false) {
+            params.push("allowInsecure=1".to_string());
+        }
+
+        let query = if params.is_empty() {
+            String::new()
+        } else {
+            format!("?{}", params.join("&"))
+        };
+
+        format!(
+            "trojan://{}@{}:{}{}#{}",
+            self.password,
+            server,
+            self.port,
+            query,
+            urlencoding::encode(&self.name)
+        )
     }
 
     fn from_link(link: String) -> Result<Self, UnsupportedLinkError>

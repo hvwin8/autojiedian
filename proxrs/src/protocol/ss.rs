@@ -60,7 +60,11 @@ impl ProxyAdapter for SS {
                 let str = plugin_opts
                     .iter()
                     .map(|(key, value)| {
-                        let v = key.clone() + "=" + value.as_str().unwrap();
+                        let value = match value {
+                            Value::String(value) => value.clone(),
+                            _ => value.to_string(),
+                        };
+                        let v = key.clone() + "=" + &value;
                         urlencoding::encode(&v).into_owned()
                     })
                     .collect::<Vec<_>>()

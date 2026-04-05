@@ -18,6 +18,15 @@
 
 建议的拉取顺序：
 
+- Clash / Mihomo 主订阅：
+  - `https://raw.githubusercontent.com/hvwin8/autojiedian/master/clash.yaml`
+  - `https://hvwin8.github.io/autojiedian/clash.yaml`
+- v2rayN Base64 订阅：
+  - `https://raw.githubusercontent.com/hvwin8/autojiedian/master/v2rayn.txt`
+  - `https://hvwin8.github.io/autojiedian/v2rayn.txt`
+- v2rayN 节点直出列表：
+  - `https://raw.githubusercontent.com/hvwin8/autojiedian/master/v2rayn-links.txt`
+  - `https://hvwin8.github.io/autojiedian/v2rayn-links.txt`
 
 GitHub Pages 还会同步发布：
 
@@ -25,6 +34,8 @@ GitHub Pages 还会同步发布：
 - `source-registry.json`
 - `validated_pool.json`
 - `validated_pool_mihomo.json`
+- `v2rayn.txt`
+- `v2rayn-links.txt`
 - `latest.json`
 - `rules/`
 
@@ -83,6 +94,8 @@ python scripts/build_pages.py --output-dir _site --base-url https://hvwin8.githu
 ## 仓库约定
 
 - `clash.yaml` 是当前对外发布的主产物
+- `v2rayn.txt` 是面向 `v2rayN` 的 Base64 订阅产物
+- `v2rayn-links.txt` 是逐行节点链接产物，方便直接查看或手动导入
 - `validated_pool.json` 是面向自动任务消费的候选池产物
 - `validated_pool_mihomo.json` 是面向 Mihomo 编排的增强候选池产物，额外带出口 IP、地区提示和能力标记
 - `artifacts/` 存放每轮聚合过程中的中间结果

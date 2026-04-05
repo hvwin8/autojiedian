@@ -24,6 +24,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--registry-file", default="artifacts/10_source_registry.json")
     parser.add_argument("--validated-pool-file", default="artifacts/11_validated_pool.json")
     parser.add_argument("--validated-pool-mihomo-file", default="artifacts/12_validated_pool_mihomo.json")
+    parser.add_argument("--v2rayn-file", default="v2rayn.txt")
+    parser.add_argument("--v2rayn-links-file", default="v2rayn-links.txt")
     parser.add_argument("--fallback-registry-file", default="artifacts/source_registry.json")
     return parser.parse_args()
 
@@ -111,10 +113,22 @@ def build_index_html(base_url: str, latest: dict[str, Any]) -> str:
     registry_json = files.get("source_registry") or {}
     validated_pool = files.get("validated_pool") or {}
     validated_pool_mihomo = files.get("validated_pool_mihomo") or {}
+    v2rayn = files.get("v2rayn") or {}
+    v2rayn_links = files.get("v2rayn_links") or {}
     rules = files.get("rules") or {}
     validated_pool_mihomo_link = (
         f'<li><a href="{validated_pool_mihomo.get("path", "validated_pool_mihomo.json")}">validated_pool_mihomo.json</a></li>'
         if validated_pool_mihomo
+        else ""
+    )
+    v2rayn_link = (
+        f'<li><a href="{v2rayn.get("path", "v2rayn.txt")}">v2rayn.txt</a></li>'
+        if v2rayn
+        else ""
+    )
+    v2rayn_links_link = (
+        f'<li><a href="{v2rayn_links.get("path", "v2rayn-links.txt")}">v2rayn-links.txt</a></li>'
+        if v2rayn_links
         else ""
     )
     rules_link = (
@@ -238,6 +252,8 @@ def build_index_html(base_url: str, latest: dict[str, Any]) -> str:
       <li><a href="{registry_json.get('path', 'source-registry.json')}">source-registry.json</a></li>
       <li><a href="{validated_pool.get('path', 'validated_pool.json')}">validated_pool.json</a></li>
       {validated_pool_mihomo_link}
+      {v2rayn_link}
+      {v2rayn_links_link}
       {rules_link}
       <li><a href="latest.json">latest.json</a></li>
     </ul>
@@ -257,6 +273,8 @@ def main() -> int:
     registry_file = (ROOT / args.registry_file).resolve()
     validated_pool_file = (ROOT / args.validated_pool_file).resolve()
     validated_pool_mihomo_file = (ROOT / args.validated_pool_mihomo_file).resolve()
+    v2rayn_file = (ROOT / args.v2rayn_file).resolve()
+    v2rayn_links_file = (ROOT / args.v2rayn_links_file).resolve()
     fallback_registry_file = (ROOT / args.fallback_registry_file).resolve()
     if not release_file.exists():
         raise FileNotFoundError(f"release file not found: {release_file}")
@@ -278,6 +296,10 @@ def main() -> int:
         shutil.copy2(validated_pool_file, output_dir / "validated_pool.json")
     if validated_pool_mihomo_file.exists():
         shutil.copy2(validated_pool_mihomo_file, output_dir / "validated_pool_mihomo.json")
+    if v2rayn_file.exists():
+        shutil.copy2(v2rayn_file, output_dir / "v2rayn.txt")
+    if v2rayn_links_file.exists():
+        shutil.copy2(v2rayn_links_file, output_dir / "v2rayn-links.txt")
     if rules_dir.exists() and rules_dir.is_dir():
         shutil.copytree(rules_dir, output_dir / "rules", dirs_exist_ok=True)
 
@@ -319,6 +341,18 @@ def main() -> int:
             "path": "validated_pool_mihomo.json",
             "url": f"{base_url}/validated_pool_mihomo.json" if base_url else "validated_pool_mihomo.json",
             "size": validated_pool_mihomo_file.stat().st_size,
+        }
+    if v2rayn_file.exists():
+        latest["files"]["v2rayn"] = {
+            "path": "v2rayn.txt",
+            "url": f"{base_url}/v2rayn.txt" if base_url else "v2rayn.txt",
+            "size": v2rayn_file.stat().st_size,
+        }
+    if v2rayn_links_file.exists():
+        latest["files"]["v2rayn_links"] = {
+            "path": "v2rayn-links.txt",
+            "url": f"{base_url}/v2rayn-links.txt" if base_url else "v2rayn-links.txt",
+            "size": v2rayn_links_file.stat().st_size,
         }
     if rules_dir.exists() and rules_dir.is_dir():
         latest["files"]["rules"] = {

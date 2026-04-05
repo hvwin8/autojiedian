@@ -50,7 +50,30 @@ impl ProxyAdapter for Socks5 {
     }
 
     fn to_link(&self) -> String {
-        todo!()
+        let auth = match (&self.username, &self.password) {
+            (Some(username), Some(password)) => {
+                format!(
+                    "{}:{}@",
+                    urlencoding::encode(username),
+                    urlencoding::encode(password)
+                )
+            }
+            (Some(username), None) => format!("{}@", urlencoding::encode(username)),
+            _ => String::new(),
+        };
+        let server = if self.server.contains(':') && !self.server.starts_with('[') {
+            format!("[{}]", self.server)
+        } else {
+            self.server.clone()
+        };
+
+        format!(
+            "socks://{}{}:{}#{}",
+            auth,
+            server,
+            self.port,
+            urlencoding::encode(&self.name)
+        )
     }
 
     fn from_link(_link: String) -> Result<Self, UnsupportedLinkError>

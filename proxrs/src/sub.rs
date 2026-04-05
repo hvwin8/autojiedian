@@ -22,6 +22,7 @@ use tracing::debug;
 use tracing::info;
 
 use crate::base64::base64decode;
+use crate::base64::base64encode;
 use crate::protocol::Proxy;
 
 #[derive(Debug)]
@@ -466,15 +467,33 @@ impl SubManager {
         file.write_all(content.as_bytes()).unwrap();
     }
 
+    pub fn get_links_content(proxies: &[Proxy]) -> String {
+        proxies
+            .iter()
+            .filter_map(|proxy| {
+                catch_unwind(AssertUnwindSafe(|| proxy.adapter.to_link()))
+                    .map_err(|_| {
+                        info!(
+                            "skip proxy {} during link export because to_link is not fully supported",
+                            proxy.get_name()
+                        );
+                    })
+                    .ok()
+            })
+            .collect::<Vec<_>>()
+            .join("\n")
+    }
+
+    pub fn save_proxies_into_links_file(proxies: &[Proxy], save_path: String) {
+        let mut file = File::create(&save_path).unwrap();
+        let content = Self::get_links_content(proxies);
+        file.write_all(content.as_bytes()).unwrap();
+    }
+
     pub fn save_proxies_into_base64_file(proxies: &[Proxy], save_path: String) {
         let mut file = File::create(&save_path).unwrap();
-        let content = proxies
-            .iter()
-            .map(|p| p.adapter.to_link())
-            .collect::<Vec<_>>();
-        for b in content {
-            writeln!(file, "{}", b).unwrap();
-        }
+        let content = base64encode(Self::get_links_content(proxies));
+        file.write_all(content.as_bytes()).unwrap();
     }
 }
 
