@@ -90,6 +90,15 @@ async fn main() {
 }
 
 async fn run(config: Settings) {
+    let direct_subs = canonicalize_subscription_sources(&config.subs);
+    let discovery_feeds = dedupe_strings(
+        config
+            .discover_feeds
+            .iter()
+            .map(|url| discovery::canonicalize_registry_url(url))
+            .collect(),
+    );
+    let pool_sources = canonicalize_subscription_sources(&config.pools);
     let artifact_store = artifacts::ArtifactStore::new(&config.artifacts);
     let mut source_registry =
         source_registry::SourceRegistry::load_or_default(&config.source_registry.path);
@@ -103,30 +112,30 @@ async fn run(config: Settings) {
     let release_clash_template_path = "conf/clash_release.yaml";
 
     let source_inputs = pipeline::SourceInputsArtifact {
-        direct_subs: config.subs.clone(),
+        direct_subs: direct_subs.clone(),
         discovery_enabled: config.discover_enabled,
-        discovery_feeds: config.discover_feeds.clone(),
+        discovery_feeds: discovery_feeds.clone(),
         pool_enabled: config.need_add_pool,
-        pool_sources: config.pools.clone(),
+        pool_sources: pool_sources.clone(),
     };
     write_artifact_json(&artifact_store, "01_source_inputs.json", &source_inputs);
 
-    for source_url in &config.subs {
+    for source_url in &direct_subs {
         source_registry.mark_seed_source(source_url, "direct_subscription");
     }
     if config.need_add_pool {
-        for pool_url in &config.pools {
+        for pool_url in &pool_sources {
             source_registry.mark_seed_source(pool_url, "pool_subscription");
         }
     }
     if config.discover_enabled {
-        for feed_url in &config.discover_feeds {
+        for feed_url in &discovery_feeds {
             source_registry.mark_seed_source(feed_url, "discovery_feed");
         }
     }
 
     let discovery_report = if config.discover_enabled {
-        discovery::discover_sub_urls_with_report(&config.discover_feeds).await
+        discovery::discover_sub_urls_with_report(&discovery_feeds).await
     } else {
         discovery::DiscoveryReport::default()
     };
@@ -143,19 +152,19 @@ async fn run(config: Settings) {
         &discovery_report,
     );
 
-    let mut urls = config.subs.clone();
+    let mut urls = direct_subs.clone();
     if !discovery_report.unique_discovered_urls.is_empty() {
         info!(
             "found {} extra subscription sources from {} discovery feeds",
             discovery_report.unique_discovered_urls.len(),
-            config.discover_feeds.len()
+            discovery_feeds.len()
         );
         urls.extend(discovery_report.unique_discovered_urls.clone());
     }
     if config.need_add_pool {
-        urls.extend(config.pools.clone());
+        urls.extend(pool_sources.clone());
     }
-    urls = dedupe_strings(urls);
+    urls = canonicalize_subscription_sources(&urls);
 
     let candidate_sources = pipeline::CandidateSourcesArtifact {
         sources: urls.clone(),
@@ -754,6 +763,15 @@ fn dedupe_strings(items: Vec<String>) -> Vec<String> {
         }
     }
     deduped
+}
+
+fn canonicalize_subscription_sources(items: &[String]) -> Vec<String> {
+    dedupe_strings(
+        items
+            .iter()
+            .flat_map(|item| discovery::canonicalize_trusted_subscription_urls(item))
+            .collect(),
+    )
 }
 
 fn write_artifact_json<T: Serialize>(

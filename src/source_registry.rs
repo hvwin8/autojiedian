@@ -8,6 +8,8 @@ use std::time::UNIX_EPOCH;
 use serde::Deserialize;
 use serde::Serialize;
 
+use crate::discovery;
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SourceRegistry {
     pub updated_at_epoch_secs: u64,
@@ -79,10 +81,11 @@ impl SourceRegistry {
             return Self::default();
         }
 
-        fs::read_to_string(registry_path)
+        let registry = fs::read_to_string(registry_path)
             .ok()
             .and_then(|content| serde_json::from_str::<SourceRegistry>(&content).ok())
-            .unwrap_or_default()
+            .unwrap_or_default();
+        normalize_registry(registry)
     }
 
     pub fn persist(&mut self, path: &str) -> io::Result<()> {
@@ -113,17 +116,17 @@ impl SourceRegistry {
         let record = self.record_mut(url, source_kind);
         record.seen_count += 1;
         record.last_seen_epoch_secs = now_epoch_secs();
-        if record.source_kind == "unknown" {
-            record.source_kind = source_kind.to_string();
-        }
+        upgrade_source_kind(&mut record.source_kind, source_kind);
         update_score(record);
     }
 
     pub fn mark_feed_scan(&mut self, feed: &str, discovered_urls: &[String], error: Option<&str>) {
-        let record = self.record_mut(feed, "discovery_feed");
+        let normalized_feed = discovery::canonicalize_registry_url(feed);
+        let record = self.record_mut(&normalized_feed, "discovery_feed");
         record.feed_scan_count += 1;
         record.last_seen_epoch_secs = now_epoch_secs();
         record.last_error = error.map(str::to_string);
+        upgrade_source_kind(&mut record.source_kind, "discovery_feed");
         if error.is_none() {
             record.discover_hits += discovered_urls.len() as u64;
         }
@@ -133,8 +136,13 @@ impl SourceRegistry {
             let child = self.record_mut(url, "discovered_subscription");
             child.seen_count += 1;
             child.last_seen_epoch_secs = now_epoch_secs();
-            if !child.discovered_from_feeds.iter().any(|item| item == feed) {
-                child.discovered_from_feeds.push(feed.to_string());
+            upgrade_source_kind(&mut child.source_kind, "discovered_subscription");
+            if !child
+                .discovered_from_feeds
+                .iter()
+                .any(|item| item == &normalized_feed)
+            {
+                child.discovered_from_feeds.push(normalized_feed.clone());
             }
             update_score(child);
         }
@@ -183,15 +191,84 @@ impl SourceRegistry {
 
     fn record_mut(&mut self, url: &str, source_kind: &str) -> &mut SourceRecord {
         let now = now_epoch_secs();
+        let normalized_url = discovery::canonicalize_registry_url(url);
         self.records
-            .entry(url.to_string())
+            .entry(normalized_url.clone())
             .or_insert_with(|| SourceRecord {
-                url: url.to_string(),
+                url: normalized_url,
                 source_kind: source_kind.to_string(),
                 first_seen_epoch_secs: now,
                 last_seen_epoch_secs: now,
                 ..SourceRecord::default()
             })
+    }
+}
+
+fn normalize_registry(registry: SourceRegistry) -> SourceRegistry {
+    let mut normalized = SourceRegistry {
+        updated_at_epoch_secs: registry.updated_at_epoch_secs,
+        records: BTreeMap::new(),
+    };
+    for (_, mut record) in registry.records {
+        let key = discovery::canonicalize_registry_url(&record.url);
+        record.url = key.clone();
+        if let Some(existing) = normalized.records.get_mut(&key) {
+            merge_record(existing, record);
+        } else {
+            normalized.records.insert(key, record);
+        }
+    }
+    normalized
+}
+
+fn merge_record(target: &mut SourceRecord, source: SourceRecord) {
+    upgrade_source_kind(&mut target.source_kind, &source.source_kind);
+    target.seen_count += source.seen_count;
+    target.discover_hits += source.discover_hits;
+    target.feed_scan_count += source.feed_scan_count;
+    target.fetch_attempts += source.fetch_attempts;
+    target.fetch_successes += source.fetch_successes;
+    target.fetch_empty_results += source.fetch_empty_results;
+    target.total_proxy_count += source.total_proxy_count;
+    target.max_proxy_count = target.max_proxy_count.max(source.max_proxy_count);
+    target.total_validated_proxy_count += source.total_validated_proxy_count;
+    target.total_released_proxy_count += source.total_released_proxy_count;
+    target.first_seen_epoch_secs = target
+        .first_seen_epoch_secs
+        .min(source.first_seen_epoch_secs);
+    if source.last_seen_epoch_secs >= target.last_seen_epoch_secs {
+        target.last_seen_epoch_secs = source.last_seen_epoch_secs;
+        target.last_proxy_count = source.last_proxy_count;
+        target.last_validated_proxy_count = source.last_validated_proxy_count;
+        target.last_released_proxy_count = source.last_released_proxy_count;
+        target.last_error = source.last_error.clone();
+    }
+    for feed in source.discovered_from_feeds {
+        if !target
+            .discovered_from_feeds
+            .iter()
+            .any(|item| item == &feed)
+        {
+            target.discovered_from_feeds.push(feed);
+        }
+    }
+    update_score(target);
+}
+
+fn upgrade_source_kind(current: &mut String, candidate: &str) {
+    if source_kind_priority(candidate) > source_kind_priority(current.as_str()) {
+        *current = candidate.to_string();
+    }
+}
+
+fn source_kind_priority(source_kind: &str) -> u8 {
+    match source_kind {
+        "direct_subscription" => 50,
+        "pool_subscription" => 40,
+        "subscription" => 30,
+        "discovered_subscription" => 20,
+        "discovery_feed" => 10,
+        _ => 0,
     }
 }
 
@@ -275,5 +352,93 @@ mod tests {
         assert_eq!(record.last_validated_proxy_count, 4);
         assert_eq!(record.last_released_proxy_count, 2);
         assert!(record.score > 0.0);
+    }
+
+    #[test]
+    fn test_load_normalizes_duplicate_raw_variants() {
+        let registry = normalize_registry(SourceRegistry {
+            updated_at_epoch_secs: 1,
+            records: BTreeMap::from([
+                (
+                    "https://raw.githubusercontent.com/example/repo/refs/heads/main/subs/test.yaml"
+                        .to_string(),
+                    SourceRecord {
+                        url: "https://raw.githubusercontent.com/example/repo/refs/heads/main/subs/test.yaml"
+                            .to_string(),
+                        fetch_attempts: 1,
+                        ..SourceRecord::default()
+                    },
+                ),
+                (
+                    "https://raw.githubusercontent.com/example/repo/main/subs/test.yaml".to_string(),
+                    SourceRecord {
+                        url: "https://raw.githubusercontent.com/example/repo/main/subs/test.yaml"
+                            .to_string(),
+                        fetch_successes: 1,
+                        ..SourceRecord::default()
+                    },
+                ),
+            ]),
+        });
+
+        assert_eq!(registry.records.len(), 1);
+        let record = registry
+            .records
+            .get("https://raw.githubusercontent.com/example/repo/main/subs/test.yaml")
+            .unwrap();
+        assert_eq!(record.fetch_attempts, 1);
+        assert_eq!(record.fetch_successes, 1);
+    }
+
+    #[test]
+    fn test_normalize_registry_keeps_dirty_embedded_multi_url_keys_separate() {
+        let dirty_key = "https://example.com/a.yaml/nhttps://example.com/b.yaml".to_string();
+        let registry = normalize_registry(SourceRegistry {
+            updated_at_epoch_secs: 1,
+            records: BTreeMap::from([
+                (
+                    dirty_key.clone(),
+                    SourceRecord {
+                        url: dirty_key.clone(),
+                        fetch_attempts: 3,
+                        ..SourceRecord::default()
+                    },
+                ),
+                (
+                    "https://example.com/a.yaml".to_string(),
+                    SourceRecord {
+                        url: "https://example.com/a.yaml".to_string(),
+                        fetch_successes: 1,
+                        ..SourceRecord::default()
+                    },
+                ),
+            ]),
+        });
+
+        assert_eq!(registry.records.len(), 2);
+        assert_eq!(
+            registry
+                .records
+                .get("https://example.com/a.yaml")
+                .unwrap()
+                .fetch_successes,
+            1
+        );
+        assert_eq!(registry.records.get(&dirty_key).unwrap().fetch_attempts, 3);
+    }
+
+    #[test]
+    fn test_mark_seed_source_upgrades_source_kind_priority() {
+        let mut registry = SourceRegistry::default();
+        let discovered = vec!["https://example.com/sub.yaml".to_string()];
+
+        registry.mark_feed_scan("https://example.com/feed", &discovered, None);
+        registry.mark_seed_source("https://example.com/sub.yaml", "direct_subscription");
+
+        let record = registry
+            .records
+            .get("https://example.com/sub.yaml")
+            .unwrap();
+        assert_eq!(record.source_kind, "direct_subscription");
     }
 }

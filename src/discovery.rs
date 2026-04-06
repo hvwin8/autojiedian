@@ -100,6 +100,36 @@ pub async fn discover_sub_urls_with_report(feeds: &[String]) -> DiscoveryReport 
     }
 }
 
+pub fn canonicalize_registry_url(raw: &str) -> String {
+    canonicalize_registry_key(raw).unwrap_or_else(|| raw.trim().to_string())
+}
+
+pub fn canonicalize_subscription_url(raw: &str) -> Option<String> {
+    canonicalize_candidate_url(raw, None, true)
+}
+
+pub fn canonicalize_trusted_subscription_urls(raw: &str) -> Vec<String> {
+    let embedded = split_embedded_absolute_urls(raw);
+    if embedded.len() > 1 {
+        return dedupe_strings(
+            embedded
+                .into_iter()
+                .filter_map(|item| canonicalize_candidate_url(&item, None, false))
+                .collect(),
+        );
+    }
+
+    if let Some(url) = canonicalize_candidate_url(raw, None, false) {
+        return vec![url];
+    }
+
+    embedded
+        .first()
+        .and_then(|item| canonicalize_candidate_url(item, None, false))
+        .into_iter()
+        .collect()
+}
+
 async fn discover_feed_urls(
     client: &Client,
     feed: &str,
@@ -114,7 +144,7 @@ async fn discover_feed_urls(
         let content = response.text().await?;
         let mut urls = extract_candidate_urls(&content, Some(&final_url));
 
-        if let Some(url) = normalize_candidate_url(feed, Some(&final_url)) {
+        if let Some(url) = canonicalize_candidate_url(feed, Some(&final_url), true) {
             if is_candidate_subscription_url(&url) {
                 urls.push(url);
             }
@@ -143,14 +173,14 @@ fn extract_candidate_urls(content: &str, base_url: Option<&Url>) -> Vec<String> 
     let mut urls = Vec::new();
 
     for matched in absolute_regex.find_iter(content) {
-        if let Some(url) = normalize_candidate_url(matched.as_str(), base_url) {
+        for url in normalize_candidate_urls(matched.as_str(), base_url) {
             urls.push(url);
         }
     }
 
     for captures in markdown_regex.captures_iter(content) {
         if let Some(target) = captures.get(1) {
-            if let Some(url) = normalize_candidate_url(target.as_str(), base_url) {
+            for url in normalize_candidate_urls(target.as_str(), base_url) {
                 urls.push(url);
             }
         }
@@ -159,7 +189,7 @@ fn extract_candidate_urls(content: &str, base_url: Option<&Url>) -> Vec<String> 
     let document = Html::parse_document(content);
     for element in document.select(&selector) {
         if let Some(target) = element.value().attr("href") {
-            if let Some(url) = normalize_candidate_url(target, base_url) {
+            for url in normalize_candidate_urls(target, base_url) {
                 urls.push(url);
             }
         }
@@ -168,7 +198,39 @@ fn extract_candidate_urls(content: &str, base_url: Option<&Url>) -> Vec<String> 
     dedupe_strings(urls)
 }
 
-fn normalize_candidate_url(candidate: &str, base_url: Option<&Url>) -> Option<String> {
+fn normalize_candidate_urls(candidate: &str, base_url: Option<&Url>) -> Vec<String> {
+    let embedded = split_embedded_absolute_urls(candidate);
+    if embedded.len() > 1 {
+        return dedupe_strings(
+            embedded
+                .into_iter()
+                .filter_map(|item| canonicalize_candidate_url(&item, None, true))
+                .collect(),
+        );
+    }
+    canonicalize_candidate_url(candidate, base_url, true)
+        .into_iter()
+        .collect()
+}
+
+fn canonicalize_registry_key(raw: &str) -> Option<String> {
+    let embedded = split_embedded_absolute_urls(raw);
+    if embedded.len() > 1 {
+        return None;
+    }
+
+    if let Some(first) = embedded.first() {
+        return canonicalize_candidate_url(first, None, false);
+    }
+
+    canonicalize_candidate_url(raw, None, false)
+}
+
+fn canonicalize_candidate_url(
+    candidate: &str,
+    base_url: Option<&Url>,
+    require_subscription: bool,
+) -> Option<String> {
     let trimmed = candidate.trim().trim_matches(|ch| {
         matches!(
             ch,
@@ -191,8 +253,8 @@ fn normalize_candidate_url(candidate: &str, base_url: Option<&Url>) -> Option<St
     };
 
     parsed.set_fragment(None);
-    let normalized = normalize_github_url(parsed);
-    if is_candidate_subscription_url(normalized.as_str()) {
+    let normalized = normalize_candidate_path(normalize_github_url(parsed));
+    if !require_subscription || is_candidate_subscription_url(normalized.as_str()) {
         Some(normalized.to_string())
     } else {
         None
@@ -204,10 +266,6 @@ fn normalize_github_url(url: Url) -> Url {
         return url;
     };
 
-    if host != "github.com" && host != "www.github.com" {
-        return url;
-    }
-
     let Some(segments) = url
         .path_segments()
         .map(|parts| parts.map(str::to_string).collect::<Vec<_>>())
@@ -215,7 +273,10 @@ fn normalize_github_url(url: Url) -> Url {
         return url;
     };
 
-    if segments.len() >= 5 && (segments[2] == "blob" || segments[2] == "raw") {
+    if (host == "github.com" || host == "www.github.com")
+        && segments.len() >= 5
+        && (segments[2] == "blob" || segments[2] == "raw")
+    {
         let raw_path = format!(
             "{}/{}/{}/{}",
             segments[0],
@@ -229,7 +290,54 @@ fn normalize_github_url(url: Url) -> Url {
         }
     }
 
+    if host == "raw.githubusercontent.com"
+        && segments.len() >= 6
+        && segments[2] == "refs"
+        && segments[3] == "heads"
+    {
+        if let Ok(raw_url) = Url::parse(&format!(
+            "https://raw.githubusercontent.com/{}/{}/{}/{}",
+            segments[0],
+            segments[1],
+            segments[4],
+            segments[5..].join("/")
+        )) {
+            return raw_url;
+        }
+    }
+
     url
+}
+
+fn normalize_candidate_path(mut url: Url) -> Url {
+    let mut path = url.path().trim().to_string();
+    if path.len() > 1 && path.ends_with('/') {
+        let trimmed = path.trim_end_matches('/');
+        let extension = Path::new(trimmed)
+            .extension()
+            .and_then(|value| value.to_str())
+            .map(|value| value.to_ascii_lowercase());
+        if extension
+            .as_deref()
+            .is_some_and(|value| DIRECT_EXTENSIONS.contains(&value))
+        {
+            path = trimmed.to_string();
+            url.set_path(&path);
+        }
+    }
+    url
+}
+
+fn split_embedded_absolute_urls(candidate: &str) -> Vec<String> {
+    let repaired = candidate
+        .replace("\\n", "\n")
+        .replace("/nhttps://", "\nhttps://")
+        .replace("/nhttp://", "\nhttp://");
+    let absolute_regex = Regex::new(r#"https?://[^\s"'<>`]+"#).unwrap();
+    absolute_regex
+        .find_iter(&repaired)
+        .map(|matched| matched.as_str().to_string())
+        .collect()
 }
 
 fn is_candidate_subscription_url(url: &str) -> bool {
@@ -341,5 +449,47 @@ mod tests {
     #[test]
     fn test_shortener_url_is_allowed() {
         assert!(is_candidate_subscription_url("https://git.io/example"));
+    }
+
+    #[test]
+    fn test_canonicalize_subscription_url_normalizes_raw_refs_heads_path() {
+        let url = canonicalize_subscription_url(
+            "https://raw.githubusercontent.com/example/repo/refs/heads/main/subs/test.yaml",
+        )
+        .unwrap();
+        assert_eq!(
+            url,
+            "https://raw.githubusercontent.com/example/repo/main/subs/test.yaml"
+        );
+    }
+
+    #[test]
+    fn test_extract_candidate_urls_splits_embedded_multiple_urls() {
+        let urls = normalize_candidate_urls(
+            "https://anaer.github.io/Sub/clash.yaml/nhttps://raw.githubusercontent.com/anaer/Sub/main/clash.yaml/",
+            None,
+        );
+        assert_eq!(
+            urls,
+            vec![
+                "https://anaer.github.io/Sub/clash.yaml".to_string(),
+                "https://raw.githubusercontent.com/anaer/Sub/main/clash.yaml".to_string(),
+            ]
+        );
+    }
+
+    #[test]
+    fn test_canonicalize_trusted_subscription_urls_keeps_unhinted_seed_url() {
+        let urls = canonicalize_trusted_subscription_urls("https://example.com/api/export?id=123");
+        assert_eq!(
+            urls,
+            vec!["https://example.com/api/export?id=123".to_string()]
+        );
+    }
+
+    #[test]
+    fn test_canonicalize_registry_url_keeps_dirty_embedded_multi_url_key() {
+        let raw = "https://example.com/a.yaml/nhttps://example.com/b.yaml";
+        assert_eq!(canonicalize_registry_url(raw), raw);
     }
 }
