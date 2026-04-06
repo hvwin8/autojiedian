@@ -14,6 +14,7 @@ use std::time::Duration;
 use flate2::read::GzDecoder;
 use reqwest::header::USER_AGENT;
 use reqwest::Client;
+use reqwest::RequestBuilder;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::json;
@@ -27,6 +28,8 @@ const UNIX_CORE_NAME: &str = "mihomo";
 const WINDOWS_CORE_NAME: &str = "mihomo.exe";
 const MIHOMO_RELEASE_API: &str = "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest";
 const GITHUB_USER_AGENT: &str = "autojiedian/0.1";
+const GITHUB_TOKEN_ENV_KEYS: [&str; 3] =
+    ["GITHUB_TOKEN", "GH_TOKEN", "GITHUB_AUTOJIEDIAN_PAT"];
 
 pub struct ClashMeta {
     pub external_port: u64,
@@ -395,8 +398,7 @@ async fn download_core_for_current_platform(
         .timeout(Duration::from_secs(120))
         .build()?;
 
-    let release = client
-        .get(MIHOMO_RELEASE_API)
+    let release = with_optional_github_auth(client.get(MIHOMO_RELEASE_API))
         .header(USER_AGENT, GITHUB_USER_AGENT)
         .send()
         .await?
@@ -417,8 +419,7 @@ async fn download_core_for_current_platform(
 
     info!("downloading official mihomo {} core: {}", os, asset.name);
 
-    let zip_bytes = client
-        .get(&asset.browser_download_url)
+    let zip_bytes = with_optional_github_auth(client.get(&asset.browser_download_url))
         .header(USER_AGENT, GITHUB_USER_AGENT)
         .send()
         .await?
@@ -440,6 +441,23 @@ async fn download_core_for_current_platform(
     ensure_executable_permissions(target_path)?;
     info!("mihomo core saved to {}", target_path.display());
     Ok(())
+}
+
+fn with_optional_github_auth(request: RequestBuilder) -> RequestBuilder {
+    if let Some(token) = github_api_token_from_env() {
+        request.bearer_auth(token)
+    } else {
+        request
+    }
+}
+
+fn github_api_token_from_env() -> Option<String> {
+    GITHUB_TOKEN_ENV_KEYS.iter().find_map(|key| {
+        std::env::var(key)
+            .ok()
+            .map(|value| value.trim().to_string())
+            .filter(|value| !value.is_empty())
+    })
 }
 
 fn select_asset_for_platform<'a>(

@@ -37,6 +37,8 @@ jobs:
         run: cargo build --workspace --verbose
 
       - name: Refresh release artifacts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: cargo run
 
       - name: Verify downloaded mihomo core
