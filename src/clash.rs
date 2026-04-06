@@ -28,8 +28,7 @@ const UNIX_CORE_NAME: &str = "mihomo";
 const WINDOWS_CORE_NAME: &str = "mihomo.exe";
 const MIHOMO_RELEASE_API: &str = "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest";
 const GITHUB_USER_AGENT: &str = "autojiedian/0.1";
-const GITHUB_TOKEN_ENV_KEYS: [&str; 3] =
-    ["GITHUB_TOKEN", "GH_TOKEN", "GITHUB_AUTOJIEDIAN_PAT"];
+const GITHUB_TOKEN_ENV_KEYS: [&str; 3] = ["GITHUB_TOKEN", "GH_TOKEN", "GITHUB_AUTOJIEDIAN_PAT"];
 
 pub struct ClashMeta {
     pub external_port: u64,
