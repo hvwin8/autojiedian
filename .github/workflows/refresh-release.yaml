@@ -78,6 +78,10 @@ jobs:
           fi
 
           git commit -m "chore: refresh clash outputs"
+          # cargo run may leave downloaded/runtime-only changes outside the published artifact set.
+          # Clean the ephemeral runner worktree so rebase only sees the artifact commit we just made.
+          git reset --hard HEAD
+          git clean -fd
           git fetch origin master
           echo "Rebasing artifact commit onto latest origin/master before push..."
           git rebase origin/master
