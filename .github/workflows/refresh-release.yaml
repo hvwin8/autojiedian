@@ -67,6 +67,8 @@ jobs:
 
       - name: Commit refreshed outputs
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add clash.yaml v2rayn.txt v2rayn-links.txt conf/clash_release.yaml artifacts/09_pipeline_summary.json artifacts/10_source_registry.json artifacts/11_validated_pool.json artifacts/12_validated_pool_mihomo.json
@@ -74,5 +76,24 @@ jobs:
             echo "No artifact changes detected."
             exit 0
           fi
+
           git commit -m "chore: refresh clash outputs"
-          git push origin HEAD:master
+          git fetch origin master
+          echo "Rebasing artifact commit onto latest origin/master before push..."
+          git rebase origin/master
+
+          for attempt in 1 2 3; do
+            if git push origin HEAD:master; then
+              echo "Artifact push succeeded on attempt ${attempt}."
+              exit 0
+            fi
+
+            if [ "${attempt}" -eq 3 ]; then
+              echo "Artifact push failed after ${attempt} attempts."
+              exit 1
+            fi
+
+            echo "Push race detected on attempt ${attempt}; fetching latest master and retrying rebase..."
+            git fetch origin master
+            git rebase origin/master
+          done
