@@ -8,6 +8,7 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::path::Path;
+use std::path::PathBuf;
 use std::time::Duration;
 
 use clap::Parser;
@@ -17,6 +18,7 @@ use serde::Deserialize;
 use serde::Serialize;
 use tracing::error;
 use tracing::info;
+use tracing::warn;
 use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
@@ -52,6 +54,19 @@ struct Cli {
 const TEST_PROXY_GROUP_NAME: &str = "PROXY";
 const V2RAYN_SUB_PATH: &str = "v2rayn.txt";
 const V2RAYN_LINKS_PATH: &str = "v2rayn-links.txt";
+const VALIDATED_POOL_MIHOMO_ARTIFACT: &str = "12_validated_pool_mihomo.json";
+
+#[derive(Debug, Clone)]
+struct CachedValidatedProxy {
+    name: String,
+    metadata: pipeline::ValidatedPoolMetadata,
+}
+
+#[derive(Debug)]
+struct LiveProbeResult {
+    renamed_name: String,
+    metadata: pipeline::ValidatedPoolMetadata,
+}
 
 #[tokio::main]
 async fn main() {
@@ -358,7 +373,6 @@ async fn run(config: Settings) {
     );
 
     let timeout: Duration = Duration::from_millis(config.connect_test.timeout + 2000);
-    let mut release_proxies = useful_proxies.clone();
     let useful_proxy_fingerprints = useful_proxies
         .iter()
         .filter_map(|proxy| {
@@ -368,7 +382,25 @@ async fn run(config: Settings) {
         .collect::<HashMap<String, String>>();
     let mut validated_pool_metadata: HashMap<String, pipeline::ValidatedPoolMetadata> =
         HashMap::new();
+    let cached_validated_proxies =
+        load_cached_validated_proxy_map(artifact_store.path(VALIDATED_POOL_MIHOMO_ARTIFACT));
+    let (mut release_proxies, mut proxies_needing_live_probe) = reuse_cached_validated_proxies(
+        useful_proxies,
+        &cached_validated_proxies,
+        &mut validated_pool_metadata,
+    );
+    if !cached_validated_proxies.is_empty() {
+        info!(
+            "reused {} previously validated proxies, probing {} remaining proxies live",
+            release_proxies.len(),
+            proxies_needing_live_probe.len()
+        );
+    }
     if config.fast_mode {
+        release_proxies.append(&mut proxies_needing_live_probe);
+        if !release_proxies.is_empty() {
+            SubManager::rename_dup_proxies_name(&mut release_proxies);
+        }
         SubManager::save_proxies_into_clash_file(
             &release_proxies,
             release_clash_template_path.to_string(),
@@ -381,161 +413,71 @@ async fn run(config: Settings) {
         );
         info!("release file: {}", release_yaml_path.to_string_lossy());
     } else {
-        let mut clash_meta = ClashMeta::new(external_port, mixed_port);
-        SubManager::save_proxies_into_clash_file(
-            &useful_proxies,
-            test_clash_template_path.to_string(),
-            test_yaml_path.to_string(),
-        );
-
-        if let Err(err) = clash_meta.start().await {
-            error!("restart clash meta for rename stage failed: {}", err);
-            clash_meta.stop().unwrap();
-            source_registry.apply_last_released_counts(&BTreeMap::new());
-            let summary = pipeline::PipelineSummaryArtifact {
-                candidate_source_count: urls.len(),
-                raw_proxy_count,
-                unique_proxy_count,
-                useful_proxy_count: useful_proxy_artifacts.len(),
-                final_release_proxy_count: 0,
-            };
-            write_artifact_json(&artifact_store, "09_pipeline_summary.json", &summary);
-            persist_source_registry(
-                &artifact_store,
-                &mut source_registry,
-                config.source_registry.enabled,
-                &config.source_registry.path,
+        if !proxies_needing_live_probe.is_empty() {
+            let mut clash_meta = ClashMeta::new(external_port, mixed_port);
+            SubManager::save_proxies_into_clash_file(
+                &proxies_needing_live_probe,
+                test_clash_template_path.to_string(),
+                test_yaml_path.to_string(),
             );
-            return;
-        }
 
-        let nodes = &mut useful_proxies
-            .iter()
-            .map(|proxy| proxy.get_name().to_string())
-            .collect::<Vec<String>>();
-        let mut node_rename_map: HashMap<String, String> = HashMap::new();
-        if config.rename_node {
-            if nodes.is_empty() {
-                error!("no proxies available for rename stage");
-                clash_meta.stop().unwrap();
-                source_registry.apply_last_released_counts(&BTreeMap::new());
-                let summary = pipeline::PipelineSummaryArtifact {
-                    candidate_source_count: urls.len(),
-                    raw_proxy_count,
-                    unique_proxy_count,
-                    useful_proxy_count: useful_proxy_artifacts.len(),
-                    final_release_proxy_count: 0,
-                };
-                write_artifact_json(&artifact_store, "09_pipeline_summary.json", &summary);
-                persist_source_registry(
-                    &artifact_store,
-                    &mut source_registry,
-                    config.source_registry.enabled,
-                    &config.source_registry.path,
-                );
-                return;
-            }
-
-            let mut index = 0;
-            while index < nodes.len() {
-                let node = nodes[index].clone();
-                let ip_result = clash_meta
-                    .set_group_proxy(TEST_PROXY_GROUP_NAME, &node)
-                    .await;
-                if ip_result.is_ok() {
-                    let ip_result = cgi_trace::get_ip(&clash_meta.proxy_url, timeout).await;
-                    if ip_result.is_ok() {
-                        let (proxy_ip, from) = ip_result.unwrap();
-                        info!("node {} ip {} from {}", node, proxy_ip, from);
-                        let mut gemini_is_ok = false;
-                        match website::gemini_is_ok(&clash_meta.proxy_url, timeout).await {
-                            Ok(_) => {
-                                info!("node {} gemini ok", node);
-                                gemini_is_ok = true;
+            match clash_meta.start().await {
+                Ok(_) => {
+                    let nodes = &mut proxies_needing_live_probe
+                        .iter()
+                        .map(|proxy| proxy.get_name().to_string())
+                        .collect::<Vec<String>>();
+                    let mut node_rename_map: HashMap<String, String> = HashMap::new();
+                    let mut index = 0;
+                    while index < nodes.len() {
+                        let node = nodes[index].clone();
+                        if let Some(probe_result) =
+                            probe_release_proxy(&clash_meta, &config, &node, timeout).await
+                        {
+                            if let Some(fingerprint) = useful_proxy_fingerprints.get(&node) {
+                                validated_pool_metadata
+                                    .insert(fingerprint.clone(), probe_result.metadata);
                             }
-                            Err(err) => error!("node {} gemini failed: {:#}", node, err),
-                        }
-
-                        let mut claude_is_ok = false;
-                        match website::claude_is_ok(&clash_meta.proxy_url, timeout).await {
-                            Ok(_) => {
-                                info!("node {} claude ok", node);
-                                claude_is_ok = true;
-                            }
-                            Err(err) => error!("node {} claude failed: {:#}", node, err),
-                        }
-
-                        if !gemini_is_ok && !claude_is_ok {
+                            node_rename_map.insert(node.clone(), probe_result.renamed_name);
+                            index += 1;
+                        } else {
                             nodes.remove(index);
-                            continue;
                         }
-
-                        let ip_detail_result =
-                            ip::get_ip_detail(&proxy_ip, &clash_meta.proxy_url).await;
-                        if let Some(fingerprint) = useful_proxy_fingerprints.get(&node) {
-                            validated_pool_metadata.insert(
-                                fingerprint.clone(),
-                                pipeline::ValidatedPoolMetadata::from_probe_result(
-                                    &proxy_ip.to_string(),
-                                    ip_detail_result.as_ref().ok(),
-                                    gemini_is_ok,
-                                    claude_is_ok,
-                                ),
-                            );
-                        }
-                        let mut new_name = proxy_ip.to_string();
-                        match ip_detail_result {
-                            Ok(ip_detail) => {
-                                info!("{:?}", ip_detail);
-                                if config.rename_node {
-                                    new_name = node_label::render_node_name(
-                                        &config.rename_pattern,
-                                        &proxy_ip,
-                                        &ip_detail,
-                                    );
-                                }
-                            }
-                            Err(err) => error!("get ip detail for {} failed: {}", node, err),
-                        }
-
-                        if gemini_is_ok {
-                            new_name += "_Gemini";
-                        }
-                        if claude_is_ok {
-                            new_name += "_Claude";
-                        }
-                        node_rename_map.insert(node.clone(), new_name);
-                    } else {
-                        let err_msg = ip_result.err().unwrap();
-                        error!("get ip for node {} failed: {}", node, err_msg);
-                        nodes.remove(index);
-                        continue;
                     }
-                } else {
-                    let err_msg = ip_result.err().unwrap();
-                    error!("set group proxy {} failed: {}", node, err_msg);
+
+                    let mut live_release_proxies = proxies_needing_live_probe
+                        .into_iter()
+                        .filter(|proxy| nodes.contains(&proxy.get_name().to_string()))
+                        .collect::<Vec<Proxy>>();
+                    if !node_rename_map.is_empty() {
+                        for proxy in &mut live_release_proxies {
+                            let name = if let Some(new_name) = node_rename_map.get(proxy.get_name())
+                            {
+                                new_name.clone()
+                            } else {
+                                proxy.get_name().to_string()
+                            };
+                            proxy.set_name(&name);
+                        }
+                    }
+                    release_proxies.extend(live_release_proxies);
                 }
-                index += 1;
+                Err(err) => {
+                    error!("restart clash meta for rename stage failed: {}", err);
+                    if !release_proxies.is_empty() {
+                        warn!(
+                            "falling back to {} cached validated proxies because live probe stage could not start",
+                            release_proxies.len()
+                        );
+                    }
+                }
             }
+            clash_meta.stop().unwrap();
         }
 
-        release_proxies = useful_proxies
-            .into_iter()
-            .filter(|proxy| nodes.contains(&proxy.get_name().to_string()))
-            .collect::<Vec<Proxy>>();
-
-        if !node_rename_map.is_empty() {
-            for proxy in &mut release_proxies {
-                let name = if let Some(new_name) = node_rename_map.get(proxy.get_name()) {
-                    new_name.clone()
-                } else {
-                    proxy.get_name().to_string()
-                };
-                proxy.set_name(&name);
-            }
+        if !release_proxies.is_empty() {
+            SubManager::rename_dup_proxies_name(&mut release_proxies);
         }
-
-        SubManager::rename_dup_proxies_name(&mut release_proxies);
         SubManager::save_proxies_into_clash_file(
             &release_proxies,
             release_clash_template_path.to_string(),
@@ -547,7 +489,6 @@ async fn run(config: Settings) {
             v2rayn_links_path.to_string_lossy().to_string(),
         );
         info!("release file: {}", release_yaml_path.to_string_lossy());
-        clash_meta.stop().unwrap();
     }
 
     let release_source_counts =
@@ -754,6 +695,175 @@ fn write_v2rayn_outputs(proxies: &[Proxy], base64_path: String, links_path: Stri
     SubManager::save_proxies_into_links_file(proxies, links_path);
 }
 
+fn load_cached_validated_proxy_map(path: PathBuf) -> HashMap<String, CachedValidatedProxy> {
+    let content = match fs::read_to_string(&path) {
+        Ok(content) => content,
+        Err(_) => return HashMap::new(),
+    };
+    let items = match serde_json::from_str::<Vec<pipeline::ValidatedPoolMihomoItem>>(&content) {
+        Ok(items) => items,
+        Err(err) => {
+            warn!(
+                "failed to parse cached validated pool at {}: {}",
+                path.display(),
+                err
+            );
+            return HashMap::new();
+        }
+    };
+    build_cached_validated_proxy_map(items)
+}
+
+fn build_cached_validated_proxy_map(
+    items: Vec<pipeline::ValidatedPoolMihomoItem>,
+) -> HashMap<String, CachedValidatedProxy> {
+    let mut cache = HashMap::new();
+    for item in items {
+        if item.name.trim().is_empty() {
+            continue;
+        }
+        if !item.supports_gemini && !item.supports_claude {
+            continue;
+        }
+        cache.insert(
+            item.fingerprint,
+            CachedValidatedProxy {
+                name: item.name,
+                metadata: pipeline::ValidatedPoolMetadata {
+                    exit_ip: item.exit_ip,
+                    country: item.country,
+                    country_code: item.country_code,
+                    region: item.region,
+                    city: item.city,
+                    isp: item.isp,
+                    supports_gemini: item.supports_gemini,
+                    supports_claude: item.supports_claude,
+                },
+            },
+        );
+    }
+    cache
+}
+
+fn reuse_cached_validated_proxies(
+    useful_proxies: Vec<Proxy>,
+    cache: &HashMap<String, CachedValidatedProxy>,
+    validated_pool_metadata: &mut HashMap<String, pipeline::ValidatedPoolMetadata>,
+) -> (Vec<Proxy>, Vec<Proxy>) {
+    let mut reused = Vec::new();
+    let mut pending = Vec::new();
+
+    for mut proxy in useful_proxies {
+        let Some(fingerprint) = pipeline::proxy_fingerprint(&proxy) else {
+            pending.push(proxy);
+            continue;
+        };
+        let Some(cached) = cache.get(&fingerprint) else {
+            pending.push(proxy);
+            continue;
+        };
+
+        proxy.set_name(&cached.name);
+        validated_pool_metadata.insert(fingerprint, cached.metadata.clone());
+        reused.push(proxy);
+    }
+
+    (reused, pending)
+}
+
+async fn probe_release_proxy(
+    clash_meta: &ClashMeta,
+    config: &Settings,
+    node: &str,
+    timeout: Duration,
+) -> Option<LiveProbeResult> {
+    match clash_meta
+        .set_group_proxy(TEST_PROXY_GROUP_NAME, node)
+        .await
+    {
+        Ok(true) => {}
+        Ok(false) => {
+            error!(
+                "set group proxy {} failed: controller returned non-success",
+                node
+            );
+            return None;
+        }
+        Err(err) => {
+            error!("set group proxy {} failed: {}", node, err);
+            return None;
+        }
+    }
+
+    let (proxy_ip, from) = match cgi_trace::get_ip(&clash_meta.proxy_url, timeout).await {
+        Ok(result) => result,
+        Err(err) => {
+            error!("get ip for node {} failed: {}", node, err);
+            return None;
+        }
+    };
+    info!("node {} ip {} from {}", node, proxy_ip, from);
+
+    let (gemini_result, claude_result, ip_detail_result) = tokio::join!(
+        website::gemini_is_ok(&clash_meta.proxy_url, timeout),
+        website::claude_is_ok(&clash_meta.proxy_url, timeout),
+        ip::get_ip_detail(&proxy_ip, &clash_meta.proxy_url)
+    );
+
+    let mut gemini_is_ok = false;
+    match gemini_result {
+        Ok(_) => {
+            info!("node {} gemini ok", node);
+            gemini_is_ok = true;
+        }
+        Err(err) => error!("node {} gemini failed: {:#}", node, err),
+    }
+
+    let mut claude_is_ok = false;
+    match claude_result {
+        Ok(_) => {
+            info!("node {} claude ok", node);
+            claude_is_ok = true;
+        }
+        Err(err) => error!("node {} claude failed: {:#}", node, err),
+    }
+
+    if !gemini_is_ok && !claude_is_ok {
+        return None;
+    }
+
+    let metadata = pipeline::ValidatedPoolMetadata::from_probe_result(
+        &proxy_ip.to_string(),
+        ip_detail_result.as_ref().ok(),
+        gemini_is_ok,
+        claude_is_ok,
+    );
+
+    let mut new_name = proxy_ip.to_string();
+    match ip_detail_result {
+        Ok(ip_detail) => {
+            info!("{:?}", ip_detail);
+            if config.rename_node {
+                new_name =
+                    node_label::render_node_name(&config.rename_pattern, &proxy_ip, &ip_detail);
+            }
+        }
+        Err(err) => error!("get ip detail for {} failed: {}", node, err),
+    }
+
+    if gemini_is_ok {
+        new_name += "_Gemini";
+    }
+    if claude_is_ok {
+        new_name += "_Claude";
+    }
+
+    Some(LiveProbeResult {
+        renamed_name: new_name,
+        metadata,
+    })
+}
+
 fn dedupe_strings(items: Vec<String>) -> Vec<String> {
     let mut deduped = Vec::new();
     let mut seen = HashSet::new();
@@ -821,6 +931,52 @@ fn current_epoch_secs() -> u64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_build_cached_validated_proxy_map_skips_unusable_entries() {
+        let cache = build_cached_validated_proxy_map(vec![
+            pipeline::ValidatedPoolMihomoItem {
+                fingerprint: "fp-ok".to_string(),
+                proxy_type: "Vless".to_string(),
+                name: "cached-node".to_string(),
+                server: "example.com".to_string(),
+                source_urls: Vec::new(),
+                source_count: 0,
+                json: "{}".to_string(),
+                exit_ip: "1.1.1.1".to_string(),
+                country: "United States".to_string(),
+                country_code: "US".to_string(),
+                region: "California".to_string(),
+                city: "Los Angeles".to_string(),
+                isp: "Example ISP".to_string(),
+                region_hint: "US".to_string(),
+                supports_gemini: true,
+                supports_claude: false,
+            },
+            pipeline::ValidatedPoolMihomoItem {
+                fingerprint: "fp-skip".to_string(),
+                proxy_type: "Vless".to_string(),
+                name: "skip-node".to_string(),
+                server: "example.org".to_string(),
+                source_urls: Vec::new(),
+                source_count: 0,
+                json: "{}".to_string(),
+                exit_ip: "2.2.2.2".to_string(),
+                country: String::new(),
+                country_code: String::new(),
+                region: String::new(),
+                city: String::new(),
+                isp: String::new(),
+                region_hint: "OTHER".to_string(),
+                supports_gemini: false,
+                supports_claude: false,
+            },
+        ]);
+
+        assert_eq!(cache.len(), 1);
+        assert_eq!(cache.get("fp-ok").unwrap().name, "cached-node");
+        assert!(!cache.contains_key("fp-skip"));
+    }
 
     #[test]
     fn test_get_stable_nodes() {

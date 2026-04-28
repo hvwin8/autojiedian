@@ -189,8 +189,8 @@ impl Proxy {
                 ProxyType::Hysteria2,
                 Box::new(Hysteria2::from_link(link)?),
             ))
-        } else if link.starts_with("hy2://") {
-            let normalized = format!("hysteria2://{}", &link[6..]);
+        } else if let Some(stripped) = link.strip_prefix("hy2://") {
+            let normalized = format!("hysteria2://{}", stripped);
             Ok(Proxy::new(
                 ProxyType::Hysteria2,
                 Box::new(Hysteria2::from_link(normalized)?),

@@ -53,6 +53,7 @@ GitHub Pages 还会同步发布：
 - `refresh-release`
   - 负责定时执行 `cargo run`，刷新 `clash.yaml` 与 `artifacts`
   - 仅手动或定时触发，不再跟每次推送绑死
+  - 会优先复用上轮 `validated_pool_mihomo` 中已验证的节点，只对新增或未命中的节点做完整探测
 - `pages`
   - 负责把最新提交内容打包成 GitHub Pages 站点
 

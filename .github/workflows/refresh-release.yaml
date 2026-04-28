@@ -18,7 +18,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     name: Refresh Release
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 360
     permissions:
       contents: write
     steps:
@@ -33,13 +33,10 @@ jobs:
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
 
-      - name: Build workspace
-        run: cargo build --workspace --verbose
-
       - name: Refresh release artifacts
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: cargo run
+        run: timeout 350m cargo run --locked --verbose
 
       - name: Verify downloaded mihomo core
         run: |

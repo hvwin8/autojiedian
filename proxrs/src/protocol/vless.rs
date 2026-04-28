@@ -181,6 +181,15 @@ impl ProxyAdapter for Vless {
         let parts: Vec<&str> = url.split("@").collect();
         let uuid = String::from(parts[0]);
 
+        if parts.len() != 2 {
+            return Err(UnsupportedLinkError {
+                message: format!(
+                    "Invalid vless link: missing uuid/server separator: {}",
+                    link
+                ),
+            });
+        }
+
         let addr = parts[1];
         let (server, port) = if addr.starts_with('[') {
             // IPv6 format: [2001:bc8:1d90:d4e::]:9999
@@ -194,11 +203,14 @@ impl ProxyAdapter for Vless {
         if name.is_empty() {
             name = server.to_owned() + port.to_string().as_str();
         }
+        let port = port.parse::<u16>().map_err(|_| UnsupportedLinkError {
+            message: format!("Invalid vless link: invalid port: {}", link),
+        })?;
 
         Ok(Vless {
             name,
             server: server.to_owned(),
-            port: port.parse::<u16>().unwrap(),
+            port,
             uuid,
             flow,
             udp: Some(true),
@@ -317,6 +329,13 @@ mod test {
         let link = "vless://fa3129d0-5d5c-4bdf-99d7-708b25e92241@[2603:c022:8013:f300:2859:298e:1387:7c28]:35803?encryption=none&security=reality&sni=sega.com&fp=firefox&pbk=euJOlEl0IAbuX8rsStBPM_DVHBtWF0e5uinEhHCzYxw&sid=32ae7737&spx=%2F&type=tcp&headerType=none#yx9mzoya".to_string();
         let vless = Vless::from_link(link).unwrap();
         assert_eq!(vless.server, "2603:c022:8013:f300:2859:298e:1387:7c28");
+    }
+
+    #[test]
+    fn test_invalid_vless_port_returns_err_instead_of_panicking() {
+        let link =
+            "vless://d351bace-f8a4-4502-b1e1-f003f45810c0@example.com:?type=ws#bad".to_string();
+        assert!(Vless::from_link(link).is_err());
     }
 
     // vless://b3524347-d27b-4d4a-8371-6cf837dea4d2@us1.helloco.xyz:60001?mode=multi&

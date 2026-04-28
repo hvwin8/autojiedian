@@ -104,6 +104,7 @@ pub fn canonicalize_registry_url(raw: &str) -> String {
     canonicalize_registry_key(raw).unwrap_or_else(|| raw.trim().to_string())
 }
 
+#[allow(dead_code)]
 pub fn canonicalize_subscription_url(raw: &str) -> Option<String> {
     canonicalize_candidate_url(raw, None, true)
 }

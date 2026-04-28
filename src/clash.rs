@@ -253,15 +253,13 @@ impl ClashMeta {
         let version_url = format!("{}/version", &self.external_url);
 
         for _ in 0..10 {
-            match client.get(&version_url).send().await {
-                Ok(response) => match response.error_for_status() {
-                    Ok(ok_response) => match ok_response.json::<ClashVersion>().await {
+            if let Ok(response) = client.get(&version_url).send().await {
+                if let Ok(ok_response) = response.error_for_status() {
+                    match ok_response.json::<ClashVersion>().await {
                         Ok(version) => return Ok(version),
                         Err(err) => return Err(Box::new(err)),
-                    },
-                    Err(_) => {}
-                },
-                Err(_) => {}
+                    }
+                }
             }
 
             sleep(Duration::from_secs(1)).await;

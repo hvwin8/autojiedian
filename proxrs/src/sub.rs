@@ -527,11 +527,11 @@ mod test {
 
     #[test]
     fn test_get_clash_config_content() {
-        let path = "conf/clash_release.yaml";
+        let path = repo_path("conf/clash_release.yaml");
         let mut proxies =
             SubManager::parse_from_path(repo_path("tests/res/base64_proxies")).unwrap();
         SubManager::unset_proxies_name(&mut proxies);
-        let content = SubManager::get_clash_config_content(path.to_string(), &proxies).unwrap();
+        let content = SubManager::get_clash_config_content(path, &proxies).unwrap();
         println!("{}", content);
     }
 
@@ -540,7 +540,7 @@ mod test {
         let link = "ss://YWVzLTEyOC1nY206ZDljNTc3MzI4ZmIzNDlmZQ==@120.232.73.68:40676#%F0%9F%87%AD%F0%9F%87%B0HK";
         assert!(!Path::new(link).is_file());
 
-        let path = PathBuf::from_iter(vec!["tests", "res", "base64_proxies"]);
+        let path = repo_root().join("tests").join("res").join("base64_proxies");
         assert!(path.is_file());
     }
 
@@ -574,14 +574,14 @@ mod test {
 
         let mut proxies = SubManager::parse_content(content).unwrap();
         assert_eq!(proxies.len(), 5);
-        assert_eq!(proxies.get(0).unwrap().get_name(), "name");
+        assert_eq!(proxies.first().unwrap().get_name(), "name");
         assert_eq!(proxies.get(1).unwrap().get_name(), "name1");
         assert_eq!(proxies.get(2).unwrap().get_name(), "name1");
         assert_eq!(proxies.get(3).unwrap().get_name(), "name");
         assert_eq!(proxies.get(4).unwrap().get_name(), "xixi");
         SubManager::rename_dup_proxies_name(&mut proxies);
         assert_eq!(proxies.len(), 5);
-        assert_eq!(proxies.get(0).unwrap().get_name(), "name1");
+        assert_eq!(proxies.first().unwrap().get_name(), "name1");
         assert_eq!(proxies.get(1).unwrap().get_name(), "name2");
         assert_eq!(proxies.get(2).unwrap().get_name(), "name3");
         assert_eq!(proxies.get(3).unwrap().get_name(), "name4");
@@ -722,7 +722,6 @@ proxy-providers:
                         p.uuid = uuid.to_string();
                         proxy.adapter = Box::new(p);
                         result.push(proxy.clone());
-                    } else {
                     }
                 } else if proxy.proxy_type.eq(&Vmess) {
                     if let Some(vmess) = proxy

@@ -3,6 +3,7 @@ use std::collections::BTreeSet;
 use std::collections::HashMap;
 
 use proxrs::protocol::Proxy;
+use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
 
@@ -50,7 +51,7 @@ pub struct ValidatedPoolItem {
     pub json: String,
 }
 
-#[derive(Debug, Clone, Serialize, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ValidatedPoolMetadata {
     pub exit_ip: String,
     pub country: String,
@@ -86,7 +87,7 @@ impl ValidatedPoolMetadata {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ValidatedPoolMihomoItem {
     pub fingerprint: String,
     pub proxy_type: String,

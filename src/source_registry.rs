@@ -90,8 +90,7 @@ impl SourceRegistry {
 
     pub fn persist(&mut self, path: &str) -> io::Result<()> {
         self.updated_at_epoch_secs = now_epoch_secs();
-        let output = serde_json::to_string_pretty(self)
-            .map_err(|err| io::Error::new(io::ErrorKind::Other, err))?;
+        let output = serde_json::to_string_pretty(self).map_err(io::Error::other)?;
         if let Some(parent) = Path::new(path).parent() {
             fs::create_dir_all(parent)?;
         }

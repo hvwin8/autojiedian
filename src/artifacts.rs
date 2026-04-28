@@ -33,8 +33,7 @@ impl ArtifactStore {
         self.ensure_parent(&full_path)?;
         let file = File::create(full_path)?;
         let writer = BufWriter::new(file);
-        serde_json::to_writer_pretty(writer, value)
-            .map_err(|err| io::Error::new(io::ErrorKind::Other, err))
+        serde_json::to_writer_pretty(writer, value).map_err(io::Error::other)
     }
 
     pub fn write_json_lines<T: Serialize>(
@@ -51,11 +50,14 @@ impl ArtifactStore {
         let file = File::create(full_path)?;
         let mut writer = BufWriter::new(file);
         for value in values {
-            serde_json::to_writer(&mut writer, value)
-                .map_err(|err| io::Error::new(io::ErrorKind::Other, err))?;
+            serde_json::to_writer(&mut writer, value).map_err(io::Error::other)?;
             writer.write_all(b"\n")?;
         }
         writer.flush()
+    }
+
+    pub fn path(&self, relative_path: &str) -> PathBuf {
+        self.full_path(relative_path)
     }
 
     fn full_path(&self, relative_path: &str) -> PathBuf {
