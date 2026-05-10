@@ -1,6 +1,54 @@
 {
-  "updated_at_epoch_secs": 1778391324,
+  "updated_at_epoch_secs": 1778406571,
   "records": [
+    {
+      "url": "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml",
+      "source_kind": "direct_subscription",
+      "discovered_from_feeds": [
+        "https://github.com/snakem982/proxypool/tree/main/source"
+      ],
+      "seen_count": 11,
+      "discover_hits": 0,
+      "feed_scan_count": 0,
+      "fetch_attempts": 6,
+      "fetch_successes": 6,
+      "fetch_empty_results": 0,
+      "total_proxy_count": 415,
+      "max_proxy_count": 75,
+      "last_proxy_count": 73,
+      "total_validated_proxy_count": 117,
+      "last_validated_proxy_count": 45,
+      "total_released_proxy_count": 99,
+      "last_released_proxy_count": 42,
+      "last_error": null,
+      "first_seen_epoch_secs": 1773700902,
+      "last_seen_epoch_secs": 1778401335,
+      "score": 79.10009267840593
+    },
+    {
+      "url": "https://raw.githubusercontent.com/dongchengjie/airport/main/subs/merged/tested_within.yaml",
+      "source_kind": "direct_subscription",
+      "discovered_from_feeds": [
+        "https://github.com/dongchengjie/airport/tree/main/subs/merged"
+      ],
+      "seen_count": 11,
+      "discover_hits": 0,
+      "feed_scan_count": 0,
+      "fetch_attempts": 10,
+      "fetch_successes": 10,
+      "fetch_empty_results": 0,
+      "total_proxy_count": 18406,
+      "max_proxy_count": 8122,
+      "last_proxy_count": 8122,
+      "total_validated_proxy_count": 4889,
+      "last_validated_proxy_count": 4183,
+      "total_released_proxy_count": 4295,
+      "last_released_proxy_count": 3935,
+      "last_error": null,
+      "first_seen_epoch_secs": 1773700902,
+      "last_seen_epoch_secs": 1778401336,
+      "score": 79.09742574405303
+    },
     {
       "url": "https://anaer.github.io/Sub/clash.yaml",
       "source_kind": "discovered_subscription",
@@ -16,14 +64,14 @@
       "total_proxy_count": 280,
       "max_proxy_count": 225,
       "last_proxy_count": 225,
-      "total_validated_proxy_count": 66,
-      "last_validated_proxy_count": 55,
-      "total_released_proxy_count": 62,
-      "last_released_proxy_count": 55,
+      "total_validated_proxy_count": 62,
+      "last_validated_proxy_count": 51,
+      "total_released_proxy_count": 58,
+      "last_released_proxy_count": 51,
       "last_error": null,
       "first_seen_epoch_secs": 1775417797,
-      "last_seen_epoch_secs": 1778386582,
-      "score": 79.10822510822511
+      "last_seen_epoch_secs": 1778401340,
+      "score": 78.78341013824884
     },
     {
       "url": "https://raw.githubusercontent.com/anaer/Sub/main/clash.yaml",
@@ -40,14 +88,14 @@
       "total_proxy_count": 280,
       "max_proxy_count": 225,
       "last_proxy_count": 225,
-      "total_validated_proxy_count": 66,
-      "last_validated_proxy_count": 55,
-      "total_released_proxy_count": 62,
-      "last_released_proxy_count": 55,
+      "total_validated_proxy_count": 62,
+      "last_validated_proxy_count": 51,
+      "total_released_proxy_count": 58,
+      "last_released_proxy_count": 51,
       "last_error": null,
       "first_seen_epoch_secs": 1775417797,
-      "last_seen_epoch_secs": 1778386582,
-      "score": 79.10822510822511
+      "last_seen_epoch_secs": 1778401341,
+      "score": 78.78341013824884
     },
     {
       "url": "https://raw.githubusercontent.com/anaer/Sub/main/proxies.yaml",
@@ -64,62 +112,14 @@
       "total_proxy_count": 280,
       "max_proxy_count": 225,
       "last_proxy_count": 225,
-      "total_validated_proxy_count": 66,
-      "last_validated_proxy_count": 55,
-      "total_released_proxy_count": 62,
-      "last_released_proxy_count": 55,
+      "total_validated_proxy_count": 62,
+      "last_validated_proxy_count": 51,
+      "total_released_proxy_count": 58,
+      "last_released_proxy_count": 51,
       "last_error": null,
       "first_seen_epoch_secs": 1775417792,
-      "last_seen_epoch_secs": 1778386579,
-      "score": 79.10822510822511
-    },
-    {
-      "url": "https://raw.githubusercontent.com/dongchengjie/airport/main/subs/merged/tested_within.yaml",
-      "source_kind": "direct_subscription",
-      "discovered_from_feeds": [
-        "https://github.com/dongchengjie/airport/tree/main/subs/merged"
-      ],
-      "seen_count": 11,
-      "discover_hits": 0,
-      "feed_scan_count": 0,
-      "fetch_attempts": 10,
-      "fetch_successes": 10,
-      "fetch_empty_results": 0,
-      "total_proxy_count": 18052,
-      "max_proxy_count": 7768,
-      "last_proxy_count": 7768,
-      "total_validated_proxy_count": 4707,
-      "last_validated_proxy_count": 4001,
-      "total_released_proxy_count": 4118,
-      "last_released_proxy_count": 3758,
-      "last_error": null,
-      "first_seen_epoch_secs": 1773700902,
-      "last_seen_epoch_secs": 1778386579,
-      "score": 78.96360682363643
-    },
-    {
-      "url": "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml",
-      "source_kind": "direct_subscription",
-      "discovered_from_feeds": [
-        "https://github.com/snakem982/proxypool/tree/main/source"
-      ],
-      "seen_count": 11,
-      "discover_hits": 0,
-      "feed_scan_count": 0,
-      "fetch_attempts": 6,
-      "fetch_successes": 6,
-      "fetch_empty_results": 0,
-      "total_proxy_count": 395,
-      "max_proxy_count": 75,
-      "last_proxy_count": 53,
-      "total_validated_proxy_count": 104,
-      "last_validated_proxy_count": 32,
-      "total_released_proxy_count": 88,
-      "last_released_proxy_count": 31,
-      "last_error": null,
-      "first_seen_epoch_secs": 1773700902,
-      "last_seen_epoch_secs": 1778386578,
-      "score": 78.7273612463486
+      "last_seen_epoch_secs": 1778401336,
+      "score": 78.78341013824884
     },
     {
       "url": "https://raw.githubusercontent.com/snakem982/proxypool/main/source/v2ray-2.txt",
@@ -133,17 +133,17 @@
       "fetch_attempts": 5,
       "fetch_successes": 5,
       "fetch_empty_results": 0,
-      "total_proxy_count": 251,
+      "total_proxy_count": 240,
       "max_proxy_count": 67,
-      "last_proxy_count": 50,
-      "total_validated_proxy_count": 39,
-      "last_validated_proxy_count": 11,
-      "total_released_proxy_count": 32,
-      "last_released_proxy_count": 11,
+      "last_proxy_count": 39,
+      "total_validated_proxy_count": 43,
+      "last_validated_proxy_count": 15,
+      "total_released_proxy_count": 36,
+      "last_released_proxy_count": 15,
       "last_error": null,
       "first_seen_epoch_secs": 1773701984,
-      "last_seen_epoch_secs": 1778386579,
-      "score": 76.31269792624374
+      "last_seen_epoch_secs": 1778401337,
+      "score": 76.15542635658915
     },
     {
       "url": "https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.meta.yml",
@@ -155,17 +155,17 @@
       "fetch_attempts": 2,
       "fetch_successes": 2,
       "fetch_empty_results": 0,
-      "total_proxy_count": 317,
-      "max_proxy_count": 222,
-      "last_proxy_count": 222,
-      "total_validated_proxy_count": 51,
-      "last_validated_proxy_count": 44,
-      "total_released_proxy_count": 35,
-      "last_released_proxy_count": 29,
+      "total_proxy_count": 309,
+      "max_proxy_count": 214,
+      "last_proxy_count": 214,
+      "total_validated_proxy_count": 39,
+      "last_validated_proxy_count": 32,
+      "total_released_proxy_count": 27,
+      "last_released_proxy_count": 21,
       "last_error": null,
       "first_seen_epoch_secs": 1775417792,
-      "last_seen_epoch_secs": 1778386579,
-      "score": 75.08041071318117
+      "last_seen_epoch_secs": 1778401337,
+      "score": 74.44734876773713
     },
     {
       "url": "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta.yaml",
@@ -188,7 +188,7 @@
       "last_released_proxy_count": 0,
       "last_error": null,
       "first_seen_epoch_secs": 1773700902,
-      "last_seen_epoch_secs": 1778386578,
+      "last_seen_epoch_secs": 1778401335,
       "score": 71.30065359477123
     },
     {
@@ -206,14 +206,14 @@
       "total_proxy_count": 41,
       "max_proxy_count": 21,
       "last_proxy_count": 20,
-      "total_validated_proxy_count": 9,
-      "last_validated_proxy_count": 8,
-      "total_released_proxy_count": 8,
-      "last_released_proxy_count": 8,
+      "total_validated_proxy_count": 10,
+      "last_validated_proxy_count": 9,
+      "total_released_proxy_count": 9,
+      "last_released_proxy_count": 9,
       "last_error": null,
       "first_seen_epoch_secs": 1775417797,
-      "last_seen_epoch_secs": 1778386582,
-      "score": 66.47913279132793
+      "last_seen_epoch_secs": 1778401340,
+      "score": 67.0780487804878
     },
     {
       "url": "https://raw.githubusercontent.com/xiaoji235/airport-free/main/clash/naidounode.txt",
@@ -230,14 +230,14 @@
       "total_proxy_count": 23,
       "max_proxy_count": 14,
       "last_proxy_count": 9,
-      "total_validated_proxy_count": 2,
-      "last_validated_proxy_count": 2,
-      "total_released_proxy_count": 1,
-      "last_released_proxy_count": 1,
+      "total_validated_proxy_count": 4,
+      "last_validated_proxy_count": 4,
+      "total_released_proxy_count": 3,
+      "last_released_proxy_count": 3,
       "last_error": null,
       "first_seen_epoch_secs": 1775417797,
-      "last_seen_epoch_secs": 1778386582,
-      "score": 56.33913043478261
+      "last_seen_epoch_secs": 1778401340,
+      "score": 60.57826086956521
     },
     {
       "url": "https://raw.githubusercontent.com/xiaoji235/airport-free/main/clash/clashnodecc.txt",
@@ -254,14 +254,14 @@
       "total_proxy_count": 20,
       "max_proxy_count": 20,
       "last_proxy_count": 20,
-      "total_validated_proxy_count": 8,
-      "last_validated_proxy_count": 8,
-      "total_released_proxy_count": 8,
-      "last_released_proxy_count": 8,
+      "total_validated_proxy_count": 9,
+      "last_validated_proxy_count": 9,
+      "total_released_proxy_count": 9,
+      "last_released_proxy_count": 9,
       "last_error": null,
       "first_seen_epoch_secs": 1775417792,
-      "last_seen_epoch_secs": 1778386579,
-      "score": 48.50000000000001
+      "last_seen_epoch_secs": 1778401337,
+      "score": 49.500000000000014
     },
     {
       "url": "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml",
@@ -282,7 +282,7 @@
       "last_released_proxy_count": 0,
       "last_error": null,
       "first_seen_epoch_secs": 1775417792,
-      "last_seen_epoch_secs": 1778386579,
+      "last_seen_epoch_secs": 1778401337,
       "score": 46.2
     },
     {
@@ -306,7 +306,7 @@
       "last_released_proxy_count": 0,
       "last_error": "empty_result",
       "first_seen_epoch_secs": 1773700902,
-      "last_seen_epoch_secs": 1778386579,
+      "last_seen_epoch_secs": 1778401336,
       "score": 31.966279334700392
     },
     {
@@ -328,7 +328,7 @@
       "last_released_proxy_count": 0,
       "last_error": null,
       "first_seen_epoch_secs": 1773700902,
-      "last_seen_epoch_secs": 1778386578,
+      "last_seen_epoch_secs": 1778401335,
       "score": 3.7500000000000004
     },
     {
@@ -350,7 +350,7 @@
       "last_released_proxy_count": 0,
       "last_error": null,
       "first_seen_epoch_secs": 1773700902,
-      "last_seen_epoch_secs": 1778386578,
+      "last_seen_epoch_secs": 1778401335,
       "score": 2.7500000000000004
     },
     {
@@ -372,7 +372,7 @@
       "last_released_proxy_count": 0,
       "last_error": null,
       "first_seen_epoch_secs": 1773700902,
-      "last_seen_epoch_secs": 1778386578,
+      "last_seen_epoch_secs": 1778401335,
       "score": 2.5
     },
     {
@@ -394,7 +394,7 @@
       "last_released_proxy_count": 0,
       "last_error": null,
       "first_seen_epoch_secs": 1775417792,
-      "last_seen_epoch_secs": 1778386578,
+      "last_seen_epoch_secs": 1778401335,
       "score": 1.7499999999999998
     },
     {
@@ -416,7 +416,7 @@
       "last_released_proxy_count": 0,
       "last_error": null,
       "first_seen_epoch_secs": 1775417792,
-      "last_seen_epoch_secs": 1778386578,
+      "last_seen_epoch_secs": 1778401335,
       "score": 1.5
     },
     {
@@ -464,7 +464,7 @@
       "last_released_proxy_count": 0,
       "last_error": "empty_result",
       "first_seen_epoch_secs": 1773701984,
-      "last_seen_epoch_secs": 1778386582,
+      "last_seen_epoch_secs": 1778401340,
       "score": 0.0
     }
   ]
