@@ -70,19 +70,6 @@ dns:
   - https://doh.pub/dns-query
   - https://dns.alidns.com/dns-query
 proxies:
-- cipher: 2022-blake3-aes-128-gcm
-  name: 104.128.72.119_Claude
-  password: YTE1ZWU4ZTEyZjc3YmEzZA==:Y2JhZTU3ODYtZjg3MC00NA==
-  plugin: gost-plugin
-  plugin-opts:
-    host: one.local
-    mode: websocket
-    mux: true
-    path: /ws
-    tls: false
-  port: 80
-  server: 104.128.72.119
-  type: ss
 - flow: xtls-rprx-vision
   name: 116.80.44.144_Gemini_Claude
   network: raw
@@ -95,24 +82,12 @@ proxies:
   tls: true
   type: vless
   uuid: ebd8539d-e249-4a39-8f90-e8585e8cc35e
-- flow: xtls-rprx-vision
-  name: 137.184.218.169_Gemini_Claude
-  network: tcp
-  port: 36925
-  reality-opts:
-    public-key: lJ9INPpO4rdnm2Tek_yg0PGFyUrBB6MoKyvqt_Mfqm0
-  server: 137.184.218.169
-  servername: www.cloudflare.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: c9fd0fb1-8251-4106-b09a-f4b426736f67
-- cipher: aes-256-gcm
-  name: 141.164.45.187_Claude
-  password: TEzjfAYq2IjtuoS
-  port: 6697
-  server: 141.164.45.187
-  type: ss
+- name: 121.169.46.116_Claude
+  port: 1090
+  server: 121.169.46.116
+  tls: false
+  type: socks5
+  username: T2clM0QlM0Q6
 - flow: xtls-rprx-vision
   name: 144.31.131.17_Claude
   network: tcp
@@ -127,20 +102,38 @@ proxies:
   type: vless
   udp: true
   uuid: 959b4df5-15bc-4eb8-8b93-95f6af50cd80
-- flow: xtls-rprx-vision
-  name: 162.217.249.72_Gemini_Claude
-  network: tcp
-  port: 443
-  reality-opts:
-    public-key: MFedImeNi-4keZx_rkV8WL6jjY6sLncSaXgNjpUBPGo
-    short-id: 8917bfb9900788d5
-  server: 162.217.249.72
-  servername: nether1cxc.chickenkiller.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: d78c12c4-6927-40b8-8550-ed9be00334da
+- cipher: chacha20-ietf-poly1305
+  name: 149.102.144.110_Claude
+  password: 7a5af500cb295935
+  port: 18337
+  server: 149.102.144.110
+  type: ss
+- alterId: 0
+  cipher: auto
+  name: 152.67.8.205_Gemini_Claude
+  network: ws
+  port: 80
+  server: 152.67.8.205
+  tls: false
+  type: vmess
+  uuid: 9db4c708-aef8-4359-821b-38e47990be0d
+  ws-opts:
+    headers:
+      Host: 152.67.8.205
+    path: /
+- cipher: 2022-blake3-aes-128-gcm
+  name: 154.16.157.200_Gemini_Claude
+  password: YTE1ZWU4ZTEyZjc3YmEzZA==:Y2JhZTU3ODYtZjg3MC00NA==
+  plugin: gost-plugin
+  plugin-opts:
+    host: one.local
+    mode: websocket
+    mux: true
+    path: /ws
+    tls: false
+  port: 20092
+  server: 172.96.161.152
+  type: ss
 - name: 162.221.196.121_Claude
   network: tcp
   password: I1vtf6pjYsAu-nFnraWAMjKTy90AHitdAz
@@ -162,15 +155,26 @@ proxies:
     headers:
       Host: sc-thenetherlands1.09vpn.com
     path: /vless/
-- name: 185.226.95.155_Claude
+- name: 172.104.237.100_Claude
   network: tcp
+  password: VPTFm=oZ++SuNT+jMRqGZqrAnWq-r8KJyY
+  port: 443
+  server: 172.104.237.100
+  skip-cert-verify: true
+  sni: 172.104.237.100
+  type: trojan
+- alterId: 0
+  cipher: auto
+  name: 172.111.146.64_Gemini_Claude
+  network: ws
   port: 80
-  server: 185.226.95.155
-  skip-cert-verify: false
+  server: 172.111.146.64
   tls: false
-  type: vless
-  udp: true
-  uuid: a4b4dbc4-c9c5-4360-9e9c-d6019118e318
+  type: vmess
+  uuid: 05b8c783-7f59-47f9-9923-06a465679f6a
+  ws-opts:
+    headers: {}
+    path: /vmess/
 - cipher: 2022-blake3-aes-128-gcm
   name: 185.229.59.254_Gemini_Claude
   password: YTE1ZWU4ZTEyZjc3YmEzZA==:Y2JhZTU3ODYtZjg3MC00NA==
@@ -192,6 +196,24 @@ proxies:
   type: vless
   udp: true
   uuid: f5a25ee5-ff24-41b0-80e8-ccafdc866614
+- cipher: chacha20-ietf-poly1305
+  name: 193.29.139.164_Claude
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.199
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 193.29.139.173_Claude
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.205
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 193.29.139.233_Claude
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.210
+  type: ss
 - flow: xtls-rprx-vision
   name: 193.56.3.125_Claude
   network: tcp
@@ -215,6 +237,20 @@ proxies:
   type: vless
   udp: true
   uuid: 3007b043-acdf-43a4-900e-c7c015406f89
+- flow: xtls-rprx-vision
+  name: 213.142.132.169_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: LaGTRJ1CJnnYV7FnyqQnU28I0xFTPFKI8xmUFwig5ic
+    short-id: c410508e9721512b
+  server: mouse2.1lil1.de
+  servername: www.stackoverflow.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: bcc094e4-1a85-8a25-f8e1-5b08b9af841c
 - name: 2401:fae0:1049:1e58:6550:43dc:877d:def_Claude
   network: tcp
   password: 4f4d1167-ef14-4304-9bce-0740472503ef
@@ -245,6 +281,14 @@ proxies:
   skip-cert-verify: true
   sni: fr.01.naiun.bilibili.com
   type: trojan
+- name: 2401:fae0:147d:2532:af67:1df:e914:d920_Claude
+  network: tcp
+  password: 4f4d1167-ef14-4304-9bce-0740472503ef
+  port: 46424
+  server: 90081bb25c.node.tro.cac.cab
+  skip-cert-verify: true
+  sni: de.01.naiun.bilibili.com
+  type: trojan
 - name: 2401:fae0:188e:ea01:84ef:6f23:7095:54fa_Claude
   network: tcp
   password: 4f4d1167-ef14-4304-9bce-0740472503ef
@@ -253,19 +297,30 @@ proxies:
   skip-cert-verify: true
   sni: gh.01.naiun.bilibili.com
   type: trojan
-- name: 37.221.79.69_Claude
-  network: xhttp
-  port: 8443
+- flow: xtls-rprx-vision
+  name: 2a0e:d604:1:130::2_Claude
+  network: tcp
+  port: 443
+  server: 87.120.93.140
+  servername: sub.sbrf-cdn342.ru
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 91e120bc-159a-4390-b4e1-197b19602ea0
+- flow: xtls-rprx-vision
+  name: 37.77.106.32_Claude
+  network: tcp
+  port: 13343
   reality-opts:
-    public-key: kSqgT4C5AcpCMLdW1VCvFSiv5UX6UDLaF33ECFpzUgQ
-    short-id: '41'
-  server: 37.221.79.69
-  servername: www.yahoo.com
+    public-key: MIs98I7LawHDr-TGlrEguEWcPQlaxoRMQW6zX9LaeUM
+    short-id: 40de4492e7
+  server: 37.77.106.32
+  servername: rcsb.org
   skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: 15115772-74b5-4c9b-9049-d7237a9c68f9
+  uuid: 228ecfd3-9bf0-42fd-a50e-581f84022513
 - name: 45.148.31.0_Claude
   network: ws
   port: 15855
@@ -299,16 +354,19 @@ proxies:
   type: vless
   udp: true
   uuid: 301d514e-4aa0-47b0-ba44-a0cb891cd52f
-- name: 47.81.36.237_Gemini
+- name: 45.88.183.168_Gemini_Claude
+  network: tcp
   port: 443
   reality-opts:
-    public-key: TRP10HqKUXEQ3O-cfsq93DycfBmbJe9KM36yvSa8Mmw
-  server: 47.81.36.237
-  servername: api.digital-help-prd.autodesk.com
+    public-key: EHtfJCv8UREtbQCPBc0BYX-BOFgKPFaG2yvR2w7rHBw
+    short-id: 972e3378
+  server: 45.89.106.4
+  servername: microsoft.com
+  skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: 3e7f67de-648e-4871-b51a-a225214d41ee
+  uuid: 5e1083b9-4d4f-50ef-93e7-6e966dfce1f9
 - alpn:
   - h3
   auth-str: dongtaiwang.com
@@ -353,6 +411,18 @@ proxies:
   port: 2083
   server: de1.connectsuite.org
   type: ss
+- name: 57.131.32.191_Claude
+  network: ws
+  port: 80
+  server: ov-italy1.09vpn.com
+  skip-cert-verify: false
+  type: vless
+  udp: true
+  uuid: 049e56d8-0ba0-49e3-b764-ee04122b9f00
+  ws-opts:
+    headers:
+      Host: ov-italy1.09vpn.com
+    path: /vless/
 - name: 57.131.32.191_Gemini_Claude1
   network: ws
   port: 80
@@ -365,18 +435,19 @@ proxies:
     headers:
       Host: OV-Italy1.09vpn.com
     path: /vless/
-- name: 57.131.32.191_Gemini_Claude2
+- alterId: 0
+  cipher: auto
+  name: 57.131.32.191_Gemini_Claude2
   network: ws
   port: 8443
-  server: ov-italy1.09vpn.com
-  servername: ov-italy1.09vpn.com
-  skip-cert-verify: false
+  server: 57.131.32.191
+  servername: OV-Italy1.09vpn.com
   tls: true
-  type: vless
-  udp: true
-  uuid: dc0d0eda-2293-4001-aa03-bd6c9431ed24
+  type: vmess
+  uuid: 848af33c-81f2-40c9-93b2-4681d056936b
   ws-opts:
-    path: /vless/
+    headers: {}
+    path: /vmess/
 - name: 84.239.14.148_Claude
   port: 9002
   server: 84.239.14.148
@@ -544,27 +615,68 @@ proxies:
   type: vless
   udp: true
   uuid: 477535ff-7878-0003-a614-5bb0e4b80959
-- name: 85.237.207.223_Gemini_Claude
-  network: ws
-  port: 2053
-  server: xmm.130209.xyz
-  servername: taiwanv6.xiaomaimai.qzz.io
+- flow: xtls-rprx-vision
+  name: 94.141.123.35_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: AYWvVCObGJ_5TnNMGj4z_UDSDzMJ3IcoRgIBCAeUWFs
+  server: 84.201.179.200
+  servername: ads.x5.ru
+  skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: 924106da-29ec-4822-bd13-703021e2a4f8
+  uuid: 223e6af9-95bb-4268-92ac-a552c54b47f1
+- name: 95.179.241.129_Claude
+  network: ws
+  port: 443
+  server: germany3.samanidempire.org
+  servername: germany3.samanidempire.org
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: true
+  uuid: 038a0cfe-d210-4b67-baa6-e3ba15046693
   ws-opts:
     headers:
-      Host: taiwanv6.xiaomaimai.qzz.io
-      User-Agent: Mozilla/5.0 (Linux; Android 7.0; Redmi Note 4 Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36
-    path: /api/v2/check_update
-- name: 中国_Beijing_Light Node Limited_Gemini
+      Host: germany3.samanidempire.org
+    path: /SDFDSerTeddgwete
+- name: 中国_Beijing_Light Node Limited_Gemini1
   network: tcp
   password: l64tlWoGT6USQr=3WnjWedzvVSHXn8TNTE
   port: 443
   server: 130.94.68.100
   skip-cert-verify: true
   sni: www.rolll.click
+  type: trojan
+- name: 中国_Beijing_Light Node Limited_Gemini2
+  network: tcp
+  password: IbezlLAYfrLRwFn9.mHn5FDwk1asLi599U
+  port: 443
+  server: 130.94.65.52
+  sni: www.static-cast.click
+  type: trojan
+- flow: xtls-rprx-vision
+  name: 其他地区_Almaty_PS Internet Company LLP_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: uz1Lb_2451iPvrwWCZ-4I9_WHdYm7ML0yjeJAZwBk3E
+    short-id: 73b4306eb38fe3d6
+  server: kz-1.nodes.ac
+  servername: kz-1.nodes.ac
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 593f4d6c-aff1-4832-87a7-b5d8e71584ea
+- name: 其他地区_Athens_BrainStorm Network_Claude
+  network: tcp
+  password: T5mQb1DCbOaJsr5UACQTe0elQ3BBH9Bf_g
+  port: 443
+  server: 185.126.238.78
+  sni: www.archiveselector.click
   type: trojan
 - flow: xtls-rprx-vision
   name: 其他地区_Belgrade_WorkTitans B.V._Claude1
@@ -581,19 +693,6 @@ proxies:
   udp: true
   uuid: 69a2af58-d74a-44ca-864a-e09b493f4274
 - name: 其他地区_Belgrade_WorkTitans B.V._Claude2
-  network: tcp
-  port: 443
-  reality-opts:
-    public-key: Zd5BqaW-kyJqZANUH2cIARr466QZw09pNngYjsEK1w8
-    short-id: 30fa
-  server: 91.225.217.26
-  servername: yahoo.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 0dc22208-cea4-4423-b3c3-a36957e23233
-- name: 其他地区_Belgrade_WorkTitans B.V._Claude3
   network: tcp
   password: strong-secret-pass-777
   port: 4443
@@ -612,20 +711,6 @@ proxies:
   tls: true
   type: vless
   uuid: 8338171d-2ea7-4015-bdea-492f3d5d4e60
-- flow: xtls-rprx-vision
-  name: 其他地区_Bratislava_eServer s.r.o._Claude
-  network: tcp
-  port: 8443
-  reality-opts:
-    public-key: A3PWLCRX9oeSyPvrmrwj2jUXcLo2uCwAISRBHtNE1Xw
-    short-id: 6ba85179e30d4fc2
-  server: 89.46.42.73
-  servername: ads.x5.ru
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 748b694f-c317-463e-a80b-f800fb03eb14
 - name: 其他地区_Bucharest_M247 Europe SRL_Claude1
   port: 9002
   server: 193.176.84.36
@@ -724,6 +809,19 @@ proxies:
   sni: www.bing.com
   tls: true
   type: http
+- name: 其他地区_Bucharest_Serva ONE LTD_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: OZVjfQBboTDTBw0baMFqzVPsVUI4FNQmspTEb0b0zW4
+    short-id: a1b2c3d4
+  server: 151.242.191.161
+  servername: www.samsung.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 301d514e-4aa0-47b0-ba44-a0cb891cd52f
 - name: 其他地区_Buchs / Buchs_Plant Holding GmbH_Claude
   network: tcp
   port: 443
@@ -737,6 +835,11 @@ proxies:
   type: vless
   udp: true
   uuid: 476caa1d-7c04-48ab-8de5-2c1af0d13a66
+- name: 其他地区_Budapest_WorkTitans B.V._Gemini_Claude
+  port: 3128
+  server: 91.132.140.82
+  skip-cert-verify: true
+  type: http
 - name: 其他地区_Dublin_WorkTitans B.V._Claude
   network: tcp
   port: 40921
@@ -749,16 +852,43 @@ proxies:
   tls: true
   type: vless
   uuid: b042a503-3cb9-461f-994d-28a642133b5e
-- alterId: 0
-  cipher: auto
-  name: 其他地区_Helsinki_Hetzner Online GmbH_Claude1
+- name: 其他地区_Geneva_Infomaniak Network SA_Claude1
   network: http
-  port: 1616
-  server: viptun2.majalekhodroshop.ir
+  port: 443
+  server: 83.228.226.72
+  skip-cert-verify: false
   tls: false
-  type: vmess
-  uuid: 56d35b8c-8e9c-4c64-a250-45401dcb156f
-- name: 其他地区_Helsinki_Hetzner Online GmbH_Claude2
+  type: vless
+  udp: true
+  uuid: a1ee1f7f-deb9-48e4-9a97-6f565949817d
+- name: 其他地区_Geneva_Infomaniak Network SA_Claude2
+  network: tcp
+  port: 18921
+  reality-opts:
+    public-key: 1-7zKj1-3VrO684UVOk4FxaNzyPexU_tszVXRCmYX1I
+    short-id: 4be126c9c5b32ff6
+  server: 83.228.226.72
+  servername: www.booking.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: a1ee1f7f-deb9-48e4-9a97-6f565949817d
+- cipher: chacha20-ietf-poly1305
+  name: 其他地区_Helsinki_Aleksei Fedorov Pr Krusevac_Claude
+  password: MZeSTvpl2uoey1R0frhPyJ
+  port: 51544
+  server: 109.107.182.229
+  type: ss
+- name: 其他地区_Helsinki_Baxet Group Inc._Claude
+  network: tcp
+  password: fHngvzC1ut#YqsV4X
+  port: 21936
+  server: 212.193.18.121
+  skip-cert-verify: true
+  sni: ya.ru
+  type: trojan
+- name: 其他地区_Helsinki_Hetzner Online GmbH_Claude1
   network: ws
   port: 80
   server: main.boobie.eu.cc
@@ -770,6 +900,15 @@ proxies:
     headers:
       Host: main.boobie.eu.cc
     path: /
+- alterId: 0
+  cipher: auto
+  name: 其他地区_Helsinki_Hetzner Online GmbH_Claude2
+  network: http
+  port: 1616
+  server: viptun2.majalekhodroshop.ir
+  tls: false
+  type: vmess
+  uuid: 56d35b8c-8e9c-4c64-a250-45401dcb156f
 - name: 其他地区_Helsinki_Hetzner Online GmbH_Claude3
   network: ws
   port: 2096
@@ -784,21 +923,36 @@ proxies:
     headers:
       Host: 69565ce3109804e7813f98ee.mmdbay.blog
     path: /graphql
-- name: 其他地区_Helsinki_Hetzner Online GmbH_Claude4
-  network: tcp
-  port: 443
+- grpc-opts:
+    grpc-service-name: xyz
+  name: 其他地区_Helsinki_Hetzner Online GmbH_Claude4
+  network: grpc
+  port: 25000
   reality-opts:
-    public-key: eXl8Dpux23etQ0aA_16LUQ9eBwfDqbCaJm7YusDIzUU
-    short-id: 5e841fab
-  server: ru7.vitok.cc
-  servername: ads.x5.ru
+    public-key: D9EktvCfJb5l8mBkJHx3U31BIUwIBHJKV85OzyNnDlU
+    short-id: 6ba85179e30d4fc3
+  server: xn-fi.onlinernet.ir
+  servername: xn--9iqr0tm1r4fi.onlinernet.ir
   skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: 1b9e301d-cecd-4eb1-8b36-eef811c2696d
+  uuid: bea6939e-eafa-4067-8fda-5152d6fa7109
+- name: 其他地区_Helsinki_Hetzner Online GmbH_Claude5
+  network: ws
+  port: 80
+  server: 204.168.234.22
+  skip-cert-verify: false
+  tls: false
+  type: vless
+  udp: true
+  uuid: 997b5119-c015-4203-b402-0eb0f60b77c3
+  ws-opts:
+    headers:
+      Host: nobody.fastspeed.ir
+    path: /ws
 - flow: xtls-rprx-vision
-  name: 其他地区_Helsinki_Livi Hosting_Claude
+  name: 其他地区_Helsinki_Livi Hosting_Claude1
   network: tcp
   port: 443
   reality-opts:
@@ -812,7 +966,35 @@ proxies:
   udp: true
   uuid: 3ea2d8f2-12c1-4189-8cc5-91d0ee9f5ca0
 - flow: xtls-rprx-vision
-  name: 其他地区_Helsinki_Node Host_Claude1
+  name: 其他地区_Helsinki_Livi Hosting_Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: C1hW1bTA9WOacIK-fHHg-HLkDZ3FY7FhEhAyldMSUEA
+    short-id: a1b2c3d4e5f6
+  server: 185.228.232.216
+  servername: queuev4.vk.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 3ea2d8f2-12c1-4189-8cc5-91d0ee9f5ca0
+- flow: xtls-rprx-vision
+  name: 其他地区_Helsinki_Livi Hosting_Claude3
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: C1hW1bTA9WOacIK-fHHg-HLkDZ3FY7FhEhAyldMSUEA
+    short-id: a1b2c3d4e5f6
+  server: 185.228.232.150
+  servername: queuev4.vk.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 3ea2d8f2-12c1-4189-8cc5-91d0ee9f5ca0
+- flow: xtls-rprx-vision
+  name: 其他地区_Helsinki_Node Host_Claude
   network: tcp
   port: 443
   reality-opts:
@@ -826,21 +1008,7 @@ proxies:
   udp: true
   uuid: 05e9d254-8ea8-4097-9450-d4aefc44bd7e
 - flow: xtls-rprx-vision
-  name: 其他地区_Helsinki_Node Host_Claude2
-  network: tcp
-  port: 443
-  reality-opts:
-    public-key: dZr14WsJ6yNqfoalMrTWBsOU74mckVoQO84Ty68TtW4
-    short-id: b03a4d1767157467
-  server: 2.27.13.15
-  servername: newfn.stardevs.top
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: f00984ef-f57e-41db-9182-b25f7bc3a1e2
-- flow: xtls-rprx-vision
-  name: 其他地区_Helsinki_Play2go International_Claude
+  name: 其他地区_Helsinki_Play2go International_Claude1
   network: tcp
   port: 443
   reality-opts:
@@ -853,8 +1021,34 @@ proxies:
   type: vless
   udp: true
   uuid: 2001daf3-5c56-4bef-8ea6-8dd0493c5a4c
+- flow: ''
+  name: 其他地区_Helsinki_Play2go International_Claude2
+  network: tcp
+  port: 4443
+  reality-opts:
+    public-key: cPnEvtfmLBeYzbYYklKblkllFRzRzCd0KgFM-19fSDM
+    short-id: c9
+  server: 2.26.87.101
+  servername: eh.vk.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 0537e5d5-8d2f-4f82-b660-ebf94062f67e
 - flow: xtls-rprx-vision
-  name: 其他地区_Helsinki_xorek.cloud International LTD_Claude
+  name: 其他地区_Helsinki_SERV.HOST GROUP LTD_Claude
+  port: 18038
+  reality-opts:
+    public-key: UDLhjunZjP-5A6KBMeuWe3qp_FusLAshcQIcCF7EZh8
+    short-id: ce9f790791426d83
+  server: 144.31.82.47
+  servername: www.microsoft.com
+  tls: true
+  type: vless
+  udp: true
+  uuid: a42c8b66-d0a7-4b49-9143-b98f1c84edba
+- flow: xtls-rprx-vision
+  name: 其他地区_Helsinki_xorek.cloud International LTD_Claude1
   network: tcp
   port: 443
   reality-opts:
@@ -866,6 +1060,12 @@ proxies:
   type: vless
   udp: true
   uuid: 749a5df1-2d12-45cf-80f3-f85ea6b2e405
+- cipher: chacha20-ietf-poly1305
+  name: 其他地区_Helsinki_xorek.cloud International LTD_Claude2
+  password: v2LIewZzNUsIrqODr22FVc
+  port: 34898
+  server: 195.133.2.2
+  type: ss
 - cipher: chacha20-ietf-poly1305
   name: 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude1
   password: Xsy8Ox4yOV3xLlpxtjzs3X
@@ -907,32 +1107,32 @@ proxies:
   tls: false
   type: vmess
   uuid: 04621bae-ab36-11ec-b909-0242ac120002
-- name: 其他地区_Milan_Akamai Technologies, Inc._Claude1
-  network: ws
-  port: 80
-  server: accountdb.ir
+- flow: xtls-rprx-vision
+  name: 其他地区_Madrid_ZhouyiSat Communications_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: WM-LMz6slGkGPD3zEM8Ntat27n6p6EfbxRsjYmTykV4
+    short-id: 8237eb
+  server: 195.96.132.125
+  servername: www.vk.ru
   skip-cert-verify: false
-  tls: false
+  tls: true
   type: vless
   udp: true
-  uuid: af77d53f-a0e4-456e-b977-696bf081dcc8
-  ws-opts:
-    headers:
-      Host: g1.nybaz.space
-    path: /
-- name: 其他地区_Milan_Akamai Technologies, Inc._Claude2
+  uuid: 69a2af58-d74a-44ca-864a-e09b493f4274
+- name: 其他地区_Mexico City_Latitude.sh_Gemini_Claude
   network: ws
-  port: 2082
-  server: yeksanaat.ir
+  port: 8443
+  server: UL-Mexico1.09vpn.com
+  servername: UL-Mexico1.09vpn.com
   skip-cert-verify: false
-  tls: false
+  tls: true
   type: vless
   udp: true
-  uuid: 536b1843-a13a-4a57-b778-bfc58e6cadb9
+  uuid: a6d20e79-d326-42c1-bc20-f4cecc6dc42d
   ws-opts:
-    headers:
-      Host: g1.nybaz.space
-    path: /
+    path: /vless/
 - name: 其他地区_Milan_OVH SAS_Gemini_Claude
   network: ws
   port: 80
@@ -969,6 +1169,19 @@ proxies:
   type: vless
   udp: true
   uuid: 6986ac20-af56-4657-babd-552bb4e57aa9
+- name: 其他地区_Riga_Serva ONE LTD_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: OZVjfQBboTDTBw0baMFqzVPsVUI4FNQmspTEb0b0zW4
+    short-id: a1b2c3d4
+  server: 62.192.174.111
+  servername: www.samsung.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 301d514e-4aa0-47b0-ba44-a0cb891cd52f
 - name: 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude1
   network: ws
   port: 80
@@ -1004,6 +1217,29 @@ proxies:
   uuid: fc1118f0-bdd6-46e7-9a97-259a5b2aabc3
   ws-opts:
     path: /vless/
+- name: 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude4
+  network: ws
+  port: 8443
+  server: pq-bosniaandherzegovina1.09vpn.com
+  servername: pq-bosniaandherzegovina1.09vpn.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: fc1118f0-bdd6-46e7-9a97-259a5b2aabc3
+  ws-opts:
+    path: /vless/
+- name: 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude5
+  network: ws
+  port: 80
+  server: 45.15.178.124
+  skip-cert-verify: false
+  type: vless
+  uuid: 75e1fde7-6bf6-48ef-ba43-400e960e185b
+  ws-opts:
+    headers:
+      Host: pq-bosniaandherzegovina1.09vpn.com
+    path: /vless/
 - flow: xtls-rprx-vision
   name: 其他地区_Sofia_WorkTitans B.V._Claude
   network: tcp
@@ -1019,6 +1255,33 @@ proxies:
   udp: true
   uuid: 85f15b9d-74da-4ea0-9ffd-5fc0bb03e3d5
 - flow: xtls-rprx-vision
+  name: 其他地区_Stockholm_Node Host_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: 56RJlIcxwncUs5m9QSfd3waHxm6vJFBKso5IkMSsyCA
+    short-id: 5d
+  server: 194.238.57.104
+  servername: www.icloud.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 8046e3a1-83a7-4155-86e4-374153fe66f3
+- flow: xtls-rprx-vision
+  name: 其他地区_Stockholm_Play2go International Limited_Claude
+  network: tcp
+  port: 9443
+  reality-opts:
+    public-key: ZHEMPjSWslk6_qD2JNQzd5enUPz8nY9mYRRuM6NkZmU
+  server: 2.27.23.139
+  servername: rutube.ru
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 2001daf3-5c56-4bef-8ea6-8dd0493c5a4c
+- flow: xtls-rprx-vision
   name: 其他地区_Stockholm_Play2go International_Claude
   network: tcp
   port: 443
@@ -1033,7 +1296,7 @@ proxies:
   udp: true
   uuid: 2001daf3-5c56-4bef-8ea6-8dd0493c5a4c
 - flow: xtls-rprx-vision
-  name: 其他地区_Stockholm_SEBEK sp. z o.o_Claude
+  name: 其他地区_Stockholm_SEBEK sp. z o.o_Claude1
   network: tcp
   port: 443
   reality-opts:
@@ -1047,7 +1310,44 @@ proxies:
   udp: true
   uuid: 980231fb-4372-5c81-b696-20aa34d33af0
 - flow: xtls-rprx-vision
-  name: 其他地区_Stockholm_xorek.cloud International LTD_Claude1
+  name: 其他地区_Stockholm_SEBEK sp. z o.o_Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: 978-Yxgtd3AWTVfiXEQqCstdwrT1qgsgleGPIRGQDl8
+    short-id: bdac121c7debdaba
+  server: 148.253.211.47
+  servername: www.microsoft.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 980231fb-4372-5c81-b696-20aa34d33af0
+- flow: xtls-rprx-vision
+  name: 其他地区_Stockholm_SEBEK sp. z o.o_Claude3
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: 978-Yxgtd3AWTVfiXEQqCstdwrT1qgsgleGPIRGQDl8
+    short-id: bdac121c7debdaba
+  server: swe-8t.freeonline.pro
+  servername: www.microsoft.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: '8546145579'
+- name: 其他地区_Stockholm_xorek.cloud International LTD_Claude1
+  network: tcp
+  port: 54346
+  server: 89.22.236.213
+  skip-cert-verify: false
+  tls: false
+  type: vless
+  udp: true
+  uuid: IR_NETLIFY
+- flow: xtls-rprx-vision
+  name: 其他地区_Stockholm_xorek.cloud International LTD_Claude2
   network: tcp
   port: 443
   reality-opts:
@@ -1060,7 +1360,7 @@ proxies:
   type: vless
   udp: true
   uuid: ebe186c0-1006-4b07-8a84-45deaf0bda23
-- name: 其他地区_Stockholm_xorek.cloud International LTD_Claude2
+- name: 其他地区_Stockholm_xorek.cloud International LTD_Claude3
   network: tcp
   port: 666
   server: 89.22.236.213
@@ -1069,15 +1369,26 @@ proxies:
   type: vless
   udp: true
   uuid: 56aaf8cd-d2fb-5211-bc9b-c242ee37d429
-- name: 其他地区_Stockholm_xorek.cloud International LTD_Claude3
+- flow: xtls-rprx-vision
+  name: 其他地区_Stockholm_xorek.cloud International LTD_Claude4
   network: tcp
-  port: 54346
-  server: 89.22.236.213
+  port: 443
+  reality-opts:
+    public-key: JbxZQuL2t4eews1QuA8O4jpsU_NXPMpmzKwlxSQj5Sk
+    short-id: f690c1046814dc9d
+  server: ru3.banovano.space
+  servername: www.icloud.com
   skip-cert-verify: false
-  tls: false
+  tls: true
   type: vless
   udp: true
-  uuid: IR_NETLIFY
+  uuid: dc540911-cd1d-41e9-9301-ecb5a507b788
+- cipher: aes-256-cfb
+  name: 其他地区_Sundbyberg_QuxLabs AB_Claude
+  password: f8f7aCzcPKbsF8p3
+  port: 989
+  server: 51.15.23.63
+  type: ss
 - cipher: chacha20-ietf-poly1305
   name: 其他地区_São Paulo_BrainStorm Network, Inc_Gemini_Claude
   password: NVcw9OTGwmThWmhs1uh7rrIJcVz7ln96ifYZiv4zsWvToTjg
@@ -1131,6 +1442,42 @@ proxies:
   type: vless
   udp: true
   uuid: afcac633-0e1a-46c3-bef2-cc01cc0097c8
+- flow: xtls-rprx-vision-udp443
+  name: 其他地区_Tbilisi_AkhaliNet LLC_Gemini4
+  network: tcp
+  port: 22231
+  server: 72.56.59.254
+  servername: r1.mizulina.top
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: true
+  uuid: afcac633-0e1a-46c3-bef2-cc01cc0097c8
+- flow: xtls-rprx-vision-udp443
+  name: 其他地区_Tbilisi_AkhaliNet LLC_Gemini5
+  network: tcp
+  port: 443
+  server: 72.56.59.223
+  servername: r1.mizulina.top
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: afcac633-0e1a-46c3-bef2-cc01cc0097c8
+- flow: xtls-rprx-vision
+  name: 其他地区_Tirana_H2nexus_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: djH9iD2QV748ocK-wPH7HvDd03lu88zHhS4G-61w6Dc
+    short-id: a120
+  server: cdn.cdnjst.org
+  servername: cdn.cdnjst.org
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: ae852d97-85f5-45cf-82a4-254eba345480
 - alterId: 0
   cipher: auto
   name: 其他地区_Tirana_WorkTitans B.V._Gemini_Claude1
@@ -1165,14 +1512,6 @@ proxies:
     headers:
       Host: pq-albania1.09vpn.com
     path: /vless/
-- name: 其他地区_Vienna_BrainStorm Network_Claude
-  network: tcp
-  password: BSs5IAVMQdYuykvDsOYZoa6gNPSGBjAbLL
-  port: 443
-  server: 185.126.236.44
-  skip-cert-verify: true
-  sni: www.mesaly.click
-  type: trojan
 - name: 其他地区_Voluntari_INVITE Systems SRL_Claude1
   port: 9002
   server: 84.239.49.212
@@ -1390,34 +1729,7 @@ proxies:
   sni: www.bing.com
   tls: true
   type: http
-- name: 其他地区_Warsaw_Atman Sp. z o.o._Claude1
-  network: ws
-  port: 9815
-  server: support.zoom.us.beichuan.serv00.net
-  servername: support.zoom.us.beichuan.serv00.net
-  skip-cert-verify: false
-  tls: false
-  type: vless
-  udp: true
-  uuid: 37a0bd7c-8b9f-4693-8916-bd1e2da0a817
-  ws-opts:
-    headers:
-      Host: support.zoom.us.beichuan.serv00.net
-    path: /
-- name: 其他地区_Warsaw_Atman Sp. z o.o._Claude2
-  network: ws
-  port: 9815
-  server: beichuan.serv00.net
-  skip-cert-verify: false
-  tls: false
-  type: vless
-  udp: true
-  uuid: 37a0bd7c-8b9f-4693-8916-bd1e2da0a817
-  ws-opts:
-    headers:
-      Host: beichuan.serv00.net
-    path: /
-- name: 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude
+- name: 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude1
   network: tcp
   port: 443
   reality-opts:
@@ -1430,6 +1742,19 @@ proxies:
   type: vless
   udp: true
   uuid: 30143e07-b734-4bd6-867c-7daf4782cccb
+- name: 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: MYU0vSA5rfofPjIwynqoPsr60F_swjCHCDX0yJPKwT0
+    short-id: 08bf
+  server: 45.140.204.121
+  servername: yahoo.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 416560bf-9ebb-4a43-96b6-e353e3d3572a
 - cipher: aes-256-cfb
   name: 其他地区_Warsaw_Melbikomas UAB_Claude1
   password: ZpNDDKRu9MagNvaf
@@ -1466,6 +1791,20 @@ proxies:
   port: 9031
   server: 217.30.10.70
   type: ss
+- flow: xtls-rprx-vision
+  name: 其他地区_Warsaw_NET_Claude
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: TxeJaR7AeMcpnSi8A45lOSc8xMSFlYu6x7mHjeQMQWU
+    short-id: 4adcbc3df6cdd138
+  server: 147.90.14.161
+  servername: www.cloudflare.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: a8f7bfbc-4bb8-4f10-ac8f-93e0ce4cc46a
 - name: 其他地区_Warsaw_The Constant Company, LLC_Claude
   network: tcp
   password: iGccGWTMHtoXtBhGYK4mogg7iIUhGbcvCf
@@ -1473,6 +1812,31 @@ proxies:
   server: 64.176.65.85
   sni: 64.176.65.85
   type: trojan
+- flow: xtls-rprx-vision
+  name: 其他地区_Warsaw_UpCloud Ltd_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: wY_MYPJUx849su3BlowuxnwnUaj25iLfRw2LooQfPAY
+  server: 81.27.101.199
+  servername: sun1-14.userapi.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: e9cd1e1e-4747-45a4-ac6e-b2ddff704033
+- name: 加拿大_Beauharnois_OVH SAS_Gemini_Claude
+  network: ws
+  port: 8443
+  server: ov-canada1.09vpn.com
+  servername: ov-canada1.09vpn.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 08f96221-9b7b-4e6f-8ffe-aee8b9c9b504
+  ws-opts:
+    path: /vless/
 - name: 加拿大_Toronto_Akamai Technologies_Gemini_Claude
   network: tcp
   password: lTLVIqIvFqp+es9giS.0o77ztLrCQLaxVh
@@ -1538,57 +1902,71 @@ proxies:
   port: 443
   server: 149.22.95.183
   type: ss
+- alterId: 0
+  cipher: auto
+  name: 印度_Chennai_Akamai Technologies, Inc._Gemini_Claude
+  network: tcp
+  port: 22324
+  server: 172.232.103.186
+  tls: false
+  type: vmess
+  uuid: 04621bae-ab36-11ec-b909-0242ac120002
+- name: 印度_Mumbai_The Constant Company_Claude
+  network: tcp
+  password: Tu1fZjElnkRg0ECRj0sI0u54PY8ptUmATg
+  port: 443
+  server: 65.20.90.225
+  sni: www.sandbox-cloud.click
+  type: trojan
+- cipher: chacha20-ietf-poly1305
+  name: 印度_Navi Mumbai_Selvakumar Selvapandi_Gemini_Claude
+  password: EBDRo9THx4CqiFU7h5gfov76oNwzZURAh0ZwbWjBKddtUhvz
+  port: 31348
+  server: 103.120.178.193
+  type: ss
 - name: 印度尼西亚_Bogor_PUSATMEDIA_Gemini
   network: ws
   port: 443
-  server: 216.24.57.1
-  servername: dl.cvs.freefiremobile.com.cyylr.eu.cc
+  server: 103.18.49.100
+  servername: support.zoom.us.cyylr.eu.cc
+  skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: 565b50d4-604d-4a60-9fc2-d9d3dac0aec6
+  uuid: 1a5b24bc-6180-4fa7-922d-ba7ee8a7a2b7
   ws-opts:
     headers:
-      Host: dl.cvs.freefiremobile.com.cyylr.eu.cc
-      User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.237 Safari/534.10
-    path: /id-pusat
-- name: 印度尼西亚_Bogor_PUSATMEDIA_Gemini_Claude
-  network: ws
-  port: 443
-  server: 216.24.57.1
-  servername: dl.cvs.freefiremobile.com.cyylr.eu.cc
-  tls: true
-  type: vless
-  udp: true
-  uuid: 6e593426-1a8e-4226-984f-0ea174e218c7
-  ws-opts:
-    headers:
-      Host: dl.cvs.freefiremobile.com.cyylr.eu.cc
-      User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; de-DE) AppleWebKit/534.17 (KHTML, like Gecko) Chrome/10.0.649.0 Safari/534.17
+      Host: support.zoom.us.cyylr.eu.cc
     path: /id-pusat
 - cipher: chacha20-ietf-poly1305
   name: 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
   password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
   port: 50099
-  server: 36.224.139.206
+  server: r3mrcg00129437x.cybervena.com
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
   password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
   port: 50099
-  server: r3mrcg00129437x.cybervena.com
+  server: 36.224.139.206
   type: ss
-- cipher: aes-256-cfb
-  name: 台湾_Taipei_Data Center Network Limited_Claude
-  password: qwerREWQ@@
-  port: 41632
-  server: 185.189.160.105
+- cipher: chacha20-ietf-poly1305
+  name: 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude3
+  password: 7e731ec3-f8e1-43f6-92cf-3978d14705c4
+  port: 50099
+  server: r3mrcg001286ek2.cybervena.com
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 台湾_Taipei_SAKURA LTD._Claude
   password: jR5Wg32XzEgCXk4MPCgvd1G1Ts8WHBLsXMUaqMa5DUXMuqMmdZgCbMipXDhoAmj73qA9oY85zXK35L5m631Tn7in2p3KLbWF
   port: 56594
   server: 46.249.109.128
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 台湾_Taipei_SAKURA LTD._Gemini_Claude
+  password: 2zQoJHz22Zbvh37yxZWJ6JzFtLhttZCLop8WFfpcJ4166JAenuKTvDuUnebBnz8PGPoXLWsEm1nkzbTnJaiTsSx9wXZkyL3i
+  port: 56594
+  server: download.riferoser.icu
   type: ss
 - alterId: 0
   cipher: auto
@@ -1608,12 +1986,19 @@ proxies:
   tls: false
   type: vmess
   uuid: 04621bae-ab36-11ec-b909-0242ac120002
-- cipher: aes-256-gcm
-  name: 土耳其_Istanbul_Iksir Internet Hizmetleri A.S._Gemini_Claude
-  password: faBAoD54k87UJG7
-  port: 2376
-  server: 185.123.101.64
-  type: ss
+- name: 土耳其_Istanbul_Scalaxy B.V._Claude
+  network: ws
+  port: 54570
+  server: 38.180.171.164
+  skip-cert-verify: false
+  tls: false
+  type: vless
+  udp: true
+  uuid: 02efe030-c27d-45e7-b1b8-6ce2b88db968
+  ws-opts:
+    headers:
+      Host: www.google.com
+    path: /
 - flow: xtls-rprx-vision
   name: 德国_Berlin_GHOSTnet GmbH_Claude1
   network: tcp
@@ -1647,6 +2032,19 @@ proxies:
   reality-opts:
     public-key: WeShDM0MdunM6N8btrY8tXlL0GT1Ah-0jcplNQf9FEo
   server: bc-fr-th.ray-balance.space
+  servername: www.cloudflare.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: f6431ff1-dec0-4a6c-be4a-ce917913b589
+- flow: xtls-rprx-vision
+  name: 德国_Berlin_GHOSTnet_Claude
+  network: tcp
+  port: 10443
+  reality-opts:
+    public-key: WeShDM0MdunM6N8btrY8tXlL0GT1Ah-0jcplNQf9FEo
+  server: 83.243.86.118
   servername: www.cloudflare.com
   skip-cert-verify: false
   tls: true
@@ -1695,6 +2093,13 @@ proxies:
   type: vless
   udp: true
   uuid: 16c6faa4-1162-49ca-acf7-059afdf1ecd3
+- name: 德国_Frankfurt am Main_Akamai Technologies, Inc._Claude
+  password: s_WEN9lMmufG+qDIsn-4C7JOVAnDdbS3Ui
+  port: 443
+  server: 172.236.220.10
+  skip-cert-verify: false
+  sni: 172.236.220.10
+  type: trojan
 - flow: xtls-rprx-vision
   name: 德国_Frankfurt am Main_Amazon Technologies Inc._Claude
   network: tcp
@@ -1709,20 +2114,26 @@ proxies:
   type: vless
   udp: true
   uuid: acb005a9-29af-437f-ba56-411a8dc9eb56
-- name: 德国_Frankfurt am Main_Clouvider Limited_Gemini_Claude
-  network: ws
-  port: 443
-  server: chingar.info
-  servername: up2-df6.pages.dev
+- flow: xtls-rprx-vision
+  name: 德国_Frankfurt am Main_Amazon.com, Inc._Claude
+  network: tcp
+  port: 57942
+  reality-opts:
+    public-key: Sfq7XvYQcbDod2_WbncXkps0GCc3smquLk8Rtudx_h4
+    short-id: 4f4e67ca
+  server: 3.70.72.166
+  servername: yahoo.com
   skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: ce69190e-935a-4394-9e5e-2ab2872ba242
-  ws-opts:
-    headers:
-      Host: up2-df6.pages.dev
-    path: /IIzL1WWUU9UXREpj
+  uuid: 443be09e-896a-4257-b60e-143c68f713f9
+- cipher: chacha20-ietf-poly1305
+  name: 德国_Frankfurt am Main_Clouvider Limited_Claude
+  password: 1hhrqrokj3ag
+  port: 8388
+  server: 209.46.102.22
+  type: ss
 - name: 德国_Frankfurt am Main_Datacamp_Claude
   network: tcp
   port: 8443
@@ -1733,6 +2144,33 @@ proxies:
   type: vless
   udp: true
   uuid: 394f6981-a782-4779-9a85-e6cf22935d93
+- flow: xtls-rprx-vision
+  name: 德国_Frankfurt am Main_Denis Terehov_Claude
+  network: tcp
+  port: 55152
+  reality-opts:
+    public-key: fX2XkujtqhnkQDy-Lwgqm_OofDs1qO5ytvVNM6aV4C4
+    short-id: ddcac8ed
+  server: 193.23.222.99
+  servername: cloudflare.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 827466ba-0910-4c48-b156-2f37fdbda362
+- flow: xtls-rprx-vision
+  name: 德国_Frankfurt am Main_H2nexus LTD_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: ZHEMPjSWslk6_qD2JNQzd5enUPz8nY9mYRRuM6NkZmU
+  server: 87.120.93.69
+  servername: www.deepl.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 2001daf3-5c56-4bef-8ea6-8dd0493c5a4c
 - flow: xtls-rprx-vision
   name: 德国_Frankfurt am Main_International Hosting Company Limited_Claude
   network: tcp
@@ -1781,34 +2219,15 @@ proxies:
   port: 10443
   server: 57.129.121.230
   type: ss
-- name: 德国_Frankfurt am Main_OVH SAS_Gemini_Claude1
+- name: 德国_Frankfurt am Main_OVH SAS_Gemini_Claude
   network: ws
-  port: 443
-  server: up2-df6.pages.dev
-  servername: up2-df6.pages.dev
+  port: 80
+  server: 57.129.41.216
   skip-cert-verify: false
-  tls: true
   type: vless
-  udp: true
-  uuid: ce69190e-935a-4394-9e5e-2ab2872ba242
+  uuid: 7d74eae4-8a06-4306-a923-ad686f30bf26
   ws-opts:
-    headers:
-      Host: up2-df6.pages.dev
-    path: /uTZSXPBI2IfoxF86
-- name: 德国_Frankfurt am Main_OVH SAS_Gemini_Claude2
-  network: ws
-  port: 443
-  server: 104.21.12.1
-  servername: up2-df6.pages.dev
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: ce69190e-935a-4394-9e5e-2ab2872ba242
-  ws-opts:
-    headers:
-      Host: up2-df6.pages.dev
-    path: /hQbiBoz8tXuYB6qH
+    path: /vless/
 - alpn:
   - h2
   - http/1.1
@@ -1836,7 +2255,7 @@ proxies:
       Host: OV-Germany1.09vpn.com
     path: /vless/
 - flow: ''
-  name: 德国_Frankfurt am Main_Play2go International Limited_Claude
+  name: 德国_Frankfurt am Main_Play2go International Limited_Claude1
   network: tcp
   port: 8443
   reality-opts:
@@ -1849,6 +2268,31 @@ proxies:
   type: vless
   udp: true
   uuid: 21c1132b-068c-46fb-880e-3268f6a30e7f
+- name: 德国_Frankfurt am Main_Play2go International Limited_Claude2
+  network: raw
+  port: 8443
+  reality-opts:
+    public-key: Crjd0I6hcasRXZcfNf7cs-YtJLpQ8u-t1CbwHIDAciU
+    short-id: 478dc6
+  server: 178.215.238.148
+  servername: eh.vk.com
+  tls: true
+  type: vless
+  udp: true
+  uuid: 21c1132b-068c-46fb-880e-3268f6a30e7f
+- flow: xtls-rprx-vision
+  name: 德国_Frankfurt am Main_Play2go International Limited_Claude3
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+  server: 94.156.170.46
+  servername: discordapp.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 74120ed7-7f61-4017-8882-bd3dbb393bd7
 - flow: xtls-rprx-vision
   name: 德国_Frankfurt am Main_Qwins LTD_Claude
   network: tcp
@@ -1863,6 +2307,59 @@ proxies:
   type: vless
   udp: true
   uuid: 3ea2d8f2-12c1-4189-8cc5-91d0ee9f5ca0
+- name: 德国_Frankfurt am Main_Sculk Ltd_Claude1
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: upDCW94g-pSYQrmXvOrTVYlwBUrSKhYFF9QwrqObdVo
+    short-id: 3ca620a7ed5f3196
+  server: 23.26.37.119
+  servername: google.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: dcba77d7-bb59-4802-b32c-37fd7011fca4
+- name: 德国_Frankfurt am Main_Sculk Ltd_Claude2
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: upDCW94g-pSYQrmXvOrTVYlwBUrSKhYFF9QwrqObdVo
+    short-id: 3ca620a7ed5f3196
+  server: de.ko.prod.n7.homes
+  servername: google.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: dcba77d7-bb59-4802-b32c-37fd7011fca4
+- name: 德国_Frankfurt am Main_Sculk_Claude
+  network: tcp
+  port: 2040
+  reality-opts:
+    public-key: LidllyozUeeSbuzJ0ZfieGoy8YjVzqXX9H2m9whPaG0
+    short-id: 53197c66aef53c44
+  server: germ-node.datamove.online
+  servername: tradingview.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 17451fec-af94-4715-8c2f-7f6839130d0a
+- name: 德国_Frankfurt am Main_The Constant Company_Claude
+  network: ws
+  port: 443
+  server: germany.samanidempire.org
+  servername: germany.samanidempire.org
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: true
+  uuid: c1e03394-9258-4717-9065-d353f484de82
+  ws-opts:
+    headers:
+      Host: germany.samanidempire.org
+    path: /reteweef
 - flow: xtls-rprx-vision
   name: 德国_Frankfurt am Main_Uxhost LTD_Claude
   network: tcp
@@ -1877,20 +2374,7 @@ proxies:
   type: vless
   udp: true
   uuid: 22768339-9096-48aa-9109-ff28141145b9
-- flow: xtls-rprx-vision
-  name: 德国_Frankfurt am Main_Vultr_Claude1
-  network: tcp
-  port: 443
-  reality-opts:
-    public-key: Ic2uiGhkBgJUsY0CZUBqa1y22V_BO7F4S93Zgk_ir2c
-    short-id: a1b2c3d4e5f67890
-  server: 136.244.93.228
-  servername: www.booking.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: 43488128-319e-f480-64ea-0acdc712e2a8
-- name: 德国_Frankfurt am Main_Vultr_Claude2
+- name: 德国_Frankfurt am Main_Vultr_Claude1
   network: ws
   port: 443
   server: germany2.samanidempire.org
@@ -1904,6 +2388,19 @@ proxies:
     headers:
       Host: germany2.samanidempire.org
     path: /hZvWArgsaxqa
+- flow: xtls-rprx-vision
+  name: 德国_Frankfurt am Main_Vultr_Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: Ic2uiGhkBgJUsY0CZUBqa1y22V_BO7F4S93Zgk_ir2c
+    short-id: a1b2c3d4e5f67890
+  server: 136.244.93.228
+  servername: www.booking.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 43488128-319e-f480-64ea-0acdc712e2a8
 - flow: xtls-rprx-vision
   name: 德国_Frankfurt am Main_WAIcore Ltd_Claude
   network: tcp
@@ -1924,6 +2421,14 @@ proxies:
   port: 443
   server: 185.137.157.254
   sni: www.directorypipeline.click
+  type: trojan
+- name: 德国_Frankfurt am Main_Zenlayer_Claude
+  network: tcp
+  password: d-VoBikwImgO9HMG7YWANlh=QNlHzjK32P
+  port: 443
+  server: 91.233.8.142
+  skip-cert-verify: false
+  sni: fra142.plasmaapp.click
   type: trojan
 - name: 德国_Leipzig_Cloudflare, Inc._Claude
   network: ws
@@ -2004,7 +2509,7 @@ proxies:
   udp: true
   uuid: 1b9e301d-cecd-4eb1-8b36-eef811c2696d
 - flow: xtls-rprx-vision
-  name: 德国_Nuremberg_netcup_Claude
+  name: 德国_Nuremberg_netcup_Claude1
   network: tcp
   port: 9443
   reality-opts:
@@ -2017,67 +2522,32 @@ proxies:
   type: vless
   udp: true
   uuid: 4649d681-7f26-4959-a3f2-02eb8866230f
-- name: 新加坡_Singapore_Akamai Technologies, Inc._Gemini_Claude
-  network: ws
-  port: 14573
-  server: 172.237.90.117
+- flow: xtls-rprx-vision
+  name: 德国_Nuremberg_netcup_Claude2
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: FQ-t1B16UdR6QYZyfYRf9PrD5JoEeCrkgRfM-doG4zY
+    short-id: 1bc9bcde4b1ef645
+  server: 159.195.65.131
+  servername: fastsync.xyz
   skip-cert-verify: false
-  tls: false
+  tls: true
   type: vless
   udp: true
-  uuid: a6dd0cc9-eeb0-4226-9623-b3fc6e1b0b98
+  uuid: 9ee79303-e095-40f5-8fb8-363d87e90465
+- name: 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude
+  network: ws
+  port: 80
+  server: 188.114.97.6
+  skip-cert-verify: false
+  type: vless
+  udp: true
+  uuid: 733e0a4f-a9c8-4d75-9d57-97cc13a4f517
   ws-opts:
     headers:
-      Host: m.zoom.us
-    path: /FREE By Tharuwa (0767597317)
-- flow: xtls-rprx-vision
-  name: 新加坡_Singapore_Amazon Technologies Inc._Gemini_Claude
-  network: tcp
-  port: 38967
-  reality-opts:
-    public-key: TFAGMtH1LB503O0SJadbPxBs8S_LACshWQpEIAyuS1g
-    short-id: 9b1cdc34dd5664
-  server: 18.143.151.84
-  servername: www.icloud.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 20ae58df-d562-40b3-908c-21b4881315d4
-- flow: xtls-rprx-vision
-  name: 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude1
-  network: tcp
-  port: 27307
-  reality-opts:
-    public-key: dIAHCrK3tbiMaFFKoPh89_eSpe8ws-rhT0rXV-RHxQQ
-    short-id: 64a35319e5db75
-  server: 18.140.170.243
-  servername: www.tesla.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: b2fe41d5-a1b4-44e8-908a-84c59a70a3d8
-- flow: xtls-rprx-vision
-  name: 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude2
-  network: tcp
-  port: 35308
-  reality-opts:
-    public-key: 4g1kpdmdbN6aNxeBYMj9WherunH9JSXsI_nKZTDiewE
-    short-id: fef8dcb8cafe30
-  server: 18.141.49.252
-  servername: www.tesla.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 779d227c-f7be-4b9d-a4a9-1197c734b4e7
-- cipher: chacha20-ietf-poly1305
-  name: 新加坡_Singapore_Cogent Communications_Claude
-  password: eLPlIVuRZ6UJyapVDeT++l7fYC0uowXJFlb9qhntAd4=
-  port: 37425
-  server: 154.18.239.126
-  type: ss
+      Host: zaintest.vuclip.com.cyylr.eu.cc
+    path: /sg-amz
 - alterId: 0
   cipher: auto
   name: 新加坡_Singapore_Datacamp Limited_Gemini_Claude
@@ -2137,6 +2607,14 @@ proxies:
     headers:
       Host: hhlfy.twiladaphne.ndjp.net
     path: /
+- name: 新加坡_Singapore_Komi LLC_Gemini_Claude
+  network: tcp
+  password: BxceQaOe
+  port: 29440
+  server: 52.69.79.73
+  skip-cert-verify: true
+  sni: t.me%252Fripaojiedian
+  type: trojan
 - name: 新加坡_Singapore_Melbikomas UAB_Gemini_Claude
   network: ws
   port: 443
@@ -2151,12 +2629,26 @@ proxies:
     headers:
       Host: support.zoom.us.cyylr.eu.cc
     path: /sg-melbi
-- cipher: aes-128-gcm
-  name: 新加坡_Singapore_Oracle Corporation_Gemini_Claude
-  password: JVSuuib4ydvY8m7u6jElTYbeRO8ygJ4Hi8Iq733BqAkF
-  port: 9888
-  server: 168.138.175.92
-  type: ss
+- alterId: 0
+  cipher: auto
+  name: 日本_Chiyoda City_SAKURA Internet Inc._Gemini_Claude
+  network: tcp
+  port: 32221
+  server: 153.121.73.175
+  type: vmess
+  udp: true
+  uuid: b06054ae-f249-438e-998a-8e67bd8df653
+- alterId: 2
+  cipher: auto
+  fingerprint: chrome
+  name: 日本_Osaka_Akamai Technologies, Inc._Claude
+  network: tcp
+  port: 30806
+  server: v6.hdacd.com
+  skip-cert-verify: true
+  tls: false
+  type: vmess
+  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
 - alterId: 0
   cipher: auto
   name: 日本_Osaka_Oracle Cloud_Gemini_Claude
@@ -2183,12 +2675,15 @@ proxies:
     headers:
       Host: jp02.a0a.xyz
     path: /cctv13.m3u8
-- cipher: chacha20-ietf-poly1305
-  name: 日本_Shibuya City_AANSys Network LLC_Claude
-  password: hbGrpfvNrJsUmKmPbR3iY2
-  port: 443
-  server: 147.90.234.133
-  type: ss
+- alterId: 0
+  cipher: auto
+  name: 日本_Osaka_SAKURA Internet Inc._Gemini_Claude
+  network: tcp
+  port: 49803
+  server: 153.121.73.175
+  type: vmess
+  udp: true
+  uuid: cd3dacbc-2b7b-4718-83ad-ab870f87e12e
 - name: 日本_Shibuya City_WorkTitans B.V._Gemini_Claude
   network: tcp
   port: 18278
@@ -2201,6 +2696,14 @@ proxies:
   tls: true
   type: vless
   uuid: 7a30b7fc-4868-4d1d-84b8-16a3d3df0139
+- name: 日本_Tokyo_Akamai Technologies, Inc._Gemini_Claude
+  network: tcp
+  password: E_hUHrn0+6VeZO=v9=fLgoPDXZWGfcrejg
+  port: 443
+  server: 172.238.19.11
+  skip-cert-verify: true
+  sni: 172.238.19.11
+  type: trojan
 - alterId: 1
   cipher: auto
   name: 日本_Tokyo_Akamai Technologies_Gemini_Claude
@@ -2210,11 +2713,11 @@ proxies:
   type: vmess
   udp: true
   uuid: 04621bae-ab36-11ec-b909-0242ac120002
-- cipher: chacha20-ietf-poly1305
-  name: 日本_Tokyo_Amazon Technologies Inc._Gemini_Claude
-  password: 792e0bdb-01db-450c-94c4-925151eb396e
-  port: 19000
-  server: ss.042.node-for-bigairport.win
+- cipher: aes-256-gcm
+  name: 日本_Tokyo_BrainStorm Network, Inc_Claude
+  password: XKFKl2rULjIp74
+  port: 8009
+  server: 103.106.228.175
   type: ss
 - cipher: aes-128-gcm
   name: 日本_Tokyo_Datacamp Limited_Gemini_Claude1
@@ -2231,6 +2734,46 @@ proxies:
   tls: true
   type: vless
   uuid: 394f6981-a782-4779-9a85-e6cf22935d93
+- cipher: aes-128-gcm
+  name: 日本_Tokyo_Datacamp Limited_Gemini_Claude3
+  password: shadowsocks
+  port: 443
+  server: 149.22.87.240
+  type: ss
+- cipher: aes-128-gcm
+  name: 日本_Tokyo_Datacamp Limited_Gemini_Claude4
+  password: shadowsocks
+  port: 443
+  server: 149.22.87.204
+  type: ss
+- name: 日本_Tokyo_Ipxo LLC_Gemini_Claude
+  network: ws
+  port: 80
+  server: 172.111.146.64
+  skip-cert-verify: false
+  type: vless
+  udp: true
+  uuid: 904f8ffa-4652-4076-8f2f-e586807840ec
+  ws-opts:
+    path: /vless/
+- name: 法国_Aubervilliers_The Constant Company, LLC_Claude
+  network: tcp
+  password: YGWIMlg.W1wRWQkRDcKfjZY7sng09aC=Yh
+  port: 443
+  server: 217.69.2.107
+  sni: www.weavenet.click
+  type: trojan
+- name: 法国_Desvres_Cloudflare, Inc._Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: fXdtB8vImCUJMQBLcCNK7p1v3rVzx6HllaDLk8Vc4EU
+    short-id: 239dcd11
+  server: 57.128.81.193
+  servername: www.samsung.com
+  tls: true
+  type: vless
+  uuid: 53821f3c-5b03-456a-89f3-f8379f130752
 - name: 法国_Gravelines_OVH SAS_Gemini_Claude1
   network: ws
   port: 80
@@ -2256,6 +2799,71 @@ proxies:
     headers:
       Host: OV-France1.09vpn.com
     path: /vless/
+- name: 法国_Gravelines_OVH SAS_Gemini_Claude3
+  network: ws
+  port: 80
+  server: ov-france1.09vpn.com
+  skip-cert-verify: false
+  tls: false
+  type: vless
+  uuid: 25f86cb1-2140-4085-abcb-c3a0ea7a4be0
+  ws-opts:
+    headers:
+      Host: ov-france1.09vpn.com
+    path: /vless/
+- name: 法国_Lauterbourg_Contabo GmbH_Claude
+  network: ws
+  port: 30001
+  server: 213.199.39.156
+  skip-cert-verify: false
+  tls: false
+  type: vless
+  udp: true
+  uuid: 3e5da4f6-93c4-4701-911b-1a5091d2430f
+  ws-opts:
+    path: /ws
+- flow: xtls-rprx-vision
+  name: 法国_Paris_Amazon Technologies Inc._Claude
+  network: tcp
+  port: 12453
+  reality-opts:
+    public-key: 7Bp5RgrAqaiXOsiKaWnu6uliLDG8Eey2gA0coU9oay0
+    short-id: 52f510cea0a0a5ef
+  server: 52.47.86.31
+  servername: yahoo.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: c9f0224c-c509-427e-b314-cef6cab20646
+- flow: xtls-rprx-vision
+  name: 法国_Paris_Amazon.com, Inc._Claude1
+  network: tcp
+  port: 15469
+  reality-opts:
+    public-key: Mr1b8zNNR1uPtf8dgfze_kBJbaVimS0NhJL0ff_2qm4
+    short-id: 0f8d9583dd332274
+  server: 13.38.52.64
+  servername: yahoo.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: deb96819-bdaa-4f52-a536-d4751290ce47
+- flow: xtls-rprx-vision
+  name: 法国_Paris_Amazon.com, Inc._Claude2
+  network: tcp
+  port: 44520
+  reality-opts:
+    public-key: MrLRcU_2S2CpUc7VT3ajIavX5NYUiQdP6J5QTDFNGFU
+    short-id: 8897c56a495b26cc
+  server: 51.44.25.250
+  servername: yahoo.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: acd726d3-0128-44d8-a575-21013ff7740a
 - name: 法国_Paris_Cloudflare, Inc._Claude
   network: tcp
   port: 8443
@@ -2276,6 +2884,19 @@ proxies:
   type: vless
   udp: true
   uuid: 55f7d143-a594-4a91-b030-f227039f85ef
+- flow: xtls-rprx-vision-udp443
+  name: 法国_Paris_OVH SAS_Claude
+  network: tcp
+  port: 54809
+  reality-opts:
+    public-key: 06rvKjC9dE_Ndd-dw6B-0zAyEpn-jUs7mcNFAPQ_1G8
+    short-id: b4b3
+  server: 5.196.51.152
+  servername: dash.cloudflare.com
+  tls: true
+  type: vless
+  udp: true
+  uuid: 87e60810-bb71-41ea-a2a6-f05c8ab903ef
 - flow: xtls-rprx-vision
   name: 法国_Paris_Scaleway SAS_Claude
   network: tcp
@@ -2301,20 +2922,7 @@ proxies:
   type: vless
   udp: true
   uuid: fae3277c-0541-4ae9-bbbb-8247453ea652
-- alpn:
-  - h2
-  - http/1.1
-  alterId: 0
-  cipher: auto
-  name: 法国_Roubaix_OVH SAS_Claude1
-  network: tcp
-  port: 2053
-  server: node-fr.connectsuite.org
-  servername: node-fr.connectsuite.org
-  tls: true
-  type: vmess
-  uuid: 2f4234f9-8f33-4c7f-952f-565ffa5f5fb7
-- name: 法国_Roubaix_OVH SAS_Claude2
+- name: 法国_Roubaix_OVH SAS_Claude
   network: ws
   port: 443
   server: bab-6.site
@@ -2328,20 +2936,21 @@ proxies:
     headers:
       Host: bab-6.site
     path: /vws/
-- flow: xtls-rprx-vision
-  name: 澳大利亚_Sydney_Amazon Technologies Inc._Gemini_Claude
-  network: tcp
-  port: 31318
+- grpc-opts:
+    grpc-service-name: vless
+  name: 法国_Strasbourg_Dedik Services_Claude
+  network: grpc
+  port: 443
   reality-opts:
-    public-key: uAhNpK_fDxgKKNtYtUs2uB79V28pjFv1-Mh7D4PTaW8
-    short-id: 1b665f78655294
-  server: 3.106.214.88
-  servername: www.tesla.com
+    public-key: ckd_LwbbFo8BYf9vT84B20P6EL1n6vl2yMxoXc6X4SA
+    short-id: f2a6d1c1e4b8
+  server: down.spectrum.vu
+  servername: down.spectrum.vu
   skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: 3c7961e6-6ce7-4e55-8b8a-01a5d663efd4
+  uuid: 76713d07-5a6b-49c2-abd8-bc450a2fa7fc
 - alterId: 0
   cipher: aes-128-gcm
   name: 美国_Ashburn_GTHost_Gemini_Claude
@@ -2351,20 +2960,33 @@ proxies:
   tls: false
   type: vmess
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- name: 美国_Buffalo_ColoCrossing_Gemini
-  network: ws
+- name: 美国_Charlotte_Aeza Group_Gemini_Claude
+  network: tcp
   port: 443
-  server: nimahavok.pages.dev
-  servername: nimahavok.pages.dev
+  reality-opts:
+    public-key: rSL9RX3anDN8Un4ImlYVa94n9wDdUmHdubxoMKnaXgE
+    short-id: 5a55
+  server: 193.233.202.7
+  servername: yahoo.com
   skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: cb0be83e-ff5c-4601-8572-18deac592958
-  ws-opts:
-    headers:
-      Host: nimahavok.pages.dev
-    path: /
+  uuid: 6e76f92f-5005-42d8-8c66-ea7ffde3168a
+- flow: xtls-rprx-vision
+  name: 美国_Charlotte_Aeza International LTD_Gemini_Claude
+  network: tcp
+  port: 8443
+  reality-opts:
+    public-key: Nlsu3xrYPB9ePk3pkcCPJbsuhsLrmAOeXMKaNAZyOww
+    short-id: 97783a46
+  server: 77.110.122.22
+  servername: www.google.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 69a2af58-d74a-44ca-864a-e09b493f4274
 - cipher: aes-128-gcm
   name: 美国_Dallas_Datacamp Limited_Gemini_Claude1
   password: shadowsocks
@@ -2389,15 +3011,7 @@ proxies:
   port: 443
   server: 156.146.38.169
   type: ss
-- name: 美国_Dallas_Dedicated.com_Gemini_Claude1
-  network: tcp
-  password: kkzh2prsyr2ik47as615
-  port: 57142
-  server: 64.94.95.115
-  skip-cert-verify: true
-  sni: static.rutube.ru
-  type: trojan
-- name: 美国_Dallas_Dedicated.com_Gemini_Claude2
+- name: 美国_Dallas_Dedicated.com_Gemini_Claude
   network: tcp
   password: kkzh2prsyr2ik47as615
   port: 57142
@@ -2405,41 +3019,12 @@ proxies:
   skip-cert-verify: true
   sni: 64.94.95.118
   type: trojan
-- name: 美国_Dallas_Dedicated.com_Gemini_Claude3
-  network: tcp
-  password: kkzh2prsyr2ik47as615
-  port: 57142
-  server: 64.94.95.117
-  skip-cert-verify: true
-  sni: static.rutube.ru
-  type: trojan
-- name: 美国_Dallas_Dedicated.com_Gemini_Claude4
-  network: tcp
-  password: kkzh2prsyr2ik47as615
-  port: 57142
-  server: 64.94.95.114
-  skip-cert-verify: true
-  sni: static.rutube.ru
-  type: trojan
 - cipher: chacha20-ietf-poly1305
   name: 美国_Dallas_Eonix Corporation_Gemini_Claude
   password: cCrMWDWKbz9cBhHEl6A7rwBXpaKky915FTRu1q
   port: 41352
   server: 170.130.40.123
   type: ss
-- flow: xtls-rprx-vision
-  name: 美国_Dallas_FORNEX_Gemini
-  network: tcp
-  port: 2026
-  reality-opts:
-    public-key: cH-LYLxYIolfsrn2V3wqkhw-hkVPPDW7ljE9KqcuJX4
-  server: 194.154.27.103
-  servername: api.vk.ru
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 9287f532-4150-48ff-a755-64b21e30e9c3
 - cipher: chacha20-ietf-poly1305
   name: 美国_Dallas_The Constant Company_Gemini_Claude
   password: GyZ5Xo0ht41vYmW3H4
@@ -2505,17 +3090,9 @@ proxies:
     headers:
       Host: juzi.qea.ccwu.cc
     path: /
-- name: 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude1
-  network: tcp
-  password: bX_lNHWoW6ywq82mI=KUr+8i__VSp0Hs_E
-  port: 443
-  server: 172.235.63.252
-  skip-cert-verify: true
-  sni: 172.235.63.252
-  type: trojan
 - alterId: 0
   cipher: auto
-  name: 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude2
+  name: 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude1
   network: ws
   port: 2053
   server: 172.236.244.171
@@ -2529,7 +3106,7 @@ proxies:
     path: /usavm
 - alterId: 0
   cipher: auto
-  name: 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude3
+  name: 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude2
   network: ws
   port: 2053
   server: usaapp2.jisuyun.top
@@ -2542,20 +3119,6 @@ proxies:
   ws-opts:
     headers:
       Host: usaapp2.jisuyun.top
-    path: /usavm
-- alterId: 0
-  cipher: auto
-  name: 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude4
-  network: ws
-  port: 2053
-  server: usaapp1.jisuyun.top
-  servername: usaapp1.jisuyun.top
-  tls: true
-  type: vmess
-  uuid: 4b80aa86-4354-40bb-d2a3-47126cff0bea
-  ws-opts:
-    headers:
-      Host: usaapp1.jisuyun.top
     path: /usavm
 - name: 美国_Los Angeles_Cogent Communications_Gemini_Claude1
   network: ws
@@ -2623,42 +3186,6 @@ proxies:
 - alterId: 0
   cipher: auto
   name: 美国_Los Angeles_Datacamp Limited_Claude2
-  port: 180
-  server: 82.198.246.233
-  skip-cert-verify: false
-  tls: false
-  type: vmess
-  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
-- alterId: 0
-  cipher: auto
-  name: 美国_Los Angeles_Datacamp Limited_Claude3
-  network: tcp
-  port: 180
-  server: 82.198.246.46
-  type: vmess
-  udp: true
-  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
-- alterId: 0
-  cipher: auto
-  name: 美国_Los Angeles_Datacamp Limited_Claude4
-  network: tcp
-  port: 180
-  server: 82.198.246.9
-  tls: false
-  type: vmess
-  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
-- alterId: 0
-  cipher: auto
-  name: 美国_Los Angeles_Datacamp Limited_Claude5
-  network: tcp
-  port: 180
-  server: 82.198.246.97
-  tls: false
-  type: vmess
-  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
-- alterId: 0
-  cipher: auto
-  name: 美国_Los Angeles_Datacamp Limited_Claude6
   network: tcp
   port: 180
   server: 82.198.246.214
@@ -2667,12 +3194,69 @@ proxies:
   uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
 - alterId: 0
   cipher: auto
+  name: 美国_Los Angeles_Datacamp Limited_Claude3
+  port: 180
+  server: 82.198.246.233
+  skip-cert-verify: false
+  tls: false
+  type: vmess
+  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
+- alterId: 0
+  cipher: auto
+  name: 美国_Los Angeles_Datacamp Limited_Claude4
+  network: tcp
+  port: 180
+  server: 82.198.246.46
+  type: vmess
+  udp: true
+  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
+- alterId: 0
+  cipher: auto
+  name: 美国_Los Angeles_Datacamp Limited_Claude5
+  network: tcp
+  port: 180
+  server: 82.198.246.9
+  tls: false
+  type: vmess
+  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
+- alterId: 0
+  cipher: auto
+  name: 美国_Los Angeles_Datacamp Limited_Claude6
+  network: tcp
+  port: 180
+  server: 82.198.246.97
+  tls: false
+  type: vmess
+  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
+- alterId: 0
+  cipher: auto
   name: 美国_Los Angeles_Datacamp Limited_Claude7
   network: tcp
   port: 180
-  server: 82.198.246.37
+  server: 82.198.246.250
+  skip-cert-verify: false
   tls: false
   type: vmess
+  udp: true
+  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
+- alterId: 0
+  cipher: auto
+  name: 美国_Los Angeles_Datacamp Limited_Claude8
+  port: 180
+  server: 82.198.246.250
+  skip-cert-verify: false
+  tls: false
+  type: vmess
+  uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
+- alterId: 0
+  cipher: auto
+  name: 美国_Los Angeles_Datacamp Limited_Claude9
+  port: 180
+  server: 82.198.246.214
+  skip-cert-verify: false
+  tls: false
+  type: vmess
+  udp: true
   uuid: d13fc2f5-3e05-4795-81eb-44143a09e552
 - name: 美国_Los Angeles_FSC NETWORK LTD_Gemini_Claude
   password: gs4BXwT6SW
@@ -2809,20 +3393,6 @@ proxies:
   tls: false
   type: vmess
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- name: 美国_Miami_Newserverlife LLC_Gemini_Claude
-  network: ws
-  port: 443
-  server: 172.64.48.201
-  servername: rahammahar.photoazadeh9100.workers.dev
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 0440e93c-a9d3-4998-aeaa-d0e2363131e4
-  ws-opts:
-    headers:
-      Host: rahammahar.photoazadeh9100.workers.dev
-    path: /
 - cipher: aes-128-gcm
   name: 美国_New York_Datacamp Limited_Claude
   password: shadowsocks
@@ -2840,12 +3410,6 @@ proxies:
   password: shadowsocks
   port: 443
   server: 37.19.198.243
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 美国_New York_Fourplex Telecom_Claude
-  password: hbGrpfvNrJsUmKmPbR3iY2
-  port: 443
-  server: 38.135.24.131
   type: ss
 - alterId: 1
   cipher: auto
@@ -2867,26 +3431,13 @@ proxies:
   type: vmess
   udp: true
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- flow: xtls-rprx-vision
-  name: 美国_North Bergen_DigitalOcean, LLC_Gemini_Claude
-  network: tcp
-  port: 56565
-  reality-opts:
-    public-key: Td03Ae-cuYLq4xg7MSps58c_yRUcbbwtZLXm0ywabjY
-  server: 147.182.212.232
-  servername: www.paypal.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 7b188eea-b08f-42c2-bac7-d3b0e74218b8
 - cipher: chacha20-ietf-poly1305
   name: 美国_Orangeburg_Contabo Inc._Gemini_Claude
   password: 4e287631dc4fc8fc
   port: 12012
   server: 62.146.231.112
   type: ss
-- name: 美国_Orem_Ace Data Centers II_Claude
+- name: 美国_Orem_Ace Data Centers II_Claude1
   port: 4443
   reality-opts:
     public-key: cPnEvtfmLBeYzbYYklKblkllFRzRzCd0KgFM-19fSDM
@@ -2898,6 +3449,20 @@ proxies:
   type: vless
   udp: true
   uuid: 0537e5d5-8d2f-4f82-b660-ebf94062f67e
+- flow: xtls-rprx-vision
+  name: 美国_Orem_Ace Data Centers II_Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: 2VJpo3kXJl9inZRLlXn65LvBUTyaHPmhggfQlzoAzkA
+    short-id: 655e55861e
+  server: finland11.banovano.space
+  servername: www.icloud.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 9a4e8fce-22ac-4e32-bada-f854ee737ec9
 - flow: xtls-rprx-vision
   name: 美国_Philadelphia_Neon Core Network LLC_Claude
   network: tcp
@@ -2976,19 +3541,6 @@ proxies:
   reality-opts:
     public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
     short-id: '01'
-  server: 15.204.97.198
-  servername: fuck.rkn
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
-- flow: xtls-rprx-vision
-  name: 美国_Reston_OVH SAS_Gemini_Claude2
-  network: tcp
-  port: 23576
-  reality-opts:
-    public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
-    short-id: '01'
   server: 15.204.97.197
   servername: fuck.rkn
   skip-cert-verify: false
@@ -2996,7 +3548,7 @@ proxies:
   type: vless
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
 - flow: xtls-rprx-vision
-  name: 美国_Reston_OVH SAS_Gemini_Claude3
+  name: 美国_Reston_OVH SAS_Gemini_Claude2
   network: tcp
   port: 23576
   reality-opts:
@@ -3010,7 +3562,7 @@ proxies:
   udp: true
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
 - flow: xtls-rprx-vision
-  name: 美国_Reston_OVH SAS_Gemini_Claude4
+  name: 美国_Reston_OVH SAS_Gemini_Claude3
   network: tcp
   port: 23576
   reality-opts:
@@ -3022,26 +3574,20 @@ proxies:
   tls: true
   type: vless
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
-- name: 美国_Richardson_Akamai Technologies, Inc._Gemini_Claude
-  network: tcp
-  password: rXyShM8Jni+5Sbq3k4gkyr5Lq0zOMRL2Uf
+- name: 美国_San Jose_Leaseweb USA, Inc._Gemini_Claude
+  network: ws
   port: 443
-  server: 45.79.8.17
-  sni: 45.79.8.17
-  type: trojan
-- alpn:
-  - ''
-  alterId: 0
-  cipher: auto
-  name: 美国_San Francisco_Xicomm LLC_Gemini_Claude
-  network: tcp
-  port: 443
-  server: 165.140.216.141
+  server: 20260529-143023.nauk.eu.cc
+  servername: 20260529-143023.nauk.eu.cc
   skip-cert-verify: false
-  tls: false
-  type: vmess
+  tls: true
+  type: vless
   udp: true
-  uuid: e7d72a8d-26f2-4b54-b366-0c43e0bcba7d
+  uuid: 78d50961-f057-4f39-8fd1-e2c818abecc4
+  ws-opts:
+    headers:
+      Host: 20260529-143023.nauk.eu.cc
+    path: /78d50961-f057-4f39-8fd1-e2c818abecc4-vl
 - name: 美国_San Jose_Oracle Corporation_Gemini
   network: ws
   port: 443
@@ -3142,19 +3688,6 @@ proxies:
   type: vmess
   udp: true
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- cipher: 2022-blake3-aes-128-gcm
-  name: 美国_Seattle_PacketHub_Gemini_Claude
-  password: YTE1ZWU4ZTEyZjc3YmEzZA==:Y2JhZTU3ODYtZjg3MC00NA==
-  plugin: gost-plugin
-  plugin-opts:
-    host: one.local
-    mode: websocket
-    mux: true
-    path: /ws
-    tls: false
-  port: 20091
-  server: 172.96.161.152
-  type: ss
 - name: 美国_The Dalles_Google LLC_Gemini_Claude
   network: ws
   port: 443
@@ -3187,17 +3720,118 @@ proxies:
   port: 8080
   server: 146.70.61.37
   type: ss
+- flow: xtls-rprx-vision
+  name: 英国_Coalville_05 COMMUNICATIONS LTD_Claude
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: UJSYKOEr3a3V1P_obd9zNBq4Pr3Vbd_a2nHE7-rstRk
+    short-id: 6089640857a72237
+  server: 217.179.6.84
+  servername: France1cxc.chickenkiller.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: d78c12c4-6927-40b8-8550-ed9be00334da
 - cipher: chacha20-ietf-poly1305
-  name: 英国_Erith_OVH SAS_Claude
+  name: 英国_Erith_OVH SAS_Claude1
   password: 78b6e93e54225803
   port: 26179
   server: 51.75.168.50
   type: ss
+- alterId: 0
+  cipher: auto
+  name: 英国_Erith_OVH SAS_Claude2
+  network: http
+  port: 2052
+  server: 51.195.235.71
+  tls: false
+  type: vmess
+  uuid: 59e28f78-c31b-4613-9d9f-1e6732a31f46
+- flow: xtls-rprx-vision
+  name: 英国_London_Amazon Technologies Inc._Claude
+  network: tcp
+  port: 18633
+  reality-opts:
+    public-key: tpovASeNxNkqDfPZhr2raGUY6pis-9XSLCB6DrIEU1g
+    short-id: d9029b790f10b2e2
+  server: 3.8.160.120
+  servername: www.yahoo.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 5da5bc00-ea44-462e-bdb7-7687346ad039
+- name: 英国_London_DataCamp Limited_Claude
+  network: tcp
+  port: 8443
+  server: uk1.fromblancwithlove.com
+  servername: uk1.fromblancwithlove.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 394f6981-a782-4779-9a85-e6cf22935d93
+- alterId: 0
+  cipher: auto
+  name: 英国_London_GTHost_Claude
+  network: tcp
+  port: 22324
+  server: 66.163.117.58
+  tls: false
+  type: vmess
+  uuid: 04621bae-ab36-11ec-b909-0242ac120002
+- name: 英国_London_OVH SAS_Claude1
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: 4e4FI0siWxFtLCRCVDQurn1wLTuvKWhRY0zj1SaUcyw
+    short-id: a13a7cc5
+  server: 51.89.229.134
+  servername: www.samsung.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  uuid: 53821f3c-5b03-456a-89f3-f8379f130752
+- flow: xtls-rprx-vision
+  name: 英国_London_OVH SAS_Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: QsjSJxjG0T6XmoBhjXUohrMNGDQ97J14LVGnJRgUqVk
+    short-id: d3
+  server: 212.74.39.81
+  servername: icloud.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 568bcfb3-965b-4d97-af29-155b7b9d89c4
+- name: 英国_London__Claude
+  network: tcp
+  port: 443
+  server: 155.117.127.137
+  skip-cert-verify: false
+  type: vless
+  udp: true
+  uuid: 5a20b5d0-3a98-4792-9559-95f4e24277ec
 - cipher: aes-128-gcm
-  name: 英国_Manchester_M247 Europe_Claude
+  name: 英国_Manchester_M247 Europe_Claude1
   password: shadowsocks
   port: 443
   server: 141.98.101.178
+  type: ss
+- cipher: aes-128-gcm
+  name: 英国_Manchester_M247 Europe_Claude2
+  password: shadowsocks
+  port: 443
+  server: 141.98.101.181
+  type: ss
+- cipher: aes-128-gcm
+  name: 英国_Manchester_M247 Europe_Claude3
+  password: shadowsocks
+  port: 443
+  server: 141.98.101.179
   type: ss
 - name: 英国_Martlesham_EE Limited_Claude
   network: xhttp
@@ -3212,6 +3846,27 @@ proxies:
   type: vless
   udp: true
   uuid: 2fb73fb6-1fa1-422e-ad82-a1a7b5f11078
+- name: 英国_Martlesham_EE Limited_Gemini_Claude
+  network: ws
+  port: 80
+  server: 151.101.193.57
+  skip-cert-verify: false
+  tls: false
+  type: vless
+  uuid: 2c15f192-3812-98db-85a2-88cd7d02b868
+  ws-opts:
+    headers:
+      Host: Vpsdelta.com
+    path: /?ed=2048
+- name: 英国_Slough_DigitalOcean, LLC_Claude
+  network: tcp
+  port: 27774
+  server: 159.65.92.206
+  skip-cert-verify: false
+  tls: false
+  type: vless
+  udp: true
+  uuid: c83014e0-ad3e-4ebd-9e8f-8f7a1f6088d6
 - cipher: aes-128-gcm
   name: 英国_Stretford_M247 Europe SRL_Claude
   password: shadowsocks
@@ -3230,17 +3885,6 @@ proxies:
   port: 49137
   server: 195.93.253.245
   type: ss
-- name: 荷兰_Amsterdam_Clodo Cloud Service CO. L.L.C_Gemini_Claude
-  network: ws
-  port: 443
-  server: a1-tss.pages.dev
-  servername: A1-tss.Pages.DeV
-  tls: true
-  type: vless
-  udp: true
-  uuid: f86f5a03-3872-46b5-bf03-a50388a0261d
-  ws-opts:
-    path: /
 - flow: xtls-rprx-vision
   name: 荷兰_Amsterdam_DA International Group Ltd._Claude
   network: tcp
@@ -3278,7 +3922,7 @@ proxies:
   udp: true
   uuid: 5c040f1d-45db-43bd-8d46-e4950e433735
 - flow: xtls-rprx-vision
-  name: 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude
+  name: 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude1
   network: tcp
   port: 8443
   reality-opts:
@@ -3291,6 +3935,19 @@ proxies:
   type: vless
   udp: true
   uuid: 69a2af58-d74a-44ca-864a-e09b493f4274
+- name: 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude2
+  network: tcp
+  port: 443
+  reality-opts:
+    public-key: VaHAVeisE4WfobLmDfXVwhKZ-WednwEIpAOhxwTI1Vg
+    short-id: '03'
+  server: 5.180.46.227
+  servername: www.google.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 1cd419c0-28e0-4268-90ea-bd4d156864e3
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude1
   password: k1dBOmOB4oqi7Ump37a1bQ
@@ -3319,12 +3976,6 @@ proxies:
   name: 荷兰_Amsterdam_Greenhost BV_Claude5
   password: 4a2rfixophdjffa8KVA4Aa
   port: 443
-  server: 193.29.139.206
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude6
-  password: 4a2rfixophdjffa8KVA4Aa
-  port: 443
   server: 193.29.139.157
   type: ss
 - cipher: chacha20-ietf-poly1305
@@ -3334,21 +3985,21 @@ proxies:
   server: 82.38.31.191
   type: ss
 - flow: xtls-rprx-vision
-  name: 荷兰_Amsterdam_Hostkey_Claude1
+  name: 荷兰_Amsterdam_HZ Hosting Ltd_Claude
   network: tcp
-  port: 18443
+  port: 28167
   reality-opts:
-    public-key: 09dnS8j39kek1dupFOV_NgLaQPwP46W8dAqt8IaTO1Y
-    short-id: c914a1c62903b4a2
-  server: 78.17.198.65
-  servername: www.ozone.nl
+    public-key: edl7x700EJzY6NIN1pZXo-QiyRAScQCW5UO-0ZQXpA0
+    short-id: aabbccdd
+  server: 79.141.164.40
+  servername: ya.ru
   skip-cert-verify: false
   tls: true
   type: vless
   udp: true
-  uuid: 228ecfd3-9bf0-42fd-a50e-581f84022513
+  uuid: 703fe724-d2b9-40f9-934f-3089403a109d
 - flow: xtls-rprx-vision
-  name: 荷兰_Amsterdam_Hostkey_Claude2
+  name: 荷兰_Amsterdam_Hostkey_Claude1
   network: tcp
   port: 8443
   reality-opts:
@@ -3361,6 +4012,20 @@ proxies:
   type: vless
   udp: true
   uuid: af194c0e-95c3-417b-85bf-9ac3027f903e
+- flow: xtls-rprx-vision
+  name: 荷兰_Amsterdam_Hostkey_Claude2
+  network: tcp
+  port: 18443
+  reality-opts:
+    public-key: 09dnS8j39kek1dupFOV_NgLaQPwP46W8dAqt8IaTO1Y
+    short-id: c914a1c62903b4a2
+  server: 78.17.198.65
+  servername: www.ozone.nl
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 228ecfd3-9bf0-42fd-a50e-581f84022513
 - flow: xtls-rprx-vision
   name: 荷兰_Amsterdam_Neon Core Network LLC_Claude
   network: tcp
@@ -3376,20 +4041,6 @@ proxies:
   udp: true
   uuid: 8be98cb0-0942-4bc2-b2da-eec9e2e53f9f
 - flow: xtls-rprx-vision
-  name: 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
-  network: tcp
-  port: 443
-  reality-opts:
-    public-key: PfG1V1-ODHD8CegoTVg8m4G4mw5S1QiA751yWKCkhBc
-    short-id: 054602d818379876
-  server: 64.188.77.219
-  servername: nid.hatvpn.org
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: f85f6c65-1b35-4c56-b766-80c5a4457b3e
-- flow: xtls-rprx-vision
   name: 荷兰_Amsterdam_Play2go International Limited_Claude
   network: tcp
   port: 443
@@ -3403,6 +4054,30 @@ proxies:
   type: vless
   udp: true
   uuid: 3e0c34a4-1c38-4d93-88c6-5155e81f8b52
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Psychz Networks_Claude1
+  password: CJmTCCx7Ltud
+  port: 8388
+  server: 108.181.58.239
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Psychz Networks_Claude2
+  password: CJmTCCx7Ltud
+  port: 8388
+  server: 108.181.126.122
+  type: ss
+- name: 荷兰_Amsterdam_Senko Digital LLC_Claude
+  network: xhttp
+  port: 443
+  reality-opts:
+    public-key: r2B2KwffHmyjWrmwKmI0o3uW9UEsn2l_Ko0UmyTjKgM
+  server: 2.26.76.140
+  servername: m.twitch.tv
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: f4bad870-4b45-4a46-bec6-d05fa31df1cb
 - name: 荷兰_Amsterdam_Servers Tech Fzco_Claude1
   network: tcp
   port: 17113
@@ -3474,26 +4149,13 @@ proxies:
       Host: SC-TheNetherlands2.09vpn.com
     path: /vless/
 - flow: xtls-rprx-vision
-  name: 荷兰_Haarlem_Scaleway SAS_Claude
-  network: tcp
-  port: 23576
-  reality-opts:
-    public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
-    short-id: '01'
-  server: 51.158.206.20
-  servername: fuck.rkn
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
-- flow: xtls-rprx-vision
   name: 荷兰_Haarlem_Scaleway_Claude1
   network: tcp
   port: 23576
   reality-opts:
     public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
     short-id: '01'
-  server: 51.158.206.34
+  server: 51.158.206.93
   servername: fuck.rkn
   skip-cert-verify: false
   tls: true
@@ -3512,70 +4174,7 @@ proxies:
   tls: true
   type: vless
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
-- flow: xtls-rprx-vision
-  name: 荷兰_Haarlem_Scaleway_Claude11
-  network: tcp
-  port: 23576
-  reality-opts:
-    public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
-    short-id: '01'
-  server: 51.158.206.87
-  servername: fuck.rkn
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
-- name: 荷兰_Haarlem_Scaleway_Claude12
-  network: ws
-  port: 8443
-  server: sc-thenetherlands1.09vpn.com
-  servername: sc-thenetherlands1.09vpn.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 40cc9b52-25b8-4cd5-8b45-715ae26e6baf
-  ws-opts:
-    path: /vless/
-- name: 荷兰_Haarlem_Scaleway_Claude13
-  network: ws
-  port: 8443
-  server: 163.172.214.188
-  servername: SC-TheNetherlands1.09vpn.com
-  skip-cert-verify: true
-  tls: true
-  type: vless
-  udp: true
-  uuid: 40cc9b52-25b8-4cd5-8b45-715ae26e6baf
-  ws-opts:
-    path: /vless/
-- flow: xtls-rprx-vision
-  name: 荷兰_Haarlem_Scaleway_Claude2
-  network: tcp
-  port: 23576
-  reality-opts:
-    public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
-    short-id: '01'
-  server: 51.158.206.96
-  servername: fuck.rkn
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
-- flow: xtls-rprx-vision
-  name: 荷兰_Haarlem_Scaleway_Claude3
-  network: tcp
-  port: 23576
-  reality-opts:
-    public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
-    short-id: '01'
-  server: 51.158.206.93
-  servername: fuck.rkn
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
-- name: 荷兰_Haarlem_Scaleway_Claude4
+- name: 荷兰_Haarlem_Scaleway_Claude2
   network: ws
   port: 80
   server: SC-TheNetherlands1.09vpn.com
@@ -3587,8 +4186,20 @@ proxies:
     headers:
       Host: SC-TheNetherlands1.09vpn.com
     path: /vless/
+- name: 荷兰_Haarlem_Scaleway_Claude3
+  network: ws
+  port: 8443
+  server: sc-thenetherlands1.09vpn.com
+  servername: sc-thenetherlands1.09vpn.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 40cc9b52-25b8-4cd5-8b45-715ae26e6baf
+  ws-opts:
+    path: /vless/
 - flow: xtls-rprx-vision
-  name: 荷兰_Haarlem_Scaleway_Claude5
+  name: 荷兰_Haarlem_Scaleway_Claude4
   network: tcp
   port: 23576
   reality-opts:
@@ -3601,7 +4212,7 @@ proxies:
   type: vless
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
 - flow: xtls-rprx-vision
-  name: 荷兰_Haarlem_Scaleway_Claude6
+  name: 荷兰_Haarlem_Scaleway_Claude5
   network: tcp
   port: 23576
   reality-opts:
@@ -3614,7 +4225,7 @@ proxies:
   type: vless
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
 - flow: xtls-rprx-vision
-  name: 荷兰_Haarlem_Scaleway_Claude7
+  name: 荷兰_Haarlem_Scaleway_Claude6
   network: tcp
   port: 23576
   reality-opts:
@@ -3626,6 +4237,18 @@ proxies:
   tls: true
   type: vless
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
+- name: 荷兰_Haarlem_Scaleway_Claude7
+  network: ws
+  port: 8443
+  server: 163.172.214.188
+  servername: SC-TheNetherlands1.09vpn.com
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: true
+  uuid: 40cc9b52-25b8-4cd5-8b45-715ae26e6baf
+  ws-opts:
+    path: /vless/
 - name: 荷兰_Haarlem_Scaleway_Claude8
   network: ws
   port: 80
@@ -3651,60 +4274,40 @@ proxies:
   type: vless
   udp: true
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
-- flow: xtls-rprx-vision
-  name: 荷兰_Meppel_Spacecore Solution_Claude
-  network: tcp
-  port: 8443
-  reality-opts:
-    public-key: XEOvGJLIn0iPDT1R71F8FCKet0XHg-NTn0sSxurlvV8
-    short-id: ce
-  server: nl-1.bereza-open.ru
-  servername: www.google.com
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 3dc68a32-43aa-4b5e-a60f-e11b27d03edc
-- cipher: aes-128-cfb
-  name: 荷兰_Rozendaal_NFOrce Entertainment B.V._Claude
-  obfs: plain
-  obfs-param: ''
-  password: shadowsocks
-  port: 443
-  protocol: origin
-  protocol-param: ''
-  server: 109.201.152.181
-  type: ssr
-- name: 阿联酋_Abu Dhabi_GoldIPv_Claude1
+- name: 阿联酋_Abu Dhabi_GoldIPv_Claude
   password: 8vX6A657pl
   port: 500
   server: 31.59.39.192
   skip-cert-verify: true
   sni: www.amd.com
   type: hysteria2
-- flow: xtls-rprx-vision
-  name: 阿联酋_Abu Dhabi_GoldIPv_Claude2
-  network: tcp
-  port: 443
-  reality-opts:
-    public-key: sXC7sPCzHG_uYfvk3GSUdYQKfHAwirOVWMhO50Y9Pn8
-    short-id: d1e9faa1b2c3
-  server: 31.59.39.29
-  servername: download.spectrum.vu
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  udp: true
-  uuid: 76713d07-5a6b-49c2-abd8-bc450a2fa7fc
+- cipher: aes-256-cfb
+  name: 韩国_Ansan-si_SK Broadband Co Ltd_Claude
+  password: qwerREWQ@@
+  port: 6123
+  server: 211.178.105.134
+  type: ss
 - alterId: 0
   cipher: auto
-  name: 韩国_Chuncheon_Oracle Cloud_Gemini_Claude
+  name: 韩国_Chuncheon_Oracle Cloud_Gemini_Claude1
   network: tcp
   port: 8888
   server: 146.56.112.110
   type: vmess
   udp: true
   uuid: e7c302f3-90d6-42dd-9d7d-94a3683a3707
+- alterId: 0
+  cipher: auto
+  name: 韩国_Chuncheon_Oracle Cloud_Gemini_Claude2
+  network: ws
+  port: 443
+  server: 152.67.218.38
+  tls: false
+  type: vmess
+  uuid: b5e9480a-b7aa-40a4-f9a7-5299b5e363b4
+  ws-opts:
+    headers: {}
+    path: /
 - cipher: aes-256-cfb
   name: 韩国_Gwacheon_SK Broadband Co Ltd_Gemini_Claude
   password: qwerREWQ@@
@@ -3712,7 +4315,7 @@ proxies:
   server: 221.139.79.57
   type: ss
 - flow: xtls-rprx-vision
-  name: 韩国_Seoul_Amazon.com, Inc._Gemini_Claude
+  name: 韩国_Seoul_Amazon.com, Inc._Gemini_Claude1
   network: tcp
   port: 21796
   reality-opts:
@@ -3725,6 +4328,20 @@ proxies:
   type: vless
   udp: true
   uuid: cd91af31-0c74-4bce-aac3-bdae367c84fa
+- flow: xtls-rprx-vision
+  name: 韩国_Seoul_Amazon.com, Inc._Gemini_Claude2
+  network: tcp
+  port: 39295
+  reality-opts:
+    public-key: CKyy_gy40xRlKa3sBbCg759CMC7vDMjZKqsiuC5BtWU
+    short-id: 88a32a0e9853b9
+  server: 43.203.249.214
+  servername: www.icloud.com
+  skip-cert-verify: false
+  tls: true
+  type: vless
+  udp: true
+  uuid: 06a1719f-417e-46f0-8a7d-e2b13ecf893a
 - alterId: 0
   cipher: auto
   name: 韩国_Seoul_Oracle Cloud_Gemini_Claude
@@ -3738,6 +4355,27 @@ proxies:
     headers:
       Host: kr02.a0a.xyz
     path: /cctv13.m3u8
+- alterId: 0
+  cipher: auto
+  name: 韩国_Seoul_Oracle Corporation_Gemini_Claude
+  network: none
+  port: 443
+  server: 140.238.2.250
+  skip-cert-verify: true
+  type: vmess
+  uuid: 41a7089a-040b-4538-8b8d-010902405bde
+- cipher: aes-256-cfb
+  name: 韩国_Yangcheon-gu_SK Broadband Co Ltd_Claude1
+  password: qwerREWQ@@
+  port: 4652
+  server: p141.panda001.net
+  type: ss
+- cipher: aes-256-cfb
+  name: 韩国_Yangcheon-gu_SK Broadband Co Ltd_Claude2
+  password: qwerREWQ@@
+  port: 4652
+  server: 218.237.185.230
+  type: ss
 proxy-groups:
 - name: PROXY
   type: select
@@ -3754,33 +4392,41 @@ proxy-groups:
   type: select
   filter: .*
   proxies:
-  - 104.128.72.119_Claude
   - 116.80.44.144_Gemini_Claude
-  - 137.184.218.169_Gemini_Claude
-  - 141.164.45.187_Claude
+  - 121.169.46.116_Claude
   - 144.31.131.17_Claude
-  - 162.217.249.72_Gemini_Claude
+  - 149.102.144.110_Claude
+  - 152.67.8.205_Gemini_Claude
+  - 154.16.157.200_Gemini_Claude
   - 162.221.196.121_Claude
   - 163.172.214.188_Claude
-  - 185.226.95.155_Claude
+  - 172.104.237.100_Claude
+  - 172.111.146.64_Gemini_Claude
   - 185.229.59.254_Gemini_Claude
   - 193.233.23.121_Claude
+  - 193.29.139.164_Claude
+  - 193.29.139.173_Claude
+  - 193.29.139.233_Claude
   - 193.56.3.125_Claude
   - 195.133.2.45_Claude
+  - 213.142.132.169_Claude
   - 2401:fae0:1049:1e58:6550:43dc:877d:def_Claude
   - 2401:fae0:1068:7bb7:ccf1:3989:dbba:7581_Claude
   - 2401:fae0:1401:7a90:e8d7:bc0:18e4:6c14_Claude
   - 2401:fae0:1441:c0cc:34ec:5b71:a82c:f8be_Claude
+  - 2401:fae0:147d:2532:af67:1df:e914:d920_Claude
   - 2401:fae0:188e:ea01:84ef:6f23:7095:54fa_Claude
-  - 37.221.79.69_Claude
+  - 2a0e:d604:1:130::2_Claude
+  - 37.77.106.32_Claude
   - 45.148.31.0_Claude
   - 45.15.170.237_Gemini_Claude
   - 45.158.127.5_Claude
-  - 47.81.36.237_Gemini
+  - 45.88.183.168_Gemini_Claude
   - 5.83.129.153_Claude
   - 5.83.129.90_Claude
   - 51.195.203.247_Claude
   - 57.129.121.230_Claude
+  - 57.131.32.191_Claude
   - 57.131.32.191_Gemini_Claude1
   - 57.131.32.191_Gemini_Claude2
   - 84.239.14.148_Claude
@@ -3806,13 +4452,15 @@ proxy-groups:
   - 84.239.49.54_Gemini_Claude
   - 84.239.49.55_Gemini_Claude
   - 85.192.37.119_Claude
-  - 85.237.207.223_Gemini_Claude
-  - 中国_Beijing_Light Node Limited_Gemini
+  - 94.141.123.35_Claude
+  - 95.179.241.129_Claude
+  - 中国_Beijing_Light Node Limited_Gemini1
+  - 中国_Beijing_Light Node Limited_Gemini2
+  - 其他地区_Almaty_PS Internet Company LLP_Claude
+  - 其他地区_Athens_BrainStorm Network_Claude
   - 其他地区_Belgrade_WorkTitans B.V._Claude1
   - 其他地区_Belgrade_WorkTitans B.V._Claude2
-  - 其他地区_Belgrade_WorkTitans B.V._Claude3
   - 其他地区_Bern_WorkTitans B.V._Claude
-  - 其他地区_Bratislava_eServer s.r.o._Claude
   - 其他地区_Bucharest_M247 Europe SRL_Claude1
   - 其他地区_Bucharest_M247 Europe SRL_Claude10
   - 其他地区_Bucharest_M247 Europe SRL_Claude11
@@ -3827,45 +4475,67 @@ proxy-groups:
   - 其他地区_Bucharest_M247 Europe SRL_Claude8
   - 其他地区_Bucharest_M247 Europe SRL_Claude9
   - 其他地区_Bucharest_M247 Europe_Claude
+  - 其他地区_Bucharest_Serva ONE LTD_Claude
   - 其他地区_Buchs / Buchs_Plant Holding GmbH_Claude
+  - 其他地区_Budapest_WorkTitans B.V._Gemini_Claude
   - 其他地区_Dublin_WorkTitans B.V._Claude
+  - 其他地区_Geneva_Infomaniak Network SA_Claude1
+  - 其他地区_Geneva_Infomaniak Network SA_Claude2
+  - 其他地区_Helsinki_Aleksei Fedorov Pr Krusevac_Claude
+  - 其他地区_Helsinki_Baxet Group Inc._Claude
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude1
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude2
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude3
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude4
-  - 其他地区_Helsinki_Livi Hosting_Claude
-  - 其他地区_Helsinki_Node Host_Claude1
-  - 其他地区_Helsinki_Node Host_Claude2
-  - 其他地区_Helsinki_Play2go International_Claude
-  - 其他地区_Helsinki_xorek.cloud International LTD_Claude
+  - 其他地区_Helsinki_Hetzner Online GmbH_Claude5
+  - 其他地区_Helsinki_Livi Hosting_Claude1
+  - 其他地区_Helsinki_Livi Hosting_Claude2
+  - 其他地区_Helsinki_Livi Hosting_Claude3
+  - 其他地区_Helsinki_Node Host_Claude
+  - 其他地区_Helsinki_Play2go International_Claude1
+  - 其他地区_Helsinki_Play2go International_Claude2
+  - 其他地区_Helsinki_SERV.HOST GROUP LTD_Claude
+  - 其他地区_Helsinki_xorek.cloud International LTD_Claude1
+  - 其他地区_Helsinki_xorek.cloud International LTD_Claude2
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude1
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude2
   - 其他地区_Kyiv_WorkTitans B.V._Claude
   - 其他地区_Labinot-Fushë_Global Connectivity Solutions LLP_Claude
   - 其他地区_Madrid_G-Core Labs SA_Claude
-  - 其他地区_Milan_Akamai Technologies, Inc._Claude1
-  - 其他地区_Milan_Akamai Technologies, Inc._Claude2
+  - 其他地区_Madrid_ZhouyiSat Communications_Claude
+  - 其他地区_Mexico City_Latitude.sh_Gemini_Claude
   - 其他地区_Milan_OVH SAS_Gemini_Claude
   - 其他地区_Oslo_Global Connectivity Solutions Llp_Claude1
   - 其他地区_Oslo_Global Connectivity Solutions Llp_Claude2
+  - 其他地区_Riga_Serva ONE LTD_Claude
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude3
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude4
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude5
   - 其他地区_Sofia_WorkTitans B.V._Claude
+  - 其他地区_Stockholm_Node Host_Claude
+  - 其他地区_Stockholm_Play2go International Limited_Claude
   - 其他地区_Stockholm_Play2go International_Claude
-  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude1
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude2
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude3
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude1
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude2
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude3
+  - 其他地区_Stockholm_xorek.cloud International LTD_Claude4
+  - 其他地区_Sundbyberg_QuxLabs AB_Claude
   - 其他地区_São Paulo_BrainStorm Network, Inc_Gemini_Claude
   - 其他地区_Tallinn_SERV.HOST GROUP LTD_Claude
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini1
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini2
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini3
+  - 其他地区_Tbilisi_AkhaliNet LLC_Gemini4
+  - 其他地区_Tbilisi_AkhaliNet LLC_Gemini5
+  - 其他地区_Tirana_H2nexus_Claude
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude3
-  - 其他地区_Vienna_BrainStorm Network_Claude
   - 其他地区_Voluntari_INVITE Systems SRL_Claude1
   - 其他地区_Voluntari_INVITE Systems SRL_Claude10
   - 其他地区_Voluntari_INVITE Systems SRL_Claude11
@@ -3897,16 +4567,18 @@ proxy-groups:
   - 其他地区_Voluntari_INVITE Systems SRL_Claude8
   - 其他地区_Voluntari_INVITE Systems SRL_Claude9
   - 其他地区_Voluntari_INVITE Systems SRL_Gemini_Claude
-  - 其他地区_Warsaw_Atman Sp. z o.o._Claude1
-  - 其他地区_Warsaw_Atman Sp. z o.o._Claude2
-  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude
+  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude1
+  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude2
   - 其他地区_Warsaw_Melbikomas UAB_Claude1
   - 其他地区_Warsaw_Melbikomas UAB_Claude2
   - 其他地区_Warsaw_Melbikomas UAB_Claude3
   - 其他地区_Warsaw_Melbikomas UAB_Claude4
   - 其他地区_Warsaw_Melbikomas UAB_Claude5
   - 其他地区_Warsaw_Melbikomas UAB_Claude6
+  - 其他地区_Warsaw_NET_Claude
   - 其他地区_Warsaw_The Constant Company, LLC_Claude
+  - 其他地区_Warsaw_UpCloud Ltd_Claude
+  - 加拿大_Beauharnois_OVH SAS_Gemini_Claude
   - 加拿大_Toronto_Akamai Technologies_Gemini_Claude
   - 加拿大_Toronto_Amazon Technologies Inc._Gemini_Claude
   - 加拿大_Toronto_Amazon.com_Gemini_Claude
@@ -3914,40 +4586,54 @@ proxy-groups:
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude1
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude2
   - 加拿大_Vancouver_Cogent Communications_Gemini_Claude
+  - 印度_Chennai_Akamai Technologies, Inc._Gemini_Claude
+  - 印度_Mumbai_The Constant Company_Claude
+  - 印度_Navi Mumbai_Selvakumar Selvapandi_Gemini_Claude
   - 印度尼西亚_Bogor_PUSATMEDIA_Gemini
-  - 印度尼西亚_Bogor_PUSATMEDIA_Gemini_Claude
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_Taipei_Data Center Network Limited_Claude
+  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude3
   - 台湾_Taipei_SAKURA LTD._Claude
+  - 台湾_Taipei_SAKURA LTD._Gemini_Claude
   - 台湾_Taoyuan_Scloud Pte Ltd_Gemini_Claude
   - 土耳其_Istanbul_G-Core Labs S.A._Gemini_Claude
-  - 土耳其_Istanbul_Iksir Internet Hizmetleri A.S._Gemini_Claude
+  - 土耳其_Istanbul_Scalaxy B.V._Claude
   - 德国_Berlin_GHOSTnet GmbH_Claude1
   - 德国_Berlin_GHOSTnet GmbH_Claude2
   - 德国_Berlin_GHOSTnet GmbH_Claude3
+  - 德国_Berlin_GHOSTnet_Claude
   - 德国_Falkenstein_Hetzner Online GmbH_Claude1
   - 德国_Falkenstein_Hetzner Online GmbH_Claude2
   - 德国_Frankfurt Am Main_Hetzner Online AG_Claude1
   - 德国_Frankfurt Am Main_Hetzner Online AG_Claude2
+  - 德国_Frankfurt am Main_Akamai Technologies, Inc._Claude
   - 德国_Frankfurt am Main_Amazon Technologies Inc._Claude
-  - 德国_Frankfurt am Main_Clouvider Limited_Gemini_Claude
+  - 德国_Frankfurt am Main_Amazon.com, Inc._Claude
+  - 德国_Frankfurt am Main_Clouvider Limited_Claude
   - 德国_Frankfurt am Main_Datacamp_Claude
+  - 德国_Frankfurt am Main_Denis Terehov_Claude
+  - 德国_Frankfurt am Main_H2nexus LTD_Claude
   - 德国_Frankfurt am Main_International Hosting Company Limited_Claude
   - 德国_Frankfurt am Main_International Hosting Company_Claude
   - 德国_Frankfurt am Main_Netaxis Group LTD_Claude
   - 德国_Frankfurt am Main_OVH SAS_Claude
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude1
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude2
+  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude
   - 德国_Frankfurt am Main_OVHcloud_Claude
   - 德国_Frankfurt am Main_OVHcloud_Gemini_Claude
-  - 德国_Frankfurt am Main_Play2go International Limited_Claude
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude1
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude2
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude3
   - 德国_Frankfurt am Main_Qwins LTD_Claude
+  - 德国_Frankfurt am Main_Sculk Ltd_Claude1
+  - 德国_Frankfurt am Main_Sculk Ltd_Claude2
+  - 德国_Frankfurt am Main_Sculk_Claude
+  - 德国_Frankfurt am Main_The Constant Company_Claude
   - 德国_Frankfurt am Main_Uxhost LTD_Claude
   - 德国_Frankfurt am Main_Vultr_Claude1
   - 德国_Frankfurt am Main_Vultr_Claude2
   - 德国_Frankfurt am Main_WAIcore Ltd_Claude
   - 德国_Frankfurt am Main_Zenlayer Inc_Claude
+  - 德国_Frankfurt am Main_Zenlayer_Claude
   - 德国_Leipzig_Cloudflare, Inc._Claude
   - 德国_Limburg an der Lahn_OVH SAS_Claude1
   - 德国_Limburg an der Lahn_OVH SAS_Claude2
@@ -3955,48 +4641,55 @@ proxy-groups:
   - 德国_Limburg_OVH SAS_Claude
   - 德国_Nuremberg_Hetzner Online GmbH_Claude1
   - 德国_Nuremberg_Hetzner Online GmbH_Claude2
-  - 德国_Nuremberg_netcup_Claude
-  - 新加坡_Singapore_Akamai Technologies, Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon Technologies Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude1
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude2
-  - 新加坡_Singapore_Cogent Communications_Claude
+  - 德国_Nuremberg_netcup_Claude1
+  - 德国_Nuremberg_netcup_Claude2
+  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude
   - 新加坡_Singapore_Datacamp Limited_Gemini_Claude
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude1
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude2
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude3
+  - 新加坡_Singapore_Komi LLC_Gemini_Claude
   - 新加坡_Singapore_Melbikomas UAB_Gemini_Claude
-  - 新加坡_Singapore_Oracle Corporation_Gemini_Claude
+  - 日本_Chiyoda City_SAKURA Internet Inc._Gemini_Claude
+  - 日本_Osaka_Akamai Technologies, Inc._Claude
   - 日本_Osaka_Oracle Cloud_Gemini_Claude
   - 日本_Osaka_Oracle Corporation_Gemini_Claude
-  - 日本_Shibuya City_AANSys Network LLC_Claude
+  - 日本_Osaka_SAKURA Internet Inc._Gemini_Claude
   - 日本_Shibuya City_WorkTitans B.V._Gemini_Claude
+  - 日本_Tokyo_Akamai Technologies, Inc._Gemini_Claude
   - 日本_Tokyo_Akamai Technologies_Gemini_Claude
-  - 日本_Tokyo_Amazon Technologies Inc._Gemini_Claude
+  - 日本_Tokyo_BrainStorm Network, Inc_Claude
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude1
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude2
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude3
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude4
+  - 日本_Tokyo_Ipxo LLC_Gemini_Claude
+  - 法国_Aubervilliers_The Constant Company, LLC_Claude
+  - 法国_Desvres_Cloudflare, Inc._Claude
   - 法国_Gravelines_OVH SAS_Gemini_Claude1
   - 法国_Gravelines_OVH SAS_Gemini_Claude2
+  - 法国_Gravelines_OVH SAS_Gemini_Claude3
+  - 法国_Lauterbourg_Contabo GmbH_Claude
+  - 法国_Paris_Amazon Technologies Inc._Claude
+  - 法国_Paris_Amazon.com, Inc._Claude1
+  - 法国_Paris_Amazon.com, Inc._Claude2
   - 法国_Paris_Cloudflare, Inc._Claude
   - 法国_Paris_Datacamp Limited_Claude
+  - 法国_Paris_OVH SAS_Claude
   - 法国_Paris_Scaleway SAS_Claude
   - 法国_Paris_xorek.cloud International LTD_Claude
-  - 法国_Roubaix_OVH SAS_Claude1
-  - 法国_Roubaix_OVH SAS_Claude2
-  - 澳大利亚_Sydney_Amazon Technologies Inc._Gemini_Claude
+  - 法国_Roubaix_OVH SAS_Claude
+  - 法国_Strasbourg_Dedik Services_Claude
   - 美国_Ashburn_GTHost_Gemini_Claude
-  - 美国_Buffalo_ColoCrossing_Gemini
+  - 美国_Charlotte_Aeza Group_Gemini_Claude
+  - 美国_Charlotte_Aeza International LTD_Gemini_Claude
   - 美国_Dallas_Datacamp Limited_Gemini_Claude1
   - 美国_Dallas_Datacamp Limited_Gemini_Claude2
   - 美国_Dallas_Datacamp Limited_Gemini_Claude3
   - 美国_Dallas_Datacamp Limited_Gemini_Claude4
-  - 美国_Dallas_Dedicated.com_Gemini_Claude1
-  - 美国_Dallas_Dedicated.com_Gemini_Claude2
-  - 美国_Dallas_Dedicated.com_Gemini_Claude3
-  - 美国_Dallas_Dedicated.com_Gemini_Claude4
+  - 美国_Dallas_Dedicated.com_Gemini_Claude
   - 美国_Dallas_Eonix Corporation_Gemini_Claude
-  - 美国_Dallas_FORNEX_Gemini
   - 美国_Dallas_The Constant Company_Gemini_Claude
   - 美国_Elk Grove Village_HostPapa_Gemini_Claude
   - 美国_Hillsboro_OVH SAS_Gemini_Claude1
@@ -4005,8 +4698,6 @@ proxy-groups:
   - 美国_Houston_Citigroup Inc._Gemini_Claude
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude1
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude2
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude3
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude4
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude1
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude2
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude3
@@ -4018,6 +4709,8 @@ proxy-groups:
   - 美国_Los Angeles_Datacamp Limited_Claude5
   - 美国_Los Angeles_Datacamp Limited_Claude6
   - 美国_Los Angeles_Datacamp Limited_Claude7
+  - 美国_Los Angeles_Datacamp Limited_Claude8
+  - 美国_Los Angeles_Datacamp Limited_Claude9
   - 美国_Los Angeles_FSC NETWORK LTD_Gemini_Claude
   - 美国_Los Angeles_GTHost_Gemini_Claude
   - 美国_Los Angeles_HostPapa_Gemini
@@ -4031,16 +4724,14 @@ proxy-groups:
   - 美国_Los Angeles_Zenlayer_Gemini_Claude
   - 美国_Miami_GTHost_Claude
   - 美国_Miami_GTHost_Gemini_Claude
-  - 美国_Miami_Newserverlife LLC_Gemini_Claude
   - 美国_New York_Datacamp Limited_Claude
   - 美国_New York_Datacamp Limited_Gemini_Claude1
   - 美国_New York_Datacamp Limited_Gemini_Claude2
-  - 美国_New York_Fourplex Telecom_Claude
   - 美国_New York_GTHost_Gemini_Claude
   - 美国_New York_objx.net_Gemini_Claude
-  - 美国_North Bergen_DigitalOcean, LLC_Gemini_Claude
   - 美国_Orangeburg_Contabo Inc._Gemini_Claude
-  - 美国_Orem_Ace Data Centers II_Claude
+  - 美国_Orem_Ace Data Centers II_Claude1
+  - 美国_Orem_Ace Data Centers II_Claude2
   - 美国_Philadelphia_Neon Core Network LLC_Claude
   - 美国_Phoenix_GTHost_Gemini_Claude
   - 美国_Phoenix_Oracle Corporation_Claude
@@ -4050,9 +4741,7 @@ proxy-groups:
   - 美国_Reston_OVH SAS_Gemini_Claude1
   - 美国_Reston_OVH SAS_Gemini_Claude2
   - 美国_Reston_OVH SAS_Gemini_Claude3
-  - 美国_Reston_OVH SAS_Gemini_Claude4
-  - 美国_Richardson_Akamai Technologies, Inc._Gemini_Claude
-  - 美国_San Francisco_Xicomm LLC_Gemini_Claude
+  - 美国_San Jose_Leaseweb USA, Inc._Gemini_Claude
   - 美国_San Jose_Oracle Corporation_Gemini
   - 美国_San Jose_Oracle Corporation_Gemini_Claude1
   - 美国_San Jose_Oracle Corporation_Gemini_Claude2
@@ -4063,46 +4752,55 @@ proxy-groups:
   - 美国_Santa Clara_prgmr.com, Inc._Claude
   - 美国_Seattle_ColoCrossing_Gemini_Claude
   - 美国_Seattle_Datacamp_Gemini_Claude
-  - 美国_Seattle_PacketHub_Gemini_Claude
   - 美国_The Dalles_Google LLC_Gemini_Claude
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude1
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude2
   - 英国_City of London_M247 Europe SRL_Claude
-  - 英国_Erith_OVH SAS_Claude
-  - 英国_Manchester_M247 Europe_Claude
+  - 英国_Coalville_05 COMMUNICATIONS LTD_Claude
+  - 英国_Erith_OVH SAS_Claude1
+  - 英国_Erith_OVH SAS_Claude2
+  - 英国_London_Amazon Technologies Inc._Claude
+  - 英国_London_DataCamp Limited_Claude
+  - 英国_London_GTHost_Claude
+  - 英国_London_OVH SAS_Claude1
+  - 英国_London_OVH SAS_Claude2
+  - 英国_London__Claude
+  - 英国_Manchester_M247 Europe_Claude1
+  - 英国_Manchester_M247 Europe_Claude2
+  - 英国_Manchester_M247 Europe_Claude3
   - 英国_Martlesham_EE Limited_Claude
+  - 英国_Martlesham_EE Limited_Gemini_Claude
+  - 英国_Slough_DigitalOcean, LLC_Claude
   - 英国_Stretford_M247 Europe SRL_Claude
   - 荷兰_Amsterdam_365.partners INC_Claude1
   - 荷兰_Amsterdam_365.partners INC_Claude2
-  - 荷兰_Amsterdam_Clodo Cloud Service CO. L.L.C_Gemini_Claude
   - 荷兰_Amsterdam_DA International Group Ltd._Claude
   - 荷兰_Amsterdam_DataCamp Limited_Claude
   - 荷兰_Amsterdam_DigitalOcean, LLC_Claude
-  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude1
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude2
   - 荷兰_Amsterdam_Greenhost BV_Claude1
   - 荷兰_Amsterdam_Greenhost BV_Claude2
   - 荷兰_Amsterdam_Greenhost BV_Claude3
   - 荷兰_Amsterdam_Greenhost BV_Claude4
   - 荷兰_Amsterdam_Greenhost BV_Claude5
-  - 荷兰_Amsterdam_Greenhost BV_Claude6
   - 荷兰_Amsterdam_Greenhost BV_Gemini_Claude
+  - 荷兰_Amsterdam_HZ Hosting Ltd_Claude
   - 荷兰_Amsterdam_Hostkey_Claude1
   - 荷兰_Amsterdam_Hostkey_Claude2
   - 荷兰_Amsterdam_Neon Core Network LLC_Claude
-  - 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
   - 荷兰_Amsterdam_Play2go International Limited_Claude
+  - 荷兰_Amsterdam_Psychz Networks_Claude1
+  - 荷兰_Amsterdam_Psychz Networks_Claude2
+  - 荷兰_Amsterdam_Senko Digital LLC_Claude
   - 荷兰_Amsterdam_Servers Tech Fzco_Claude1
   - 荷兰_Amsterdam_Servers Tech Fzco_Claude2
   - 荷兰_Amsterdam_Timeweb, LLP_Claude
   - 荷兰_Dronten_The Infrastructure Group B.V._Claude
   - 荷兰_Dronten_Zenex 5ive Limited_Gemini_Claude
   - 荷兰_Haarlem_SCALEWAY_Claude
-  - 荷兰_Haarlem_Scaleway SAS_Claude
   - 荷兰_Haarlem_Scaleway_Claude1
   - 荷兰_Haarlem_Scaleway_Claude10
-  - 荷兰_Haarlem_Scaleway_Claude11
-  - 荷兰_Haarlem_Scaleway_Claude12
-  - 荷兰_Haarlem_Scaleway_Claude13
   - 荷兰_Haarlem_Scaleway_Claude2
   - 荷兰_Haarlem_Scaleway_Claude3
   - 荷兰_Haarlem_Scaleway_Claude4
@@ -4111,14 +4809,17 @@ proxy-groups:
   - 荷兰_Haarlem_Scaleway_Claude7
   - 荷兰_Haarlem_Scaleway_Claude8
   - 荷兰_Haarlem_Scaleway_Claude9
-  - 荷兰_Meppel_Spacecore Solution_Claude
-  - 荷兰_Rozendaal_NFOrce Entertainment B.V._Claude
-  - 阿联酋_Abu Dhabi_GoldIPv_Claude1
-  - 阿联酋_Abu Dhabi_GoldIPv_Claude2
-  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude
+  - 阿联酋_Abu Dhabi_GoldIPv_Claude
+  - 韩国_Ansan-si_SK Broadband Co Ltd_Claude
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude1
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude2
   - 韩国_Gwacheon_SK Broadband Co Ltd_Gemini_Claude
-  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude1
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude2
   - 韩国_Seoul_Oracle Cloud_Gemini_Claude
+  - 韩国_Seoul_Oracle Corporation_Gemini_Claude
+  - 韩国_Yangcheon-gu_SK Broadband Co Ltd_Claude1
+  - 韩国_Yangcheon-gu_SK Broadband Co Ltd_Claude2
 - name: Best
   type: url-test
   url: https://www.gstatic.com/generate_204
@@ -4130,28 +4831,34 @@ proxy-groups:
   filter: _Gemini_Claude
   proxies:
   - 116.80.44.144_Gemini_Claude
-  - 137.184.218.169_Gemini_Claude
-  - 162.217.249.72_Gemini_Claude
+  - 152.67.8.205_Gemini_Claude
+  - 154.16.157.200_Gemini_Claude
+  - 172.111.146.64_Gemini_Claude
   - 185.229.59.254_Gemini_Claude
   - 45.15.170.237_Gemini_Claude
+  - 45.88.183.168_Gemini_Claude
   - 57.131.32.191_Gemini_Claude1
   - 57.131.32.191_Gemini_Claude2
   - 84.239.49.180_Gemini_Claude
   - 84.239.49.53_Gemini_Claude
   - 84.239.49.54_Gemini_Claude
   - 84.239.49.55_Gemini_Claude
-  - 85.237.207.223_Gemini_Claude
+  - 其他地区_Budapest_WorkTitans B.V._Gemini_Claude
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude1
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude2
+  - 其他地区_Mexico City_Latitude.sh_Gemini_Claude
   - 其他地区_Milan_OVH SAS_Gemini_Claude
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude3
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude4
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude5
   - 其他地区_São Paulo_BrainStorm Network, Inc_Gemini_Claude
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude3
   - 其他地区_Voluntari_INVITE Systems SRL_Gemini_Claude
+  - 加拿大_Beauharnois_OVH SAS_Gemini_Claude
   - 加拿大_Toronto_Akamai Technologies_Gemini_Claude
   - 加拿大_Toronto_Amazon Technologies Inc._Gemini_Claude
   - 加拿大_Toronto_Amazon.com_Gemini_Claude
@@ -4159,45 +4866,46 @@ proxy-groups:
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude1
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude2
   - 加拿大_Vancouver_Cogent Communications_Gemini_Claude
-  - 印度尼西亚_Bogor_PUSATMEDIA_Gemini_Claude
+  - 印度_Chennai_Akamai Technologies, Inc._Gemini_Claude
+  - 印度_Navi Mumbai_Selvakumar Selvapandi_Gemini_Claude
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
+  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude3
+  - 台湾_Taipei_SAKURA LTD._Gemini_Claude
   - 台湾_Taoyuan_Scloud Pte Ltd_Gemini_Claude
   - 土耳其_Istanbul_G-Core Labs S.A._Gemini_Claude
-  - 土耳其_Istanbul_Iksir Internet Hizmetleri A.S._Gemini_Claude
-  - 德国_Frankfurt am Main_Clouvider Limited_Gemini_Claude
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude1
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude2
+  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude
   - 德国_Frankfurt am Main_OVHcloud_Gemini_Claude
-  - 新加坡_Singapore_Akamai Technologies, Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon Technologies Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude1
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude2
+  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude
   - 新加坡_Singapore_Datacamp Limited_Gemini_Claude
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude1
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude2
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude3
+  - 新加坡_Singapore_Komi LLC_Gemini_Claude
   - 新加坡_Singapore_Melbikomas UAB_Gemini_Claude
-  - 新加坡_Singapore_Oracle Corporation_Gemini_Claude
+  - 日本_Chiyoda City_SAKURA Internet Inc._Gemini_Claude
   - 日本_Osaka_Oracle Cloud_Gemini_Claude
   - 日本_Osaka_Oracle Corporation_Gemini_Claude
+  - 日本_Osaka_SAKURA Internet Inc._Gemini_Claude
   - 日本_Shibuya City_WorkTitans B.V._Gemini_Claude
+  - 日本_Tokyo_Akamai Technologies, Inc._Gemini_Claude
   - 日本_Tokyo_Akamai Technologies_Gemini_Claude
-  - 日本_Tokyo_Amazon Technologies Inc._Gemini_Claude
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude1
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude2
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude3
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude4
+  - 日本_Tokyo_Ipxo LLC_Gemini_Claude
   - 法国_Gravelines_OVH SAS_Gemini_Claude1
   - 法国_Gravelines_OVH SAS_Gemini_Claude2
-  - 澳大利亚_Sydney_Amazon Technologies Inc._Gemini_Claude
+  - 法国_Gravelines_OVH SAS_Gemini_Claude3
   - 美国_Ashburn_GTHost_Gemini_Claude
+  - 美国_Charlotte_Aeza Group_Gemini_Claude
+  - 美国_Charlotte_Aeza International LTD_Gemini_Claude
   - 美国_Dallas_Datacamp Limited_Gemini_Claude1
   - 美国_Dallas_Datacamp Limited_Gemini_Claude2
   - 美国_Dallas_Datacamp Limited_Gemini_Claude3
   - 美国_Dallas_Datacamp Limited_Gemini_Claude4
-  - 美国_Dallas_Dedicated.com_Gemini_Claude1
-  - 美国_Dallas_Dedicated.com_Gemini_Claude2
-  - 美国_Dallas_Dedicated.com_Gemini_Claude3
-  - 美国_Dallas_Dedicated.com_Gemini_Claude4
+  - 美国_Dallas_Dedicated.com_Gemini_Claude
   - 美国_Dallas_Eonix Corporation_Gemini_Claude
   - 美国_Dallas_The Constant Company_Gemini_Claude
   - 美国_Elk Grove Village_HostPapa_Gemini_Claude
@@ -4207,8 +4915,6 @@ proxy-groups:
   - 美国_Houston_Citigroup Inc._Gemini_Claude
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude1
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude2
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude3
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude4
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude1
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude2
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude3
@@ -4223,12 +4929,10 @@ proxy-groups:
   - 美国_Los Angeles_Zenlayer Inc_Gemini_Claude2
   - 美国_Los Angeles_Zenlayer_Gemini_Claude
   - 美国_Miami_GTHost_Gemini_Claude
-  - 美国_Miami_Newserverlife LLC_Gemini_Claude
   - 美国_New York_Datacamp Limited_Gemini_Claude1
   - 美国_New York_Datacamp Limited_Gemini_Claude2
   - 美国_New York_GTHost_Gemini_Claude
   - 美国_New York_objx.net_Gemini_Claude
-  - 美国_North Bergen_DigitalOcean, LLC_Gemini_Claude
   - 美国_Orangeburg_Contabo Inc._Gemini_Claude
   - 美国_Phoenix_GTHost_Gemini_Claude
   - 美国_Phoenix_Oracle Corporation_Gemini_Claude1
@@ -4237,9 +4941,7 @@ proxy-groups:
   - 美国_Reston_OVH SAS_Gemini_Claude1
   - 美国_Reston_OVH SAS_Gemini_Claude2
   - 美国_Reston_OVH SAS_Gemini_Claude3
-  - 美国_Reston_OVH SAS_Gemini_Claude4
-  - 美国_Richardson_Akamai Technologies, Inc._Gemini_Claude
-  - 美国_San Francisco_Xicomm LLC_Gemini_Claude
+  - 美国_San Jose_Leaseweb USA, Inc._Gemini_Claude
   - 美国_San Jose_Oracle Corporation_Gemini_Claude1
   - 美国_San Jose_Oracle Corporation_Gemini_Claude2
   - 美国_San Jose_Oracle Corporation_Gemini_Claude3
@@ -4247,17 +4949,19 @@ proxy-groups:
   - 美国_Santa Clara_GTHost_Gemini_Claude2
   - 美国_Seattle_ColoCrossing_Gemini_Claude
   - 美国_Seattle_Datacamp_Gemini_Claude
-  - 美国_Seattle_PacketHub_Gemini_Claude
   - 美国_The Dalles_Google LLC_Gemini_Claude
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude1
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude2
-  - 荷兰_Amsterdam_Clodo Cloud Service CO. L.L.C_Gemini_Claude
+  - 英国_Martlesham_EE Limited_Gemini_Claude
   - 荷兰_Amsterdam_Greenhost BV_Gemini_Claude
   - 荷兰_Dronten_Zenex 5ive Limited_Gemini_Claude
-  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude1
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude2
   - 韩国_Gwacheon_SK Broadband Co Ltd_Gemini_Claude
-  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude1
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude2
   - 韩国_Seoul_Oracle Cloud_Gemini_Claude
+  - 韩国_Seoul_Oracle Corporation_Gemini_Claude
 - name: Fallback
   type: fallback
   url: https://www.gstatic.com/generate_204
@@ -4268,33 +4972,41 @@ proxy-groups:
   tolerance: 50
   filter: .*
   proxies:
-  - 104.128.72.119_Claude
   - 116.80.44.144_Gemini_Claude
-  - 137.184.218.169_Gemini_Claude
-  - 141.164.45.187_Claude
+  - 121.169.46.116_Claude
   - 144.31.131.17_Claude
-  - 162.217.249.72_Gemini_Claude
+  - 149.102.144.110_Claude
+  - 152.67.8.205_Gemini_Claude
+  - 154.16.157.200_Gemini_Claude
   - 162.221.196.121_Claude
   - 163.172.214.188_Claude
-  - 185.226.95.155_Claude
+  - 172.104.237.100_Claude
+  - 172.111.146.64_Gemini_Claude
   - 185.229.59.254_Gemini_Claude
   - 193.233.23.121_Claude
+  - 193.29.139.164_Claude
+  - 193.29.139.173_Claude
+  - 193.29.139.233_Claude
   - 193.56.3.125_Claude
   - 195.133.2.45_Claude
+  - 213.142.132.169_Claude
   - 2401:fae0:1049:1e58:6550:43dc:877d:def_Claude
   - 2401:fae0:1068:7bb7:ccf1:3989:dbba:7581_Claude
   - 2401:fae0:1401:7a90:e8d7:bc0:18e4:6c14_Claude
   - 2401:fae0:1441:c0cc:34ec:5b71:a82c:f8be_Claude
+  - 2401:fae0:147d:2532:af67:1df:e914:d920_Claude
   - 2401:fae0:188e:ea01:84ef:6f23:7095:54fa_Claude
-  - 37.221.79.69_Claude
+  - 2a0e:d604:1:130::2_Claude
+  - 37.77.106.32_Claude
   - 45.148.31.0_Claude
   - 45.15.170.237_Gemini_Claude
   - 45.158.127.5_Claude
-  - 47.81.36.237_Gemini
+  - 45.88.183.168_Gemini_Claude
   - 5.83.129.153_Claude
   - 5.83.129.90_Claude
   - 51.195.203.247_Claude
   - 57.129.121.230_Claude
+  - 57.131.32.191_Claude
   - 57.131.32.191_Gemini_Claude1
   - 57.131.32.191_Gemini_Claude2
   - 84.239.14.148_Claude
@@ -4320,13 +5032,15 @@ proxy-groups:
   - 84.239.49.54_Gemini_Claude
   - 84.239.49.55_Gemini_Claude
   - 85.192.37.119_Claude
-  - 85.237.207.223_Gemini_Claude
-  - 中国_Beijing_Light Node Limited_Gemini
+  - 94.141.123.35_Claude
+  - 95.179.241.129_Claude
+  - 中国_Beijing_Light Node Limited_Gemini1
+  - 中国_Beijing_Light Node Limited_Gemini2
+  - 其他地区_Almaty_PS Internet Company LLP_Claude
+  - 其他地区_Athens_BrainStorm Network_Claude
   - 其他地区_Belgrade_WorkTitans B.V._Claude1
   - 其他地区_Belgrade_WorkTitans B.V._Claude2
-  - 其他地区_Belgrade_WorkTitans B.V._Claude3
   - 其他地区_Bern_WorkTitans B.V._Claude
-  - 其他地区_Bratislava_eServer s.r.o._Claude
   - 其他地区_Bucharest_M247 Europe SRL_Claude1
   - 其他地区_Bucharest_M247 Europe SRL_Claude10
   - 其他地区_Bucharest_M247 Europe SRL_Claude11
@@ -4341,45 +5055,67 @@ proxy-groups:
   - 其他地区_Bucharest_M247 Europe SRL_Claude8
   - 其他地区_Bucharest_M247 Europe SRL_Claude9
   - 其他地区_Bucharest_M247 Europe_Claude
+  - 其他地区_Bucharest_Serva ONE LTD_Claude
   - 其他地区_Buchs / Buchs_Plant Holding GmbH_Claude
+  - 其他地区_Budapest_WorkTitans B.V._Gemini_Claude
   - 其他地区_Dublin_WorkTitans B.V._Claude
+  - 其他地区_Geneva_Infomaniak Network SA_Claude1
+  - 其他地区_Geneva_Infomaniak Network SA_Claude2
+  - 其他地区_Helsinki_Aleksei Fedorov Pr Krusevac_Claude
+  - 其他地区_Helsinki_Baxet Group Inc._Claude
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude1
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude2
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude3
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude4
-  - 其他地区_Helsinki_Livi Hosting_Claude
-  - 其他地区_Helsinki_Node Host_Claude1
-  - 其他地区_Helsinki_Node Host_Claude2
-  - 其他地区_Helsinki_Play2go International_Claude
-  - 其他地区_Helsinki_xorek.cloud International LTD_Claude
+  - 其他地区_Helsinki_Hetzner Online GmbH_Claude5
+  - 其他地区_Helsinki_Livi Hosting_Claude1
+  - 其他地区_Helsinki_Livi Hosting_Claude2
+  - 其他地区_Helsinki_Livi Hosting_Claude3
+  - 其他地区_Helsinki_Node Host_Claude
+  - 其他地区_Helsinki_Play2go International_Claude1
+  - 其他地区_Helsinki_Play2go International_Claude2
+  - 其他地区_Helsinki_SERV.HOST GROUP LTD_Claude
+  - 其他地区_Helsinki_xorek.cloud International LTD_Claude1
+  - 其他地区_Helsinki_xorek.cloud International LTD_Claude2
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude1
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude2
   - 其他地区_Kyiv_WorkTitans B.V._Claude
   - 其他地区_Labinot-Fushë_Global Connectivity Solutions LLP_Claude
   - 其他地区_Madrid_G-Core Labs SA_Claude
-  - 其他地区_Milan_Akamai Technologies, Inc._Claude1
-  - 其他地区_Milan_Akamai Technologies, Inc._Claude2
+  - 其他地区_Madrid_ZhouyiSat Communications_Claude
+  - 其他地区_Mexico City_Latitude.sh_Gemini_Claude
   - 其他地区_Milan_OVH SAS_Gemini_Claude
   - 其他地区_Oslo_Global Connectivity Solutions Llp_Claude1
   - 其他地区_Oslo_Global Connectivity Solutions Llp_Claude2
+  - 其他地区_Riga_Serva ONE LTD_Claude
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude3
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude4
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude5
   - 其他地区_Sofia_WorkTitans B.V._Claude
+  - 其他地区_Stockholm_Node Host_Claude
+  - 其他地区_Stockholm_Play2go International Limited_Claude
   - 其他地区_Stockholm_Play2go International_Claude
-  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude1
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude2
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude3
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude1
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude2
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude3
+  - 其他地区_Stockholm_xorek.cloud International LTD_Claude4
+  - 其他地区_Sundbyberg_QuxLabs AB_Claude
   - 其他地区_São Paulo_BrainStorm Network, Inc_Gemini_Claude
   - 其他地区_Tallinn_SERV.HOST GROUP LTD_Claude
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini1
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini2
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini3
+  - 其他地区_Tbilisi_AkhaliNet LLC_Gemini4
+  - 其他地区_Tbilisi_AkhaliNet LLC_Gemini5
+  - 其他地区_Tirana_H2nexus_Claude
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude3
-  - 其他地区_Vienna_BrainStorm Network_Claude
   - 其他地区_Voluntari_INVITE Systems SRL_Claude1
   - 其他地区_Voluntari_INVITE Systems SRL_Claude10
   - 其他地区_Voluntari_INVITE Systems SRL_Claude11
@@ -4411,16 +5147,18 @@ proxy-groups:
   - 其他地区_Voluntari_INVITE Systems SRL_Claude8
   - 其他地区_Voluntari_INVITE Systems SRL_Claude9
   - 其他地区_Voluntari_INVITE Systems SRL_Gemini_Claude
-  - 其他地区_Warsaw_Atman Sp. z o.o._Claude1
-  - 其他地区_Warsaw_Atman Sp. z o.o._Claude2
-  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude
+  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude1
+  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude2
   - 其他地区_Warsaw_Melbikomas UAB_Claude1
   - 其他地区_Warsaw_Melbikomas UAB_Claude2
   - 其他地区_Warsaw_Melbikomas UAB_Claude3
   - 其他地区_Warsaw_Melbikomas UAB_Claude4
   - 其他地区_Warsaw_Melbikomas UAB_Claude5
   - 其他地区_Warsaw_Melbikomas UAB_Claude6
+  - 其他地区_Warsaw_NET_Claude
   - 其他地区_Warsaw_The Constant Company, LLC_Claude
+  - 其他地区_Warsaw_UpCloud Ltd_Claude
+  - 加拿大_Beauharnois_OVH SAS_Gemini_Claude
   - 加拿大_Toronto_Akamai Technologies_Gemini_Claude
   - 加拿大_Toronto_Amazon Technologies Inc._Gemini_Claude
   - 加拿大_Toronto_Amazon.com_Gemini_Claude
@@ -4428,40 +5166,54 @@ proxy-groups:
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude1
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude2
   - 加拿大_Vancouver_Cogent Communications_Gemini_Claude
+  - 印度_Chennai_Akamai Technologies, Inc._Gemini_Claude
+  - 印度_Mumbai_The Constant Company_Claude
+  - 印度_Navi Mumbai_Selvakumar Selvapandi_Gemini_Claude
   - 印度尼西亚_Bogor_PUSATMEDIA_Gemini
-  - 印度尼西亚_Bogor_PUSATMEDIA_Gemini_Claude
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_Taipei_Data Center Network Limited_Claude
+  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude3
   - 台湾_Taipei_SAKURA LTD._Claude
+  - 台湾_Taipei_SAKURA LTD._Gemini_Claude
   - 台湾_Taoyuan_Scloud Pte Ltd_Gemini_Claude
   - 土耳其_Istanbul_G-Core Labs S.A._Gemini_Claude
-  - 土耳其_Istanbul_Iksir Internet Hizmetleri A.S._Gemini_Claude
+  - 土耳其_Istanbul_Scalaxy B.V._Claude
   - 德国_Berlin_GHOSTnet GmbH_Claude1
   - 德国_Berlin_GHOSTnet GmbH_Claude2
   - 德国_Berlin_GHOSTnet GmbH_Claude3
+  - 德国_Berlin_GHOSTnet_Claude
   - 德国_Falkenstein_Hetzner Online GmbH_Claude1
   - 德国_Falkenstein_Hetzner Online GmbH_Claude2
   - 德国_Frankfurt Am Main_Hetzner Online AG_Claude1
   - 德国_Frankfurt Am Main_Hetzner Online AG_Claude2
+  - 德国_Frankfurt am Main_Akamai Technologies, Inc._Claude
   - 德国_Frankfurt am Main_Amazon Technologies Inc._Claude
-  - 德国_Frankfurt am Main_Clouvider Limited_Gemini_Claude
+  - 德国_Frankfurt am Main_Amazon.com, Inc._Claude
+  - 德国_Frankfurt am Main_Clouvider Limited_Claude
   - 德国_Frankfurt am Main_Datacamp_Claude
+  - 德国_Frankfurt am Main_Denis Terehov_Claude
+  - 德国_Frankfurt am Main_H2nexus LTD_Claude
   - 德国_Frankfurt am Main_International Hosting Company Limited_Claude
   - 德国_Frankfurt am Main_International Hosting Company_Claude
   - 德国_Frankfurt am Main_Netaxis Group LTD_Claude
   - 德国_Frankfurt am Main_OVH SAS_Claude
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude1
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude2
+  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude
   - 德国_Frankfurt am Main_OVHcloud_Claude
   - 德国_Frankfurt am Main_OVHcloud_Gemini_Claude
-  - 德国_Frankfurt am Main_Play2go International Limited_Claude
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude1
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude2
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude3
   - 德国_Frankfurt am Main_Qwins LTD_Claude
+  - 德国_Frankfurt am Main_Sculk Ltd_Claude1
+  - 德国_Frankfurt am Main_Sculk Ltd_Claude2
+  - 德国_Frankfurt am Main_Sculk_Claude
+  - 德国_Frankfurt am Main_The Constant Company_Claude
   - 德国_Frankfurt am Main_Uxhost LTD_Claude
   - 德国_Frankfurt am Main_Vultr_Claude1
   - 德国_Frankfurt am Main_Vultr_Claude2
   - 德国_Frankfurt am Main_WAIcore Ltd_Claude
   - 德国_Frankfurt am Main_Zenlayer Inc_Claude
+  - 德国_Frankfurt am Main_Zenlayer_Claude
   - 德国_Leipzig_Cloudflare, Inc._Claude
   - 德国_Limburg an der Lahn_OVH SAS_Claude1
   - 德国_Limburg an der Lahn_OVH SAS_Claude2
@@ -4469,48 +5221,55 @@ proxy-groups:
   - 德国_Limburg_OVH SAS_Claude
   - 德国_Nuremberg_Hetzner Online GmbH_Claude1
   - 德国_Nuremberg_Hetzner Online GmbH_Claude2
-  - 德国_Nuremberg_netcup_Claude
-  - 新加坡_Singapore_Akamai Technologies, Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon Technologies Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude1
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude2
-  - 新加坡_Singapore_Cogent Communications_Claude
+  - 德国_Nuremberg_netcup_Claude1
+  - 德国_Nuremberg_netcup_Claude2
+  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude
   - 新加坡_Singapore_Datacamp Limited_Gemini_Claude
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude1
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude2
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude3
+  - 新加坡_Singapore_Komi LLC_Gemini_Claude
   - 新加坡_Singapore_Melbikomas UAB_Gemini_Claude
-  - 新加坡_Singapore_Oracle Corporation_Gemini_Claude
+  - 日本_Chiyoda City_SAKURA Internet Inc._Gemini_Claude
+  - 日本_Osaka_Akamai Technologies, Inc._Claude
   - 日本_Osaka_Oracle Cloud_Gemini_Claude
   - 日本_Osaka_Oracle Corporation_Gemini_Claude
-  - 日本_Shibuya City_AANSys Network LLC_Claude
+  - 日本_Osaka_SAKURA Internet Inc._Gemini_Claude
   - 日本_Shibuya City_WorkTitans B.V._Gemini_Claude
+  - 日本_Tokyo_Akamai Technologies, Inc._Gemini_Claude
   - 日本_Tokyo_Akamai Technologies_Gemini_Claude
-  - 日本_Tokyo_Amazon Technologies Inc._Gemini_Claude
+  - 日本_Tokyo_BrainStorm Network, Inc_Claude
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude1
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude2
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude3
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude4
+  - 日本_Tokyo_Ipxo LLC_Gemini_Claude
+  - 法国_Aubervilliers_The Constant Company, LLC_Claude
+  - 法国_Desvres_Cloudflare, Inc._Claude
   - 法国_Gravelines_OVH SAS_Gemini_Claude1
   - 法国_Gravelines_OVH SAS_Gemini_Claude2
+  - 法国_Gravelines_OVH SAS_Gemini_Claude3
+  - 法国_Lauterbourg_Contabo GmbH_Claude
+  - 法国_Paris_Amazon Technologies Inc._Claude
+  - 法国_Paris_Amazon.com, Inc._Claude1
+  - 法国_Paris_Amazon.com, Inc._Claude2
   - 法国_Paris_Cloudflare, Inc._Claude
   - 法国_Paris_Datacamp Limited_Claude
+  - 法国_Paris_OVH SAS_Claude
   - 法国_Paris_Scaleway SAS_Claude
   - 法国_Paris_xorek.cloud International LTD_Claude
-  - 法国_Roubaix_OVH SAS_Claude1
-  - 法国_Roubaix_OVH SAS_Claude2
-  - 澳大利亚_Sydney_Amazon Technologies Inc._Gemini_Claude
+  - 法国_Roubaix_OVH SAS_Claude
+  - 法国_Strasbourg_Dedik Services_Claude
   - 美国_Ashburn_GTHost_Gemini_Claude
-  - 美国_Buffalo_ColoCrossing_Gemini
+  - 美国_Charlotte_Aeza Group_Gemini_Claude
+  - 美国_Charlotte_Aeza International LTD_Gemini_Claude
   - 美国_Dallas_Datacamp Limited_Gemini_Claude1
   - 美国_Dallas_Datacamp Limited_Gemini_Claude2
   - 美国_Dallas_Datacamp Limited_Gemini_Claude3
   - 美国_Dallas_Datacamp Limited_Gemini_Claude4
-  - 美国_Dallas_Dedicated.com_Gemini_Claude1
-  - 美国_Dallas_Dedicated.com_Gemini_Claude2
-  - 美国_Dallas_Dedicated.com_Gemini_Claude3
-  - 美国_Dallas_Dedicated.com_Gemini_Claude4
+  - 美国_Dallas_Dedicated.com_Gemini_Claude
   - 美国_Dallas_Eonix Corporation_Gemini_Claude
-  - 美国_Dallas_FORNEX_Gemini
   - 美国_Dallas_The Constant Company_Gemini_Claude
   - 美国_Elk Grove Village_HostPapa_Gemini_Claude
   - 美国_Hillsboro_OVH SAS_Gemini_Claude1
@@ -4519,8 +5278,6 @@ proxy-groups:
   - 美国_Houston_Citigroup Inc._Gemini_Claude
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude1
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude2
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude3
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude4
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude1
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude2
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude3
@@ -4532,6 +5289,8 @@ proxy-groups:
   - 美国_Los Angeles_Datacamp Limited_Claude5
   - 美国_Los Angeles_Datacamp Limited_Claude6
   - 美国_Los Angeles_Datacamp Limited_Claude7
+  - 美国_Los Angeles_Datacamp Limited_Claude8
+  - 美国_Los Angeles_Datacamp Limited_Claude9
   - 美国_Los Angeles_FSC NETWORK LTD_Gemini_Claude
   - 美国_Los Angeles_GTHost_Gemini_Claude
   - 美国_Los Angeles_HostPapa_Gemini
@@ -4545,16 +5304,14 @@ proxy-groups:
   - 美国_Los Angeles_Zenlayer_Gemini_Claude
   - 美国_Miami_GTHost_Claude
   - 美国_Miami_GTHost_Gemini_Claude
-  - 美国_Miami_Newserverlife LLC_Gemini_Claude
   - 美国_New York_Datacamp Limited_Claude
   - 美国_New York_Datacamp Limited_Gemini_Claude1
   - 美国_New York_Datacamp Limited_Gemini_Claude2
-  - 美国_New York_Fourplex Telecom_Claude
   - 美国_New York_GTHost_Gemini_Claude
   - 美国_New York_objx.net_Gemini_Claude
-  - 美国_North Bergen_DigitalOcean, LLC_Gemini_Claude
   - 美国_Orangeburg_Contabo Inc._Gemini_Claude
-  - 美国_Orem_Ace Data Centers II_Claude
+  - 美国_Orem_Ace Data Centers II_Claude1
+  - 美国_Orem_Ace Data Centers II_Claude2
   - 美国_Philadelphia_Neon Core Network LLC_Claude
   - 美国_Phoenix_GTHost_Gemini_Claude
   - 美国_Phoenix_Oracle Corporation_Claude
@@ -4564,9 +5321,7 @@ proxy-groups:
   - 美国_Reston_OVH SAS_Gemini_Claude1
   - 美国_Reston_OVH SAS_Gemini_Claude2
   - 美国_Reston_OVH SAS_Gemini_Claude3
-  - 美国_Reston_OVH SAS_Gemini_Claude4
-  - 美国_Richardson_Akamai Technologies, Inc._Gemini_Claude
-  - 美国_San Francisco_Xicomm LLC_Gemini_Claude
+  - 美国_San Jose_Leaseweb USA, Inc._Gemini_Claude
   - 美国_San Jose_Oracle Corporation_Gemini
   - 美国_San Jose_Oracle Corporation_Gemini_Claude1
   - 美国_San Jose_Oracle Corporation_Gemini_Claude2
@@ -4577,46 +5332,55 @@ proxy-groups:
   - 美国_Santa Clara_prgmr.com, Inc._Claude
   - 美国_Seattle_ColoCrossing_Gemini_Claude
   - 美国_Seattle_Datacamp_Gemini_Claude
-  - 美国_Seattle_PacketHub_Gemini_Claude
   - 美国_The Dalles_Google LLC_Gemini_Claude
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude1
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude2
   - 英国_City of London_M247 Europe SRL_Claude
-  - 英国_Erith_OVH SAS_Claude
-  - 英国_Manchester_M247 Europe_Claude
+  - 英国_Coalville_05 COMMUNICATIONS LTD_Claude
+  - 英国_Erith_OVH SAS_Claude1
+  - 英国_Erith_OVH SAS_Claude2
+  - 英国_London_Amazon Technologies Inc._Claude
+  - 英国_London_DataCamp Limited_Claude
+  - 英国_London_GTHost_Claude
+  - 英国_London_OVH SAS_Claude1
+  - 英国_London_OVH SAS_Claude2
+  - 英国_London__Claude
+  - 英国_Manchester_M247 Europe_Claude1
+  - 英国_Manchester_M247 Europe_Claude2
+  - 英国_Manchester_M247 Europe_Claude3
   - 英国_Martlesham_EE Limited_Claude
+  - 英国_Martlesham_EE Limited_Gemini_Claude
+  - 英国_Slough_DigitalOcean, LLC_Claude
   - 英国_Stretford_M247 Europe SRL_Claude
   - 荷兰_Amsterdam_365.partners INC_Claude1
   - 荷兰_Amsterdam_365.partners INC_Claude2
-  - 荷兰_Amsterdam_Clodo Cloud Service CO. L.L.C_Gemini_Claude
   - 荷兰_Amsterdam_DA International Group Ltd._Claude
   - 荷兰_Amsterdam_DataCamp Limited_Claude
   - 荷兰_Amsterdam_DigitalOcean, LLC_Claude
-  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude1
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude2
   - 荷兰_Amsterdam_Greenhost BV_Claude1
   - 荷兰_Amsterdam_Greenhost BV_Claude2
   - 荷兰_Amsterdam_Greenhost BV_Claude3
   - 荷兰_Amsterdam_Greenhost BV_Claude4
   - 荷兰_Amsterdam_Greenhost BV_Claude5
-  - 荷兰_Amsterdam_Greenhost BV_Claude6
   - 荷兰_Amsterdam_Greenhost BV_Gemini_Claude
+  - 荷兰_Amsterdam_HZ Hosting Ltd_Claude
   - 荷兰_Amsterdam_Hostkey_Claude1
   - 荷兰_Amsterdam_Hostkey_Claude2
   - 荷兰_Amsterdam_Neon Core Network LLC_Claude
-  - 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
   - 荷兰_Amsterdam_Play2go International Limited_Claude
+  - 荷兰_Amsterdam_Psychz Networks_Claude1
+  - 荷兰_Amsterdam_Psychz Networks_Claude2
+  - 荷兰_Amsterdam_Senko Digital LLC_Claude
   - 荷兰_Amsterdam_Servers Tech Fzco_Claude1
   - 荷兰_Amsterdam_Servers Tech Fzco_Claude2
   - 荷兰_Amsterdam_Timeweb, LLP_Claude
   - 荷兰_Dronten_The Infrastructure Group B.V._Claude
   - 荷兰_Dronten_Zenex 5ive Limited_Gemini_Claude
   - 荷兰_Haarlem_SCALEWAY_Claude
-  - 荷兰_Haarlem_Scaleway SAS_Claude
   - 荷兰_Haarlem_Scaleway_Claude1
   - 荷兰_Haarlem_Scaleway_Claude10
-  - 荷兰_Haarlem_Scaleway_Claude11
-  - 荷兰_Haarlem_Scaleway_Claude12
-  - 荷兰_Haarlem_Scaleway_Claude13
   - 荷兰_Haarlem_Scaleway_Claude2
   - 荷兰_Haarlem_Scaleway_Claude3
   - 荷兰_Haarlem_Scaleway_Claude4
@@ -4625,14 +5389,17 @@ proxy-groups:
   - 荷兰_Haarlem_Scaleway_Claude7
   - 荷兰_Haarlem_Scaleway_Claude8
   - 荷兰_Haarlem_Scaleway_Claude9
-  - 荷兰_Meppel_Spacecore Solution_Claude
-  - 荷兰_Rozendaal_NFOrce Entertainment B.V._Claude
-  - 阿联酋_Abu Dhabi_GoldIPv_Claude1
-  - 阿联酋_Abu Dhabi_GoldIPv_Claude2
-  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude
+  - 阿联酋_Abu Dhabi_GoldIPv_Claude
+  - 韩国_Ansan-si_SK Broadband Co Ltd_Claude
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude1
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude2
   - 韩国_Gwacheon_SK Broadband Co Ltd_Gemini_Claude
-  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude1
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude2
   - 韩国_Seoul_Oracle Cloud_Gemini_Claude
+  - 韩国_Seoul_Oracle Corporation_Gemini_Claude
+  - 韩国_Yangcheon-gu_SK Broadband Co Ltd_Claude1
+  - 韩国_Yangcheon-gu_SK Broadband Co Ltd_Claude2
 - name: HK
   type: url-test
   url: https://www.gstatic.com/generate_204
@@ -4655,11 +5422,11 @@ proxy-groups:
   proxies:
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_Taipei_Data Center Network Limited_Claude
+  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude3
   - 台湾_Taipei_SAKURA LTD._Claude
+  - 台湾_Taipei_SAKURA LTD._Gemini_Claude
   - 台湾_Taoyuan_Scloud Pte Ltd_Gemini_Claude
   - 美国_Los Angeles_FSC NETWORK LTD_Gemini_Claude
-  - 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
   filter: 台湾|TW|Tw|Taiwan|新北|彰化|CHT|HINET
 - name: JP
   type: url-test
@@ -4670,14 +5437,20 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
+  - 日本_Chiyoda City_SAKURA Internet Inc._Gemini_Claude
+  - 日本_Osaka_Akamai Technologies, Inc._Claude
   - 日本_Osaka_Oracle Cloud_Gemini_Claude
   - 日本_Osaka_Oracle Corporation_Gemini_Claude
-  - 日本_Shibuya City_AANSys Network LLC_Claude
+  - 日本_Osaka_SAKURA Internet Inc._Gemini_Claude
   - 日本_Shibuya City_WorkTitans B.V._Gemini_Claude
+  - 日本_Tokyo_Akamai Technologies, Inc._Gemini_Claude
   - 日本_Tokyo_Akamai Technologies_Gemini_Claude
-  - 日本_Tokyo_Amazon Technologies Inc._Gemini_Claude
+  - 日本_Tokyo_BrainStorm Network, Inc_Claude
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude1
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude2
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude3
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude4
+  - 日本_Tokyo_Ipxo LLC_Gemini_Claude
   filter: (?i)日|东京|大阪|JP|Japan|Tokyo|Osaka|Saitama
 - name: SG
   type: url-test
@@ -4688,18 +5461,14 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 新加坡_Singapore_Akamai Technologies, Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon Technologies Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude1
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude2
-  - 新加坡_Singapore_Cogent Communications_Claude
+  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude
   - 新加坡_Singapore_Datacamp Limited_Gemini_Claude
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude1
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude2
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude3
+  - 新加坡_Singapore_Komi LLC_Gemini_Claude
   - 新加坡_Singapore_Melbikomas UAB_Gemini_Claude
-  - 新加坡_Singapore_Oracle Corporation_Gemini_Claude
   filter: (?i)新|狮城|SG|Singapore
 - name: US
   type: url-test
@@ -4710,21 +5479,20 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
+  - 其他地区_Helsinki_Aleksei Fedorov Pr Krusevac_Claude
   - 其他地区_Labinot-Fushë_Global Connectivity Solutions LLP_Claude
+  - 其他地区_Tirana_H2nexus_Claude
   - 印度尼西亚_Bogor_PUSATMEDIA_Gemini
-  - 印度尼西亚_Bogor_PUSATMEDIA_Gemini_Claude
+  - 德国_Frankfurt am Main_H2nexus LTD_Claude
   - 美国_Ashburn_GTHost_Gemini_Claude
-  - 美国_Buffalo_ColoCrossing_Gemini
+  - 美国_Charlotte_Aeza Group_Gemini_Claude
+  - 美国_Charlotte_Aeza International LTD_Gemini_Claude
   - 美国_Dallas_Datacamp Limited_Gemini_Claude1
   - 美国_Dallas_Datacamp Limited_Gemini_Claude2
   - 美国_Dallas_Datacamp Limited_Gemini_Claude3
   - 美国_Dallas_Datacamp Limited_Gemini_Claude4
-  - 美国_Dallas_Dedicated.com_Gemini_Claude1
-  - 美国_Dallas_Dedicated.com_Gemini_Claude2
-  - 美国_Dallas_Dedicated.com_Gemini_Claude3
-  - 美国_Dallas_Dedicated.com_Gemini_Claude4
+  - 美国_Dallas_Dedicated.com_Gemini_Claude
   - 美国_Dallas_Eonix Corporation_Gemini_Claude
-  - 美国_Dallas_FORNEX_Gemini
   - 美国_Dallas_The Constant Company_Gemini_Claude
   - 美国_Elk Grove Village_HostPapa_Gemini_Claude
   - 美国_Hillsboro_OVH SAS_Gemini_Claude1
@@ -4733,8 +5501,6 @@ proxy-groups:
   - 美国_Houston_Citigroup Inc._Gemini_Claude
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude1
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude2
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude3
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude4
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude1
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude2
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude3
@@ -4746,6 +5512,8 @@ proxy-groups:
   - 美国_Los Angeles_Datacamp Limited_Claude5
   - 美国_Los Angeles_Datacamp Limited_Claude6
   - 美国_Los Angeles_Datacamp Limited_Claude7
+  - 美国_Los Angeles_Datacamp Limited_Claude8
+  - 美国_Los Angeles_Datacamp Limited_Claude9
   - 美国_Los Angeles_FSC NETWORK LTD_Gemini_Claude
   - 美国_Los Angeles_GTHost_Gemini_Claude
   - 美国_Los Angeles_HostPapa_Gemini
@@ -4759,16 +5527,14 @@ proxy-groups:
   - 美国_Los Angeles_Zenlayer_Gemini_Claude
   - 美国_Miami_GTHost_Claude
   - 美国_Miami_GTHost_Gemini_Claude
-  - 美国_Miami_Newserverlife LLC_Gemini_Claude
   - 美国_New York_Datacamp Limited_Claude
   - 美国_New York_Datacamp Limited_Gemini_Claude1
   - 美国_New York_Datacamp Limited_Gemini_Claude2
-  - 美国_New York_Fourplex Telecom_Claude
   - 美国_New York_GTHost_Gemini_Claude
   - 美国_New York_objx.net_Gemini_Claude
-  - 美国_North Bergen_DigitalOcean, LLC_Gemini_Claude
   - 美国_Orangeburg_Contabo Inc._Gemini_Claude
-  - 美国_Orem_Ace Data Centers II_Claude
+  - 美国_Orem_Ace Data Centers II_Claude1
+  - 美国_Orem_Ace Data Centers II_Claude2
   - 美国_Philadelphia_Neon Core Network LLC_Claude
   - 美国_Phoenix_GTHost_Gemini_Claude
   - 美国_Phoenix_Oracle Corporation_Claude
@@ -4778,9 +5544,7 @@ proxy-groups:
   - 美国_Reston_OVH SAS_Gemini_Claude1
   - 美国_Reston_OVH SAS_Gemini_Claude2
   - 美国_Reston_OVH SAS_Gemini_Claude3
-  - 美国_Reston_OVH SAS_Gemini_Claude4
-  - 美国_Richardson_Akamai Technologies, Inc._Gemini_Claude
-  - 美国_San Francisco_Xicomm LLC_Gemini_Claude
+  - 美国_San Jose_Leaseweb USA, Inc._Gemini_Claude
   - 美国_San Jose_Oracle Corporation_Gemini
   - 美国_San Jose_Oracle Corporation_Gemini_Claude1
   - 美国_San Jose_Oracle Corporation_Gemini_Claude2
@@ -4791,7 +5555,6 @@ proxy-groups:
   - 美国_Santa Clara_prgmr.com, Inc._Claude
   - 美国_Seattle_ColoCrossing_Gemini_Claude
   - 美国_Seattle_Datacamp_Gemini_Claude
-  - 美国_Seattle_PacketHub_Gemini_Claude
   - 美国_The Dalles_Google LLC_Gemini_Claude
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude1
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude2
@@ -4804,32 +5567,41 @@ proxy-groups:
   interval: 600
   tolerance: 50
   proxies:
-  - 104.128.72.119_Claude
   - 116.80.44.144_Gemini_Claude
-  - 137.184.218.169_Gemini_Claude
-  - 141.164.45.187_Claude
+  - 121.169.46.116_Claude
   - 144.31.131.17_Claude
-  - 162.217.249.72_Gemini_Claude
+  - 149.102.144.110_Claude
+  - 152.67.8.205_Gemini_Claude
+  - 154.16.157.200_Gemini_Claude
   - 162.221.196.121_Claude
   - 163.172.214.188_Claude
-  - 185.226.95.155_Claude
+  - 172.104.237.100_Claude
+  - 172.111.146.64_Gemini_Claude
   - 185.229.59.254_Gemini_Claude
   - 193.233.23.121_Claude
+  - 193.29.139.164_Claude
+  - 193.29.139.173_Claude
+  - 193.29.139.233_Claude
   - 193.56.3.125_Claude
   - 195.133.2.45_Claude
+  - 213.142.132.169_Claude
   - 2401:fae0:1049:1e58:6550:43dc:877d:def_Claude
   - 2401:fae0:1068:7bb7:ccf1:3989:dbba:7581_Claude
   - 2401:fae0:1401:7a90:e8d7:bc0:18e4:6c14_Claude
   - 2401:fae0:1441:c0cc:34ec:5b71:a82c:f8be_Claude
+  - 2401:fae0:147d:2532:af67:1df:e914:d920_Claude
   - 2401:fae0:188e:ea01:84ef:6f23:7095:54fa_Claude
-  - 37.221.79.69_Claude
+  - 2a0e:d604:1:130::2_Claude
+  - 37.77.106.32_Claude
   - 45.148.31.0_Claude
   - 45.15.170.237_Gemini_Claude
   - 45.158.127.5_Claude
+  - 45.88.183.168_Gemini_Claude
   - 5.83.129.153_Claude
   - 5.83.129.90_Claude
   - 51.195.203.247_Claude
   - 57.129.121.230_Claude
+  - 57.131.32.191_Claude
   - 57.131.32.191_Gemini_Claude1
   - 57.131.32.191_Gemini_Claude2
   - 84.239.14.148_Claude
@@ -4855,12 +5627,13 @@ proxy-groups:
   - 84.239.49.54_Gemini_Claude
   - 84.239.49.55_Gemini_Claude
   - 85.192.37.119_Claude
-  - 85.237.207.223_Gemini_Claude
+  - 94.141.123.35_Claude
+  - 95.179.241.129_Claude
+  - 其他地区_Almaty_PS Internet Company LLP_Claude
+  - 其他地区_Athens_BrainStorm Network_Claude
   - 其他地区_Belgrade_WorkTitans B.V._Claude1
   - 其他地区_Belgrade_WorkTitans B.V._Claude2
-  - 其他地区_Belgrade_WorkTitans B.V._Claude3
   - 其他地区_Bern_WorkTitans B.V._Claude
-  - 其他地区_Bratislava_eServer s.r.o._Claude
   - 其他地区_Bucharest_M247 Europe SRL_Claude1
   - 其他地区_Bucharest_M247 Europe SRL_Claude10
   - 其他地区_Bucharest_M247 Europe SRL_Claude11
@@ -4875,42 +5648,62 @@ proxy-groups:
   - 其他地区_Bucharest_M247 Europe SRL_Claude8
   - 其他地区_Bucharest_M247 Europe SRL_Claude9
   - 其他地区_Bucharest_M247 Europe_Claude
+  - 其他地区_Bucharest_Serva ONE LTD_Claude
   - 其他地区_Buchs / Buchs_Plant Holding GmbH_Claude
+  - 其他地区_Budapest_WorkTitans B.V._Gemini_Claude
   - 其他地区_Dublin_WorkTitans B.V._Claude
+  - 其他地区_Geneva_Infomaniak Network SA_Claude1
+  - 其他地区_Geneva_Infomaniak Network SA_Claude2
+  - 其他地区_Helsinki_Aleksei Fedorov Pr Krusevac_Claude
+  - 其他地区_Helsinki_Baxet Group Inc._Claude
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude1
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude2
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude3
   - 其他地区_Helsinki_Hetzner Online GmbH_Claude4
-  - 其他地区_Helsinki_Livi Hosting_Claude
-  - 其他地区_Helsinki_Node Host_Claude1
-  - 其他地区_Helsinki_Node Host_Claude2
-  - 其他地区_Helsinki_Play2go International_Claude
-  - 其他地区_Helsinki_xorek.cloud International LTD_Claude
+  - 其他地区_Helsinki_Hetzner Online GmbH_Claude5
+  - 其他地区_Helsinki_Livi Hosting_Claude1
+  - 其他地区_Helsinki_Livi Hosting_Claude2
+  - 其他地区_Helsinki_Livi Hosting_Claude3
+  - 其他地区_Helsinki_Node Host_Claude
+  - 其他地区_Helsinki_Play2go International_Claude1
+  - 其他地区_Helsinki_Play2go International_Claude2
+  - 其他地区_Helsinki_SERV.HOST GROUP LTD_Claude
+  - 其他地区_Helsinki_xorek.cloud International LTD_Claude1
+  - 其他地区_Helsinki_xorek.cloud International LTD_Claude2
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude1
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude2
   - 其他地区_Kyiv_WorkTitans B.V._Claude
   - 其他地区_Labinot-Fushë_Global Connectivity Solutions LLP_Claude
   - 其他地区_Madrid_G-Core Labs SA_Claude
-  - 其他地区_Milan_Akamai Technologies, Inc._Claude1
-  - 其他地区_Milan_Akamai Technologies, Inc._Claude2
+  - 其他地区_Madrid_ZhouyiSat Communications_Claude
+  - 其他地区_Mexico City_Latitude.sh_Gemini_Claude
   - 其他地区_Milan_OVH SAS_Gemini_Claude
   - 其他地区_Oslo_Global Connectivity Solutions Llp_Claude1
   - 其他地区_Oslo_Global Connectivity Solutions Llp_Claude2
+  - 其他地区_Riga_Serva ONE LTD_Claude
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude3
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude4
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude5
   - 其他地区_Sofia_WorkTitans B.V._Claude
+  - 其他地区_Stockholm_Node Host_Claude
+  - 其他地区_Stockholm_Play2go International Limited_Claude
   - 其他地区_Stockholm_Play2go International_Claude
-  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude1
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude2
+  - 其他地区_Stockholm_SEBEK sp. z o.o_Claude3
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude1
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude2
   - 其他地区_Stockholm_xorek.cloud International LTD_Claude3
+  - 其他地区_Stockholm_xorek.cloud International LTD_Claude4
+  - 其他地区_Sundbyberg_QuxLabs AB_Claude
   - 其他地区_São Paulo_BrainStorm Network, Inc_Gemini_Claude
   - 其他地区_Tallinn_SERV.HOST GROUP LTD_Claude
+  - 其他地区_Tirana_H2nexus_Claude
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude3
-  - 其他地区_Vienna_BrainStorm Network_Claude
   - 其他地区_Voluntari_INVITE Systems SRL_Claude1
   - 其他地区_Voluntari_INVITE Systems SRL_Claude10
   - 其他地区_Voluntari_INVITE Systems SRL_Claude11
@@ -4942,16 +5735,18 @@ proxy-groups:
   - 其他地区_Voluntari_INVITE Systems SRL_Claude8
   - 其他地区_Voluntari_INVITE Systems SRL_Claude9
   - 其他地区_Voluntari_INVITE Systems SRL_Gemini_Claude
-  - 其他地区_Warsaw_Atman Sp. z o.o._Claude1
-  - 其他地区_Warsaw_Atman Sp. z o.o._Claude2
-  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude
+  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude1
+  - 其他地区_Warsaw_Global Connectivity Solutions LLP_Claude2
   - 其他地区_Warsaw_Melbikomas UAB_Claude1
   - 其他地区_Warsaw_Melbikomas UAB_Claude2
   - 其他地区_Warsaw_Melbikomas UAB_Claude3
   - 其他地区_Warsaw_Melbikomas UAB_Claude4
   - 其他地区_Warsaw_Melbikomas UAB_Claude5
   - 其他地区_Warsaw_Melbikomas UAB_Claude6
+  - 其他地区_Warsaw_NET_Claude
   - 其他地区_Warsaw_The Constant Company, LLC_Claude
+  - 其他地区_Warsaw_UpCloud Ltd_Claude
+  - 加拿大_Beauharnois_OVH SAS_Gemini_Claude
   - 加拿大_Toronto_Akamai Technologies_Gemini_Claude
   - 加拿大_Toronto_Amazon Technologies Inc._Gemini_Claude
   - 加拿大_Toronto_Amazon.com_Gemini_Claude
@@ -4959,39 +5754,53 @@ proxy-groups:
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude1
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude2
   - 加拿大_Vancouver_Cogent Communications_Gemini_Claude
-  - 印度尼西亚_Bogor_PUSATMEDIA_Gemini_Claude
+  - 印度_Chennai_Akamai Technologies, Inc._Gemini_Claude
+  - 印度_Mumbai_The Constant Company_Claude
+  - 印度_Navi Mumbai_Selvakumar Selvapandi_Gemini_Claude
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
-  - 台湾_Taipei_Data Center Network Limited_Claude
+  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude3
   - 台湾_Taipei_SAKURA LTD._Claude
+  - 台湾_Taipei_SAKURA LTD._Gemini_Claude
   - 台湾_Taoyuan_Scloud Pte Ltd_Gemini_Claude
   - 土耳其_Istanbul_G-Core Labs S.A._Gemini_Claude
-  - 土耳其_Istanbul_Iksir Internet Hizmetleri A.S._Gemini_Claude
+  - 土耳其_Istanbul_Scalaxy B.V._Claude
   - 德国_Berlin_GHOSTnet GmbH_Claude1
   - 德国_Berlin_GHOSTnet GmbH_Claude2
   - 德国_Berlin_GHOSTnet GmbH_Claude3
+  - 德国_Berlin_GHOSTnet_Claude
   - 德国_Falkenstein_Hetzner Online GmbH_Claude1
   - 德国_Falkenstein_Hetzner Online GmbH_Claude2
   - 德国_Frankfurt Am Main_Hetzner Online AG_Claude1
   - 德国_Frankfurt Am Main_Hetzner Online AG_Claude2
+  - 德国_Frankfurt am Main_Akamai Technologies, Inc._Claude
   - 德国_Frankfurt am Main_Amazon Technologies Inc._Claude
-  - 德国_Frankfurt am Main_Clouvider Limited_Gemini_Claude
+  - 德国_Frankfurt am Main_Amazon.com, Inc._Claude
+  - 德国_Frankfurt am Main_Clouvider Limited_Claude
   - 德国_Frankfurt am Main_Datacamp_Claude
+  - 德国_Frankfurt am Main_Denis Terehov_Claude
+  - 德国_Frankfurt am Main_H2nexus LTD_Claude
   - 德国_Frankfurt am Main_International Hosting Company Limited_Claude
   - 德国_Frankfurt am Main_International Hosting Company_Claude
   - 德国_Frankfurt am Main_Netaxis Group LTD_Claude
   - 德国_Frankfurt am Main_OVH SAS_Claude
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude1
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude2
+  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude
   - 德国_Frankfurt am Main_OVHcloud_Claude
   - 德国_Frankfurt am Main_OVHcloud_Gemini_Claude
-  - 德国_Frankfurt am Main_Play2go International Limited_Claude
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude1
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude2
+  - 德国_Frankfurt am Main_Play2go International Limited_Claude3
   - 德国_Frankfurt am Main_Qwins LTD_Claude
+  - 德国_Frankfurt am Main_Sculk Ltd_Claude1
+  - 德国_Frankfurt am Main_Sculk Ltd_Claude2
+  - 德国_Frankfurt am Main_Sculk_Claude
+  - 德国_Frankfurt am Main_The Constant Company_Claude
   - 德国_Frankfurt am Main_Uxhost LTD_Claude
   - 德国_Frankfurt am Main_Vultr_Claude1
   - 德国_Frankfurt am Main_Vultr_Claude2
   - 德国_Frankfurt am Main_WAIcore Ltd_Claude
   - 德国_Frankfurt am Main_Zenlayer Inc_Claude
+  - 德国_Frankfurt am Main_Zenlayer_Claude
   - 德国_Leipzig_Cloudflare, Inc._Claude
   - 德国_Limburg an der Lahn_OVH SAS_Claude1
   - 德国_Limburg an der Lahn_OVH SAS_Claude2
@@ -4999,44 +5808,53 @@ proxy-groups:
   - 德国_Limburg_OVH SAS_Claude
   - 德国_Nuremberg_Hetzner Online GmbH_Claude1
   - 德国_Nuremberg_Hetzner Online GmbH_Claude2
-  - 德国_Nuremberg_netcup_Claude
-  - 新加坡_Singapore_Akamai Technologies, Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon Technologies Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude1
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude2
-  - 新加坡_Singapore_Cogent Communications_Claude
+  - 德国_Nuremberg_netcup_Claude1
+  - 德国_Nuremberg_netcup_Claude2
+  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude
   - 新加坡_Singapore_Datacamp Limited_Gemini_Claude
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude1
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude2
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude3
+  - 新加坡_Singapore_Komi LLC_Gemini_Claude
   - 新加坡_Singapore_Melbikomas UAB_Gemini_Claude
-  - 新加坡_Singapore_Oracle Corporation_Gemini_Claude
+  - 日本_Chiyoda City_SAKURA Internet Inc._Gemini_Claude
+  - 日本_Osaka_Akamai Technologies, Inc._Claude
   - 日本_Osaka_Oracle Cloud_Gemini_Claude
   - 日本_Osaka_Oracle Corporation_Gemini_Claude
-  - 日本_Shibuya City_AANSys Network LLC_Claude
+  - 日本_Osaka_SAKURA Internet Inc._Gemini_Claude
   - 日本_Shibuya City_WorkTitans B.V._Gemini_Claude
+  - 日本_Tokyo_Akamai Technologies, Inc._Gemini_Claude
   - 日本_Tokyo_Akamai Technologies_Gemini_Claude
-  - 日本_Tokyo_Amazon Technologies Inc._Gemini_Claude
+  - 日本_Tokyo_BrainStorm Network, Inc_Claude
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude1
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude2
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude3
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude4
+  - 日本_Tokyo_Ipxo LLC_Gemini_Claude
+  - 法国_Aubervilliers_The Constant Company, LLC_Claude
+  - 法国_Desvres_Cloudflare, Inc._Claude
   - 法国_Gravelines_OVH SAS_Gemini_Claude1
   - 法国_Gravelines_OVH SAS_Gemini_Claude2
+  - 法国_Gravelines_OVH SAS_Gemini_Claude3
+  - 法国_Lauterbourg_Contabo GmbH_Claude
+  - 法国_Paris_Amazon Technologies Inc._Claude
+  - 法国_Paris_Amazon.com, Inc._Claude1
+  - 法国_Paris_Amazon.com, Inc._Claude2
   - 法国_Paris_Cloudflare, Inc._Claude
   - 法国_Paris_Datacamp Limited_Claude
+  - 法国_Paris_OVH SAS_Claude
   - 法国_Paris_Scaleway SAS_Claude
   - 法国_Paris_xorek.cloud International LTD_Claude
-  - 法国_Roubaix_OVH SAS_Claude1
-  - 法国_Roubaix_OVH SAS_Claude2
-  - 澳大利亚_Sydney_Amazon Technologies Inc._Gemini_Claude
+  - 法国_Roubaix_OVH SAS_Claude
+  - 法国_Strasbourg_Dedik Services_Claude
   - 美国_Ashburn_GTHost_Gemini_Claude
+  - 美国_Charlotte_Aeza Group_Gemini_Claude
+  - 美国_Charlotte_Aeza International LTD_Gemini_Claude
   - 美国_Dallas_Datacamp Limited_Gemini_Claude1
   - 美国_Dallas_Datacamp Limited_Gemini_Claude2
   - 美国_Dallas_Datacamp Limited_Gemini_Claude3
   - 美国_Dallas_Datacamp Limited_Gemini_Claude4
-  - 美国_Dallas_Dedicated.com_Gemini_Claude1
-  - 美国_Dallas_Dedicated.com_Gemini_Claude2
-  - 美国_Dallas_Dedicated.com_Gemini_Claude3
-  - 美国_Dallas_Dedicated.com_Gemini_Claude4
+  - 美国_Dallas_Dedicated.com_Gemini_Claude
   - 美国_Dallas_Eonix Corporation_Gemini_Claude
   - 美国_Dallas_The Constant Company_Gemini_Claude
   - 美国_Elk Grove Village_HostPapa_Gemini_Claude
@@ -5046,8 +5864,6 @@ proxy-groups:
   - 美国_Houston_Citigroup Inc._Gemini_Claude
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude1
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude2
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude3
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude4
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude1
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude2
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude3
@@ -5059,6 +5875,8 @@ proxy-groups:
   - 美国_Los Angeles_Datacamp Limited_Claude5
   - 美国_Los Angeles_Datacamp Limited_Claude6
   - 美国_Los Angeles_Datacamp Limited_Claude7
+  - 美国_Los Angeles_Datacamp Limited_Claude8
+  - 美国_Los Angeles_Datacamp Limited_Claude9
   - 美国_Los Angeles_FSC NETWORK LTD_Gemini_Claude
   - 美国_Los Angeles_GTHost_Gemini_Claude
   - 美国_Los Angeles_IT7 Networks Inc_Gemini_Claude
@@ -5071,16 +5889,14 @@ proxy-groups:
   - 美国_Los Angeles_Zenlayer_Gemini_Claude
   - 美国_Miami_GTHost_Claude
   - 美国_Miami_GTHost_Gemini_Claude
-  - 美国_Miami_Newserverlife LLC_Gemini_Claude
   - 美国_New York_Datacamp Limited_Claude
   - 美国_New York_Datacamp Limited_Gemini_Claude1
   - 美国_New York_Datacamp Limited_Gemini_Claude2
-  - 美国_New York_Fourplex Telecom_Claude
   - 美国_New York_GTHost_Gemini_Claude
   - 美国_New York_objx.net_Gemini_Claude
-  - 美国_North Bergen_DigitalOcean, LLC_Gemini_Claude
   - 美国_Orangeburg_Contabo Inc._Gemini_Claude
-  - 美国_Orem_Ace Data Centers II_Claude
+  - 美国_Orem_Ace Data Centers II_Claude1
+  - 美国_Orem_Ace Data Centers II_Claude2
   - 美国_Philadelphia_Neon Core Network LLC_Claude
   - 美国_Phoenix_GTHost_Gemini_Claude
   - 美国_Phoenix_Oracle Corporation_Claude
@@ -5090,9 +5906,7 @@ proxy-groups:
   - 美国_Reston_OVH SAS_Gemini_Claude1
   - 美国_Reston_OVH SAS_Gemini_Claude2
   - 美国_Reston_OVH SAS_Gemini_Claude3
-  - 美国_Reston_OVH SAS_Gemini_Claude4
-  - 美国_Richardson_Akamai Technologies, Inc._Gemini_Claude
-  - 美国_San Francisco_Xicomm LLC_Gemini_Claude
+  - 美国_San Jose_Leaseweb USA, Inc._Gemini_Claude
   - 美国_San Jose_Oracle Corporation_Gemini_Claude1
   - 美国_San Jose_Oracle Corporation_Gemini_Claude2
   - 美国_San Jose_Oracle Corporation_Gemini_Claude3
@@ -5101,46 +5915,55 @@ proxy-groups:
   - 美国_Santa Clara_prgmr.com, Inc._Claude
   - 美国_Seattle_ColoCrossing_Gemini_Claude
   - 美国_Seattle_Datacamp_Gemini_Claude
-  - 美国_Seattle_PacketHub_Gemini_Claude
   - 美国_The Dalles_Google LLC_Gemini_Claude
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude1
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude2
   - 英国_City of London_M247 Europe SRL_Claude
-  - 英国_Erith_OVH SAS_Claude
-  - 英国_Manchester_M247 Europe_Claude
+  - 英国_Coalville_05 COMMUNICATIONS LTD_Claude
+  - 英国_Erith_OVH SAS_Claude1
+  - 英国_Erith_OVH SAS_Claude2
+  - 英国_London_Amazon Technologies Inc._Claude
+  - 英国_London_DataCamp Limited_Claude
+  - 英国_London_GTHost_Claude
+  - 英国_London_OVH SAS_Claude1
+  - 英国_London_OVH SAS_Claude2
+  - 英国_London__Claude
+  - 英国_Manchester_M247 Europe_Claude1
+  - 英国_Manchester_M247 Europe_Claude2
+  - 英国_Manchester_M247 Europe_Claude3
   - 英国_Martlesham_EE Limited_Claude
+  - 英国_Martlesham_EE Limited_Gemini_Claude
+  - 英国_Slough_DigitalOcean, LLC_Claude
   - 英国_Stretford_M247 Europe SRL_Claude
   - 荷兰_Amsterdam_365.partners INC_Claude1
   - 荷兰_Amsterdam_365.partners INC_Claude2
-  - 荷兰_Amsterdam_Clodo Cloud Service CO. L.L.C_Gemini_Claude
   - 荷兰_Amsterdam_DA International Group Ltd._Claude
   - 荷兰_Amsterdam_DataCamp Limited_Claude
   - 荷兰_Amsterdam_DigitalOcean, LLC_Claude
-  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude1
+  - 荷兰_Amsterdam_Fast GEO Hosting S.R.L._Claude2
   - 荷兰_Amsterdam_Greenhost BV_Claude1
   - 荷兰_Amsterdam_Greenhost BV_Claude2
   - 荷兰_Amsterdam_Greenhost BV_Claude3
   - 荷兰_Amsterdam_Greenhost BV_Claude4
   - 荷兰_Amsterdam_Greenhost BV_Claude5
-  - 荷兰_Amsterdam_Greenhost BV_Claude6
   - 荷兰_Amsterdam_Greenhost BV_Gemini_Claude
+  - 荷兰_Amsterdam_HZ Hosting Ltd_Claude
   - 荷兰_Amsterdam_Hostkey_Claude1
   - 荷兰_Amsterdam_Hostkey_Claude2
   - 荷兰_Amsterdam_Neon Core Network LLC_Claude
-  - 荷兰_Amsterdam_OC NETWORKS LIMITED_Claude
   - 荷兰_Amsterdam_Play2go International Limited_Claude
+  - 荷兰_Amsterdam_Psychz Networks_Claude1
+  - 荷兰_Amsterdam_Psychz Networks_Claude2
+  - 荷兰_Amsterdam_Senko Digital LLC_Claude
   - 荷兰_Amsterdam_Servers Tech Fzco_Claude1
   - 荷兰_Amsterdam_Servers Tech Fzco_Claude2
   - 荷兰_Amsterdam_Timeweb, LLP_Claude
   - 荷兰_Dronten_The Infrastructure Group B.V._Claude
   - 荷兰_Dronten_Zenex 5ive Limited_Gemini_Claude
   - 荷兰_Haarlem_SCALEWAY_Claude
-  - 荷兰_Haarlem_Scaleway SAS_Claude
   - 荷兰_Haarlem_Scaleway_Claude1
   - 荷兰_Haarlem_Scaleway_Claude10
-  - 荷兰_Haarlem_Scaleway_Claude11
-  - 荷兰_Haarlem_Scaleway_Claude12
-  - 荷兰_Haarlem_Scaleway_Claude13
   - 荷兰_Haarlem_Scaleway_Claude2
   - 荷兰_Haarlem_Scaleway_Claude3
   - 荷兰_Haarlem_Scaleway_Claude4
@@ -5149,14 +5972,17 @@ proxy-groups:
   - 荷兰_Haarlem_Scaleway_Claude7
   - 荷兰_Haarlem_Scaleway_Claude8
   - 荷兰_Haarlem_Scaleway_Claude9
-  - 荷兰_Meppel_Spacecore Solution_Claude
-  - 荷兰_Rozendaal_NFOrce Entertainment B.V._Claude
-  - 阿联酋_Abu Dhabi_GoldIPv_Claude1
-  - 阿联酋_Abu Dhabi_GoldIPv_Claude2
-  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude
+  - 阿联酋_Abu Dhabi_GoldIPv_Claude
+  - 韩国_Ansan-si_SK Broadband Co Ltd_Claude
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude1
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude2
   - 韩国_Gwacheon_SK Broadband Co Ltd_Gemini_Claude
-  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude1
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude2
   - 韩国_Seoul_Oracle Cloud_Gemini_Claude
+  - 韩国_Seoul_Oracle Corporation_Gemini_Claude
+  - 韩国_Yangcheon-gu_SK Broadband Co Ltd_Claude1
+  - 韩国_Yangcheon-gu_SK Broadband Co Ltd_Claude2
   filter: _Claude
 - name: Gemini
   type: url-test
@@ -5167,33 +5993,41 @@ proxy-groups:
   tolerance: 50
   proxies:
   - 116.80.44.144_Gemini_Claude
-  - 137.184.218.169_Gemini_Claude
-  - 162.217.249.72_Gemini_Claude
+  - 152.67.8.205_Gemini_Claude
+  - 154.16.157.200_Gemini_Claude
+  - 172.111.146.64_Gemini_Claude
   - 185.229.59.254_Gemini_Claude
   - 45.15.170.237_Gemini_Claude
-  - 47.81.36.237_Gemini
+  - 45.88.183.168_Gemini_Claude
   - 57.131.32.191_Gemini_Claude1
   - 57.131.32.191_Gemini_Claude2
   - 84.239.49.180_Gemini_Claude
   - 84.239.49.53_Gemini_Claude
   - 84.239.49.54_Gemini_Claude
   - 84.239.49.55_Gemini_Claude
-  - 85.237.207.223_Gemini_Claude
-  - 中国_Beijing_Light Node Limited_Gemini
+  - 中国_Beijing_Light Node Limited_Gemini1
+  - 中国_Beijing_Light Node Limited_Gemini2
+  - 其他地区_Budapest_WorkTitans B.V._Gemini_Claude
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude1
   - 其他地区_Johannesburg_Microsoft Corporation_Gemini_Claude2
+  - 其他地区_Mexico City_Latitude.sh_Gemini_Claude
   - 其他地区_Milan_OVH SAS_Gemini_Claude
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude3
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude4
+  - 其他地区_Sarajevo_WorkTitans B.V._Gemini_Claude5
   - 其他地区_São Paulo_BrainStorm Network, Inc_Gemini_Claude
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini1
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini2
   - 其他地区_Tbilisi_AkhaliNet LLC_Gemini3
+  - 其他地区_Tbilisi_AkhaliNet LLC_Gemini4
+  - 其他地区_Tbilisi_AkhaliNet LLC_Gemini5
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude1
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude2
   - 其他地区_Tirana_WorkTitans B.V._Gemini_Claude3
   - 其他地区_Voluntari_INVITE Systems SRL_Gemini_Claude
+  - 加拿大_Beauharnois_OVH SAS_Gemini_Claude
   - 加拿大_Toronto_Akamai Technologies_Gemini_Claude
   - 加拿大_Toronto_Amazon Technologies Inc._Gemini_Claude
   - 加拿大_Toronto_Amazon.com_Gemini_Claude
@@ -5201,50 +6035,49 @@ proxy-groups:
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude1
   - 加拿大_Toronto_GLOBALTELEHOST_Gemini_Claude2
   - 加拿大_Vancouver_Cogent Communications_Gemini_Claude
+  - 印度_Chennai_Akamai Technologies, Inc._Gemini_Claude
+  - 印度_Navi Mumbai_Selvakumar Selvapandi_Gemini_Claude
   - 印度尼西亚_Bogor_PUSATMEDIA_Gemini
-  - 印度尼西亚_Bogor_PUSATMEDIA_Gemini_Claude
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude1
   - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude2
+  - 台湾_New Taipei City_Chunghwa Telecom Co., Ltd._Gemini_Claude3
+  - 台湾_Taipei_SAKURA LTD._Gemini_Claude
   - 台湾_Taoyuan_Scloud Pte Ltd_Gemini_Claude
   - 土耳其_Istanbul_G-Core Labs S.A._Gemini_Claude
-  - 土耳其_Istanbul_Iksir Internet Hizmetleri A.S._Gemini_Claude
-  - 德国_Frankfurt am Main_Clouvider Limited_Gemini_Claude
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude1
-  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude2
+  - 德国_Frankfurt am Main_OVH SAS_Gemini_Claude
   - 德国_Frankfurt am Main_OVHcloud_Gemini_Claude
-  - 新加坡_Singapore_Akamai Technologies, Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon Technologies Inc._Gemini_Claude
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude1
-  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude2
+  - 新加坡_Singapore_Amazon.com, Inc._Gemini_Claude
   - 新加坡_Singapore_Datacamp Limited_Gemini_Claude
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude1
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude2
   - 新加坡_Singapore_DigitalOcean, LLC_Gemini_Claude3
+  - 新加坡_Singapore_Komi LLC_Gemini_Claude
   - 新加坡_Singapore_Melbikomas UAB_Gemini_Claude
-  - 新加坡_Singapore_Oracle Corporation_Gemini_Claude
+  - 日本_Chiyoda City_SAKURA Internet Inc._Gemini_Claude
   - 日本_Osaka_Oracle Cloud_Gemini_Claude
   - 日本_Osaka_Oracle Corporation_Gemini_Claude
+  - 日本_Osaka_SAKURA Internet Inc._Gemini_Claude
   - 日本_Shibuya City_WorkTitans B.V._Gemini_Claude
+  - 日本_Tokyo_Akamai Technologies, Inc._Gemini_Claude
   - 日本_Tokyo_Akamai Technologies_Gemini_Claude
-  - 日本_Tokyo_Amazon Technologies Inc._Gemini_Claude
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude1
   - 日本_Tokyo_Datacamp Limited_Gemini_Claude2
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude3
+  - 日本_Tokyo_Datacamp Limited_Gemini_Claude4
+  - 日本_Tokyo_Ipxo LLC_Gemini_Claude
   - 法国_Gravelines_OVH SAS_Gemini_Claude1
   - 法国_Gravelines_OVH SAS_Gemini_Claude2
-  - 澳大利亚_Sydney_Amazon Technologies Inc._Gemini_Claude
+  - 法国_Gravelines_OVH SAS_Gemini_Claude3
   - 美国_Ashburn_GTHost_Gemini_Claude
-  - 美国_Buffalo_ColoCrossing_Gemini
+  - 美国_Charlotte_Aeza Group_Gemini_Claude
+  - 美国_Charlotte_Aeza International LTD_Gemini_Claude
   - 美国_Dallas_Datacamp Limited_Gemini_Claude1
   - 美国_Dallas_Datacamp Limited_Gemini_Claude2
   - 美国_Dallas_Datacamp Limited_Gemini_Claude3
   - 美国_Dallas_Datacamp Limited_Gemini_Claude4
-  - 美国_Dallas_Dedicated.com_Gemini_Claude1
-  - 美国_Dallas_Dedicated.com_Gemini_Claude2
-  - 美国_Dallas_Dedicated.com_Gemini_Claude3
-  - 美国_Dallas_Dedicated.com_Gemini_Claude4
+  - 美国_Dallas_Dedicated.com_Gemini_Claude
   - 美国_Dallas_Eonix Corporation_Gemini_Claude
-  - 美国_Dallas_FORNEX_Gemini
   - 美国_Dallas_The Constant Company_Gemini_Claude
   - 美国_Elk Grove Village_HostPapa_Gemini_Claude
   - 美国_Hillsboro_OVH SAS_Gemini_Claude1
@@ -5253,8 +6086,6 @@ proxy-groups:
   - 美国_Houston_Citigroup Inc._Gemini_Claude
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude1
   - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude2
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude3
-  - 美国_Los Angeles_Akamai Technologies, Inc._Gemini_Claude4
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude1
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude2
   - 美国_Los Angeles_Cogent Communications_Gemini_Claude3
@@ -5270,12 +6101,10 @@ proxy-groups:
   - 美国_Los Angeles_Zenlayer Inc_Gemini_Claude2
   - 美国_Los Angeles_Zenlayer_Gemini_Claude
   - 美国_Miami_GTHost_Gemini_Claude
-  - 美国_Miami_Newserverlife LLC_Gemini_Claude
   - 美国_New York_Datacamp Limited_Gemini_Claude1
   - 美国_New York_Datacamp Limited_Gemini_Claude2
   - 美国_New York_GTHost_Gemini_Claude
   - 美国_New York_objx.net_Gemini_Claude
-  - 美国_North Bergen_DigitalOcean, LLC_Gemini_Claude
   - 美国_Orangeburg_Contabo Inc._Gemini_Claude
   - 美国_Phoenix_GTHost_Gemini_Claude
   - 美国_Phoenix_Oracle Corporation_Gemini_Claude1
@@ -5284,9 +6113,7 @@ proxy-groups:
   - 美国_Reston_OVH SAS_Gemini_Claude1
   - 美国_Reston_OVH SAS_Gemini_Claude2
   - 美国_Reston_OVH SAS_Gemini_Claude3
-  - 美国_Reston_OVH SAS_Gemini_Claude4
-  - 美国_Richardson_Akamai Technologies, Inc._Gemini_Claude
-  - 美国_San Francisco_Xicomm LLC_Gemini_Claude
+  - 美国_San Jose_Leaseweb USA, Inc._Gemini_Claude
   - 美国_San Jose_Oracle Corporation_Gemini
   - 美国_San Jose_Oracle Corporation_Gemini_Claude1
   - 美国_San Jose_Oracle Corporation_Gemini_Claude2
@@ -5296,17 +6123,19 @@ proxy-groups:
   - 美国_Santa Clara_PEG TECH INC_Gemini
   - 美国_Seattle_ColoCrossing_Gemini_Claude
   - 美国_Seattle_Datacamp_Gemini_Claude
-  - 美国_Seattle_PacketHub_Gemini_Claude
   - 美国_The Dalles_Google LLC_Gemini_Claude
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude1
   - 美国_Us-az_GSL Networks Pty LTD_Gemini_Claude2
-  - 荷兰_Amsterdam_Clodo Cloud Service CO. L.L.C_Gemini_Claude
+  - 英国_Martlesham_EE Limited_Gemini_Claude
   - 荷兰_Amsterdam_Greenhost BV_Gemini_Claude
   - 荷兰_Dronten_Zenex 5ive Limited_Gemini_Claude
-  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude1
+  - 韩国_Chuncheon_Oracle Cloud_Gemini_Claude2
   - 韩国_Gwacheon_SK Broadband Co Ltd_Gemini_Claude
-  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude1
+  - 韩国_Seoul_Amazon.com, Inc._Gemini_Claude2
   - 韩国_Seoul_Oracle Cloud_Gemini_Claude
+  - 韩国_Seoul_Oracle Corporation_Gemini_Claude
   filter: _Gemini
 rules:
 - RULE-SET,ads,REJECT
