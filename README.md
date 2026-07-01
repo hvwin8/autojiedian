@@ -102,6 +102,7 @@ python scripts/build_pages.py --output-dir _site --base-url https://hvwin8.githu
 - `clash.yaml` 是当前对外发布的主产物
 - `v2rayn.txt` 是面向 `v2rayN` 的 Base64 订阅产物
 - `v2rayn-links.txt` 是逐行节点链接产物，方便直接查看或手动导入
+- v2rayN/sing-box 兼容口径：v2rayN 产物只导出 `vmess`、`ss`、`socks/socks5`、`vless`、`trojan`、`hysteria2/hy2`、`wireguard`；`http/https/ssr` 等不在截图支持列表内的协议会从 v2rayN 产物中过滤，避免客户端订阅更新解析为 0 条。Clash/Mihomo 产物不受该过滤影响。
 - `validated_pool.json` 是面向自动任务消费的候选池产物
 - `validated_pool_mihomo.json` 是面向 Mihomo 编排的增强候选池产物，额外带出口 IP、地区提示和能力标记
   - `supports_google=true` 是进入当前发布节点池的必要条件

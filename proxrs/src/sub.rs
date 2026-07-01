@@ -24,6 +24,7 @@ use tracing::info;
 use crate::base64::base64decode;
 use crate::base64::base64encode;
 use crate::protocol::Proxy;
+use crate::protocol::ProxyType;
 
 #[derive(Debug)]
 pub struct SubManager {}
@@ -470,6 +471,7 @@ impl SubManager {
     pub fn get_links_content(proxies: &[Proxy]) -> String {
         proxies
             .iter()
+            .filter(|proxy| Self::is_v2rayn_supported_proxy(proxy))
             .filter_map(|proxy| {
                 catch_unwind(AssertUnwindSafe(|| proxy.adapter.to_link()))
                     .map_err(|_| {
@@ -482,6 +484,19 @@ impl SubManager {
             })
             .collect::<Vec<_>>()
             .join("\n")
+    }
+
+    fn is_v2rayn_supported_proxy(proxy: &Proxy) -> bool {
+        matches!(
+            proxy.proxy_type,
+            ProxyType::SS
+                | ProxyType::Vmess
+                | ProxyType::Vless
+                | ProxyType::Trojan
+                | ProxyType::Hysteria2
+                | ProxyType::Socks5
+                | ProxyType::WireGuard
+        )
     }
 
     pub fn save_proxies_into_links_file(proxies: &[Proxy], save_path: String) {
