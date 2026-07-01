@@ -54,6 +54,8 @@ struct Cli {
 const TEST_PROXY_GROUP_NAME: &str = "PROXY";
 const V2RAYN_SUB_PATH: &str = "v2rayn.txt";
 const V2RAYN_LINKS_PATH: &str = "v2rayn-links.txt";
+const V2RAYN_BASIC_SUB_PATH: &str = "v2rayn-basic.txt";
+const V2RAYN_BASIC_LINKS_PATH: &str = "v2rayn-basic-links.txt";
 const VALIDATED_POOL_MIHOMO_ARTIFACT: &str = "12_validated_pool_mihomo.json";
 
 #[derive(Debug, Clone)]
@@ -123,6 +125,8 @@ async fn run(config: Settings) {
     let release_yaml_path = env::current_dir().unwrap().join("clash.yaml");
     let v2rayn_sub_path = env::current_dir().unwrap().join(V2RAYN_SUB_PATH);
     let v2rayn_links_path = env::current_dir().unwrap().join(V2RAYN_LINKS_PATH);
+    let v2rayn_basic_sub_path = env::current_dir().unwrap().join(V2RAYN_BASIC_SUB_PATH);
+    let v2rayn_basic_links_path = env::current_dir().unwrap().join(V2RAYN_BASIC_LINKS_PATH);
     let test_clash_template_path = "conf/clash_test.yaml";
     let release_clash_template_path = "conf/clash_release.yaml";
 
@@ -416,6 +420,8 @@ async fn run(config: Settings) {
                 &release_proxies,
                 v2rayn_sub_path.to_string_lossy().to_string(),
                 v2rayn_links_path.to_string_lossy().to_string(),
+                v2rayn_basic_sub_path.to_string_lossy().to_string(),
+                v2rayn_basic_links_path.to_string_lossy().to_string(),
             );
             info!("release file: {}", release_yaml_path.to_string_lossy());
         }
@@ -494,6 +500,8 @@ async fn run(config: Settings) {
             &release_proxies,
             v2rayn_sub_path.to_string_lossy().to_string(),
             v2rayn_links_path.to_string_lossy().to_string(),
+            v2rayn_basic_sub_path.to_string_lossy().to_string(),
+            v2rayn_basic_links_path.to_string_lossy().to_string(),
         );
         info!("release file: {}", release_yaml_path.to_string_lossy());
     }
@@ -693,13 +701,23 @@ fn export_v2rayn_from_jsonl(path: &str) -> Result<usize, Box<dyn std::error::Err
         &proxies,
         V2RAYN_SUB_PATH.to_string(),
         V2RAYN_LINKS_PATH.to_string(),
+        V2RAYN_BASIC_SUB_PATH.to_string(),
+        V2RAYN_BASIC_LINKS_PATH.to_string(),
     );
     Ok(proxies.len())
 }
 
-fn write_v2rayn_outputs(proxies: &[Proxy], base64_path: String, links_path: String) {
+fn write_v2rayn_outputs(
+    proxies: &[Proxy],
+    base64_path: String,
+    links_path: String,
+    basic_base64_path: String,
+    basic_links_path: String,
+) {
     SubManager::save_proxies_into_base64_file(proxies, base64_path);
     SubManager::save_proxies_into_links_file(proxies, links_path);
+    SubManager::save_basic_proxies_into_base64_file(proxies, basic_base64_path);
+    SubManager::save_basic_proxies_into_links_file(proxies, basic_links_path);
 }
 
 fn load_cached_validated_proxy_map(path: PathBuf) -> HashMap<String, CachedValidatedProxy> {

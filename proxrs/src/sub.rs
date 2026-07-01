@@ -469,9 +469,17 @@ impl SubManager {
     }
 
     pub fn get_links_content(proxies: &[Proxy]) -> String {
+        Self::get_filtered_links_content(proxies, Self::is_v2rayn_supported_proxy)
+    }
+
+    pub fn get_basic_links_content(proxies: &[Proxy]) -> String {
+        Self::get_filtered_links_content(proxies, Self::is_v2rayn_basic_proxy)
+    }
+
+    fn get_filtered_links_content(proxies: &[Proxy], predicate: fn(&Proxy) -> bool) -> String {
         proxies
             .iter()
-            .filter(|proxy| Self::is_v2rayn_supported_proxy(proxy))
+            .filter(|proxy| predicate(proxy))
             .filter_map(|proxy| {
                 catch_unwind(AssertUnwindSafe(|| proxy.adapter.to_link()))
                     .map_err(|_| {
@@ -499,6 +507,13 @@ impl SubManager {
         )
     }
 
+    fn is_v2rayn_basic_proxy(proxy: &Proxy) -> bool {
+        matches!(
+            proxy.proxy_type,
+            ProxyType::SS | ProxyType::Vmess | ProxyType::Vless | ProxyType::Trojan
+        )
+    }
+
     pub fn save_proxies_into_links_file(proxies: &[Proxy], save_path: String) {
         let mut file = File::create(&save_path).unwrap();
         let content = Self::get_links_content(proxies);
@@ -508,6 +523,18 @@ impl SubManager {
     pub fn save_proxies_into_base64_file(proxies: &[Proxy], save_path: String) {
         let mut file = File::create(&save_path).unwrap();
         let content = base64encode(Self::get_links_content(proxies));
+        file.write_all(content.as_bytes()).unwrap();
+    }
+
+    pub fn save_basic_proxies_into_links_file(proxies: &[Proxy], save_path: String) {
+        let mut file = File::create(&save_path).unwrap();
+        let content = Self::get_basic_links_content(proxies);
+        file.write_all(content.as_bytes()).unwrap();
+    }
+
+    pub fn save_basic_proxies_into_base64_file(proxies: &[Proxy], save_path: String) {
+        let mut file = File::create(&save_path).unwrap();
+        let content = base64encode(Self::get_basic_links_content(proxies));
         file.write_all(content.as_bytes()).unwrap();
     }
 }

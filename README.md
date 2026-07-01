@@ -27,6 +27,12 @@
 - v2rayN 节点直出列表：
   - `https://raw.githubusercontent.com/hvwin8/autojiedian/master/v2rayn-links.txt`
   - `https://hvwin8.github.io/autojiedian/v2rayn-links.txt`
+- v2rayN Basic 稳定订阅（仅 `vmess/vless/trojan/ss`，旧版或导入异常时优先用）：
+  - `https://raw.githubusercontent.com/hvwin8/autojiedian/master/v2rayn-basic.txt`
+  - `https://hvwin8.github.io/autojiedian/v2rayn-basic.txt`
+- v2rayN Basic 节点直出列表：
+  - `https://raw.githubusercontent.com/hvwin8/autojiedian/master/v2rayn-basic-links.txt`
+  - `https://hvwin8.github.io/autojiedian/v2rayn-basic-links.txt`
 
 GitHub Pages 还会同步发布：
 
@@ -36,6 +42,8 @@ GitHub Pages 还会同步发布：
 - `validated_pool_mihomo.json`
 - `v2rayn.txt`
 - `v2rayn-links.txt`
+- `v2rayn-basic.txt`
+- `v2rayn-basic-links.txt`
 - `latest.json`
 - `rules/`
 
@@ -102,7 +110,9 @@ python scripts/build_pages.py --output-dir _site --base-url https://hvwin8.githu
 - `clash.yaml` 是当前对外发布的主产物
 - `v2rayn.txt` 是面向 `v2rayN` 的 Base64 订阅产物
 - `v2rayn-links.txt` 是逐行节点链接产物，方便直接查看或手动导入
-- v2rayN/sing-box 兼容口径：v2rayN 产物只导出 `vmess`、`ss`、`socks/socks5`、`vless`、`trojan`、`hysteria2/hy2`、`wireguard`；`http/https/ssr` 等不在截图支持列表内的协议会从 v2rayN 产物中过滤，避免客户端订阅更新解析为 0 条。Clash/Mihomo 产物不受该过滤影响。
+- `v2rayn-basic.txt` / `v2rayn-basic-links.txt` 是最大兼容口径，只导出 `vmess`、`vless`、`trojan`、`ss`，用于 v2rayN 旧版、Xray core 或导入显示 0 条时的首选排障入口
+- v2rayN/sing-box 兼容口径：`v2rayn.txt` 产物只导出 `vmess`、`ss`、`socks/socks5`、`vless`、`trojan`、`hysteria2/hy2`、`wireguard`；`http/https/ssr` 等不在截图支持列表内的协议会从 v2rayN 产物中过滤，避免客户端订阅更新解析为 0 条。Clash/Mihomo 产物不受该过滤影响。
+- 最近变更（2026-07-02）：联网复核 v2rayN 官方订阅说明与 Hy2/WireGuard 兼容 issue 后，新增 Basic 订阅；行为缘由是 Hy2/WireGuard/Socks 虽可被新版 v2rayN/sing-box 支持，但容易造成旧客户端、核心选择或参数兼容误判，Basic 入口可快速确认“订阅格式可解析”。验证：`cargo fmt --check`、`cargo check`、本地导出和 Base64 解码协议计数。
 - `validated_pool.json` 是面向自动任务消费的候选池产物
 - `validated_pool_mihomo.json` 是面向 Mihomo 编排的增强候选池产物，额外带出口 IP、地区提示和能力标记
   - `supports_google=true` 是进入当前发布节点池的必要条件
