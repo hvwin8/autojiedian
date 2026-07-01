@@ -43,8 +43,12 @@ GitHub Pages 还会同步发布：
 
 - `https://hvwin8.github.io/autojiedian/`
 
-## 工作流
 
+## 运维与写入凭据
+
+- GitHub 写入凭据、SSH Host alias、Deploy key 公钥与推送验收命令见：docs/ops/github-write-access.md。
+- 私钥只保留在本机用户 .ssh，不得写入仓库；本仓库推送不要走默认 HTTPS/Git Credential Manager 旧账号。
+## 工作流
 仓库当前分成三条独立链路：
 
 - `ci`
