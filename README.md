@@ -53,7 +53,8 @@ GitHub Pages 还会同步发布：
 - `refresh-release`
   - 负责定时执行 `cargo run`，刷新 `clash.yaml` 与 `artifacts`
   - 仅手动或定时触发，不再跟每次推送绑死
-  - 会优先复用上轮 `validated_pool_mihomo` 中已验证的节点，只对新增或未命中的节点做完整探测
+  - 会优先复用上轮 `validated_pool_mihomo` 中已验证且已通过 Google 专项验活的节点；旧缓存缺少 `supports_google=true` 时必须重新 live probe
+  - 入库硬门槛：节点除基础连通探针外，还必须通过 `google_test`，默认 `https://www.google.com/generate_204 = 204`，不通过就不进入 `validated_pool` / `validated_pool_mihomo` / `clash.yaml` / `v2rayn*`
 - `pages`
   - 负责把最新提交内容打包成 GitHub Pages 站点
 
@@ -99,6 +100,7 @@ python scripts/build_pages.py --output-dir _site --base-url https://hvwin8.githu
 - `v2rayn-links.txt` 是逐行节点链接产物，方便直接查看或手动导入
 - `validated_pool.json` 是面向自动任务消费的候选池产物
 - `validated_pool_mihomo.json` 是面向 Mihomo 编排的增强候选池产物，额外带出口 IP、地区提示和能力标记
+  - `supports_google=true` 是进入当前发布节点池的必要条件
 - `artifacts/` 存放每轮聚合过程中的中间结果
 - `rules/` 存放仓库自托管的规则文件
 - GitHub Pages 是对外稳定分发层，不依赖上游仓库页面

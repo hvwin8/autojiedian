@@ -59,6 +59,7 @@ pub struct ValidatedPoolMetadata {
     pub region: String,
     pub city: String,
     pub isp: String,
+    pub supports_google: bool,
     pub supports_gemini: bool,
     pub supports_claude: bool,
 }
@@ -67,11 +68,13 @@ impl ValidatedPoolMetadata {
     pub fn from_probe_result(
         exit_ip: &str,
         ip_detail: Option<&IpDetail>,
+        supports_google: bool,
         supports_gemini: bool,
         supports_claude: bool,
     ) -> Self {
         let mut metadata = Self {
             exit_ip: exit_ip.to_string(),
+            supports_google,
             supports_gemini,
             supports_claude,
             ..Self::default()
@@ -103,6 +106,8 @@ pub struct ValidatedPoolMihomoItem {
     pub city: String,
     pub isp: String,
     pub region_hint: String,
+    #[serde(default)]
+    pub supports_google: bool,
     pub supports_gemini: bool,
     pub supports_claude: bool,
 }
@@ -177,6 +182,7 @@ pub fn build_validated_pool_mihomo(
             city: metadata.map(|item| item.city.clone()).unwrap_or_default(),
             isp: metadata.map(|item| item.isp.clone()).unwrap_or_default(),
             region_hint: infer_region_hint(&name, metadata),
+            supports_google: metadata.map(|item| item.supports_google).unwrap_or(false),
             supports_gemini: metadata
                 .map(|item| item.supports_gemini)
                 .unwrap_or_else(|| infer_capability_from_name(&name, "gemini")),
@@ -398,6 +404,7 @@ mod tests {
                 region: "Singapore".to_string(),
                 city: "Singapore".to_string(),
                 isp: "TestISP".to_string(),
+                supports_google: true,
                 supports_gemini: true,
                 supports_claude: true,
             },
@@ -407,6 +414,7 @@ mod tests {
             build_validated_pool_mihomo(&proxies, &fingerprint_sources, &fingerprint_metadata);
         assert_eq!(items.len(), 1);
         assert_eq!(items[0].region_hint, "SG");
+        assert!(items[0].supports_google);
         assert!(items[0].supports_gemini);
         assert!(items[0].supports_claude);
         assert_eq!(items[0].source_count, 1);

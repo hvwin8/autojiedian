@@ -87,6 +87,42 @@ pub async fn youtube_music_is_ok(proxy_url: &str, timeout: Duration) -> Result<(
     Err(anyhow!("error status code: {}", status))
 }
 
+pub async fn google_is_ok(
+    proxy_url: &str,
+    url: &str,
+    expected_status: u16,
+    timeout: Duration,
+) -> Result<()> {
+    let client = build_client(proxy_url, timeout)?;
+    let resp = client
+        .get(url)
+        .header("User-Agent", USER_AGENT)
+        .send()
+        .await
+        .with_context(|| "Failed to send request to Google")?;
+    let status = resp.status();
+    if status.as_u16() == expected_status {
+        return Ok(());
+    }
+    if status.is_redirection() {
+        let location = resp
+            .headers()
+            .get("Location")
+            .and_then(|value| value.to_str().ok())
+            .unwrap_or("");
+        if location.starts_with("https://www.google.com/sorry/index")
+            || location.starts_with("https://consent.google.com/")
+        {
+            return Err(anyhow!(
+                "google redirected to restricted page: {}",
+                location
+            ));
+        }
+        return Err(anyhow!("google redirect location: {}", location));
+    }
+    Err(anyhow!("google status code: {}", status))
+}
+
 pub async fn gemini_is_ok(proxy_url: &str, timeout: Duration) -> Result<()> {
     let url = "https://gemini.google.com";
     let client = build_client(proxy_url, timeout)?;

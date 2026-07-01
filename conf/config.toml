@@ -53,6 +53,15 @@ url = "https://www.gstatic.com/generate_204"
 expected = 204
 timeout = 3000
 
+# Hard gate for nodes entering validated/release pools.
+# Passing the basic connectivity probe is not enough; nodes must also pass
+# this Google-specific probe before being published.
+[google_test]
+enabled = true
+url = "https://www.google.com/generate_204"
+expected = 204
+timeout = 5000
+
 [speed_test]
 enabled = false
 url = "https://speed.cloudflare.com/__down?bytes=104857600"

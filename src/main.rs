@@ -384,7 +384,7 @@ async fn run(config: Settings) {
         HashMap::new();
     let cached_validated_proxies =
         load_cached_validated_proxy_map(artifact_store.path(VALIDATED_POOL_MIHOMO_ARTIFACT));
-    let (mut release_proxies, mut proxies_needing_live_probe) = reuse_cached_validated_proxies(
+    let (mut release_proxies, proxies_needing_live_probe) = reuse_cached_validated_proxies(
         useful_proxies,
         &cached_validated_proxies,
         &mut validated_pool_metadata,
@@ -397,21 +397,28 @@ async fn run(config: Settings) {
         );
     }
     if config.fast_mode {
-        release_proxies.append(&mut proxies_needing_live_probe);
-        if !release_proxies.is_empty() {
-            SubManager::rename_dup_proxies_name(&mut release_proxies);
+        if !proxies_needing_live_probe.is_empty() {
+            warn!(
+                "fast mode skips {} unprobed proxies; only cached supports_google=true proxies can enter release pool",
+                proxies_needing_live_probe.len()
+            );
         }
-        SubManager::save_proxies_into_clash_file(
-            &release_proxies,
-            release_clash_template_path.to_string(),
-            release_yaml_path.to_string_lossy().to_string(),
-        );
-        write_v2rayn_outputs(
-            &release_proxies,
-            v2rayn_sub_path.to_string_lossy().to_string(),
-            v2rayn_links_path.to_string_lossy().to_string(),
-        );
-        info!("release file: {}", release_yaml_path.to_string_lossy());
+        if release_proxies.is_empty() {
+            error!("no proxies survived Google-specific release gate");
+        } else {
+            SubManager::rename_dup_proxies_name(&mut release_proxies);
+            SubManager::save_proxies_into_clash_file(
+                &release_proxies,
+                release_clash_template_path.to_string(),
+                release_yaml_path.to_string_lossy().to_string(),
+            );
+            write_v2rayn_outputs(
+                &release_proxies,
+                v2rayn_sub_path.to_string_lossy().to_string(),
+                v2rayn_links_path.to_string_lossy().to_string(),
+            );
+            info!("release file: {}", release_yaml_path.to_string_lossy());
+        }
     } else {
         if !proxies_needing_live_probe.is_empty() {
             let mut clash_meta = ClashMeta::new(external_port, mixed_port);
@@ -725,6 +732,9 @@ fn build_cached_validated_proxy_map(
         if !item.supports_gemini && !item.supports_claude {
             continue;
         }
+        if !item.supports_google {
+            continue;
+        }
         cache.insert(
             item.fingerprint,
             CachedValidatedProxy {
@@ -736,6 +746,7 @@ fn build_cached_validated_proxy_map(
                     region: item.region,
                     city: item.city,
                     isp: item.isp,
+                    supports_google: item.supports_google,
                     supports_gemini: item.supports_gemini,
                     supports_claude: item.supports_claude,
                 },
@@ -804,6 +815,29 @@ async fn probe_release_proxy(
     };
     info!("node {} ip {} from {}", node, proxy_ip, from);
 
+    let google_is_ok = if config.google_test.enabled {
+        let google_timeout = Duration::from_millis(config.google_test.timeout);
+        match website::google_is_ok(
+            &clash_meta.proxy_url,
+            &config.google_test.url,
+            config.google_test.expected,
+            google_timeout,
+        )
+        .await
+        {
+            Ok(_) => {
+                info!("node {} google ok", node);
+                true
+            }
+            Err(err) => {
+                error!("node {} google failed: {:#}", node, err);
+                return None;
+            }
+        }
+    } else {
+        true
+    };
+
     let (gemini_result, claude_result, ip_detail_result) = tokio::join!(
         website::gemini_is_ok(&clash_meta.proxy_url, timeout),
         website::claude_is_ok(&clash_meta.proxy_url, timeout),
@@ -835,6 +869,7 @@ async fn probe_release_proxy(
     let metadata = pipeline::ValidatedPoolMetadata::from_probe_result(
         &proxy_ip.to_string(),
         ip_detail_result.as_ref().ok(),
+        google_is_ok,
         gemini_is_ok,
         claude_is_ok,
     );
@@ -950,6 +985,7 @@ mod tests {
                 city: "Los Angeles".to_string(),
                 isp: "Example ISP".to_string(),
                 region_hint: "US".to_string(),
+                supports_google: true,
                 supports_gemini: true,
                 supports_claude: false,
             },
@@ -968,6 +1004,7 @@ mod tests {
                 city: String::new(),
                 isp: String::new(),
                 region_hint: "OTHER".to_string(),
+                supports_google: false,
                 supports_gemini: false,
                 supports_claude: false,
             },
@@ -976,6 +1013,31 @@ mod tests {
         assert_eq!(cache.len(), 1);
         assert_eq!(cache.get("fp-ok").unwrap().name, "cached-node");
         assert!(!cache.contains_key("fp-skip"));
+    }
+
+    #[test]
+    fn test_build_cached_validated_proxy_map_requires_google_gate() {
+        let cache = build_cached_validated_proxy_map(vec![pipeline::ValidatedPoolMihomoItem {
+            fingerprint: "fp-google-missing".to_string(),
+            proxy_type: "Vless".to_string(),
+            name: "old-cache-node".to_string(),
+            server: "example.com".to_string(),
+            source_urls: Vec::new(),
+            source_count: 0,
+            json: "{}".to_string(),
+            exit_ip: "1.1.1.1".to_string(),
+            country: "United States".to_string(),
+            country_code: "US".to_string(),
+            region: "California".to_string(),
+            city: "Los Angeles".to_string(),
+            isp: "Example ISP".to_string(),
+            region_hint: "US".to_string(),
+            supports_google: false,
+            supports_gemini: true,
+            supports_claude: true,
+        }]);
+
+        assert!(cache.is_empty());
     }
 
     #[test]
