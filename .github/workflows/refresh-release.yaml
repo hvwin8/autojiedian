@@ -3,6 +3,12 @@ name: refresh-release
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - "conf/config.toml"
+      - ".github/workflows/refresh-release.yaml"
   schedule:
     - cron: "20 */6 * * *"
 

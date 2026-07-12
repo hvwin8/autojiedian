@@ -64,7 +64,7 @@ GitHub Pages 还会同步发布：
   - 面向 `push` / `pull_request` / 手动触发
 - `refresh-release`
   - 负责定时执行 `cargo run`，刷新 `clash.yaml` 与 `artifacts`
-  - 仅手动或定时触发，不再跟每次推送绑死
+  - 支持手动、每 6 小时定时触发；`conf/config.toml` 或本工作流自身变化时也会自动触发，但普通代码/文档 push 不跑重型刷新
   - 会优先复用上轮 `validated_pool_mihomo` 中已验证且已通过 Google 专项验活的节点；旧缓存缺少 `supports_google=true` 时必须重新 live probe
   - 入库硬门槛：节点除基础连通探针外，还必须通过 `google_test`，默认 `https://www.google.com/generate_204 = 204`，不通过就不进入 `validated_pool` / `validated_pool_mihomo` / `clash.yaml` / `v2rayn*`
 - `pages`
