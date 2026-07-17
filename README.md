@@ -117,6 +117,7 @@ python scripts/build_pages.py --output-dir _site --base-url https://hvwin8.githu
 - `validated_pool_mihomo.json` 是面向 Mihomo 编排的增强候选池产物，额外带出口 IP、地区提示和能力标记
   - `supports_google=true` 是进入当前发布节点池的必要条件
 - 最近变更（2026-07-12）：新增 `Au1rxx/free-vpn-subscriptions`、`Pawdroid/Free-servers`、`Barabama/FreeNodes` 三个活跃公开输入；纳入前已核验目标 raw 文件可访问、可解析，且对应文件在当日有更新。它们仍只作为候选源，必须通过基础连通和 Google 硬验活后才进入发布池。
+- 最近变更（2026-07-17）：新增 6 条 LinuxDo / dpdns Base64 分享链接订阅源；纳入前已逐条确认 HTTP 200 且可解析为 Base64 share-link feed，其中 5 条为大池/精选/ChatGPT/Gemini 分类池，1 条上游当前仅返回极小无效分享内容。所有新增源仍只作为候选源，必须通过基础连通和 Google 硬验活后才进入发布池。
 - `artifacts/` 存放每轮聚合过程中的中间结果
 - `rules/` 存放仓库自托管的规则文件
 - GitHub Pages 是对外稳定分发层，不依赖上游仓库页面

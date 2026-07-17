@@ -16,6 +16,15 @@ subs = [
     "https://raw.githubusercontent.com/Au1rxx/free-vpn-subscriptions/main/output/clash.yaml",
     "https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
     "https://raw.githubusercontent.com/Barabama/FreeNodes/refs/heads/feat/ai-crawler-v2/nodes/merged.yaml",
+
+    # LinuxDo / dpdns public subscription feeds. These return Base64 share-link
+    # payloads and still must pass basic + Google validation before publishing.
+    "https://subs.2519885.dpdns.org/c/?token=ce7b0ad8f20c084448d03891f892d848",
+    "https://subs.2519885.dpdns.org/c/?token=326ad4c90c6d9ac385e09ea68c3c74ab",
+    "https://subs.2519885.dpdns.org/c/?token=5d25f2afab579ed11ecb0292a1ab7283",
+    "https://subs.2519885.dpdns.org/c/?token=21154442b2581e0a7b36244e8381a8ef",
+    "https://subs.2519885.dpdns.org/c/?token=6fc5412c3df0fc7597ee415d89fbd7f5",
+    "https://subs.2519885.dpdns.org/c/?token=b976286ba5963b5e20b11de3c70fd204",
 ]
 
 # Discovery feeds can be repo pages, tree pages, or readme pages that link to
